@@ -24,4 +24,5 @@ Imports:
     spex,
     tabularaster
 Suggests:
+    adehabitatLT,
     covr
