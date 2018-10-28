@@ -1,10 +1,10 @@
 
 [![Travis build
-status](https://travis-ci.org/Maschette/SOmap.svg?branch=master)](https://travis-ci.org/Maschette/SOmap)
+status](https://travis-ci.org/AustralianAntarcticDivision/SOmap.svg?branch=master)](https://travis-ci.org/AustralianAntarcticDivision/SOmap)
 [![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/github/Maschette/SOmap?branch=master&svg=true)](https://ci.appveyor.com/project/Maschette/SOmap)
+status](https://ci.appveyor.com/api/projects/status/github/AustralianAntarcticDivision/SOmap?branch=master&svg=true)](https://ci.appveyor.com/project/AustralianAntarcticDivision/SOmap)
 [![Coverage
-status](https://codecov.io/gh/Maschette/SOmap/branch/master/graph/badge.svg)](https://codecov.io/github/Maschette/SOmap?branch=master)
+status](https://codecov.io/gh/AustralianAntarcticDivision/SOmap/branch/master/graph/badge.svg)](https://codecov.io/github/AustralianAntarcticDivision/SOmap?branch=master)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/SOmap)](https://cran.r-project.org/package=SOmap)
 
@@ -19,11 +19,11 @@ much a work in progress contact me with any questions or suggestions.
 ## Installation
 
 The development version from
-[GitHub](https://github.com/Maschette/SOmap) with:
+[GitHub](https://github.com/AustralianAntarcticDivision/SOmap) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("Maschette/SOmap")
+devtools::install_github("AustralianAntarcticDivision/SOmap")
 ```
 
 ## Example
