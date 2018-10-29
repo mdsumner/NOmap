@@ -25,4 +25,6 @@ Imports:
     tabularaster
 Suggests:
     adehabitatLT,
-    covr
+    covr,
+    testthat,
+    vdiffr
