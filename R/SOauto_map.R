@@ -98,6 +98,12 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
     }
     testx <- try(spbabel::sptable(x))  ##
 
+    if (inherits(x, "SpatialPoints")) {
+      input_lines <- FALSE
+    }
+    if (inherits(x, "SpatialLines") || inherits(x, "SpatialPolygons")) {
+      input_points <- FALSE
+    }
 
     if (inherits(testx, "try-error")) stop("don't understand how to get lon,lat from 'x'")
     ## split on branch
