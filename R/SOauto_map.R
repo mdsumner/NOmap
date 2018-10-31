@@ -256,7 +256,7 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
   # plot(erase(poly, g), add = TRUE, col = "white")
   # invisible(list(bathy = bathymetry, coastline = coastline, target = target))
   # } else {
-
+  if (!exists("xy")) xy <- NULL
   invisible(structure(list(bathy = bathymetry, coastline = coastline, target = target, data = xy, graticule = graticule, crs = prj), class = "SOmap"))
 
   #}
