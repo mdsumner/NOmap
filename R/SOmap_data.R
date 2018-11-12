@@ -43,6 +43,13 @@
 #'       \item URL: https://data.ccamlr.org/dataset/statistical-areas-subareas-and-divisions
 #'       \item License: Public domain
 #'     }
+#'   \item CCAMLR_VME_polygons
+#'     \itemize{
+#'       \item Description: Defined areas of registered vulnerable marine ecosystems as defined under CM 22-09.
+#'       \item Source: CCAMLR
+#'       \item URL: https://gis.ccamlr.org/geoserver/ows?service=wfs&version=1.0.0&request=GetCapabilities
+#'       \item License: Not specified
+#'     }
 #'   \item continent
 #'     \itemize{
 #'       \item Description: Coastline, details TBA
@@ -71,13 +78,26 @@
 #'       \item URL: https://doi.org/10.7265/N5K072F8
 #'       \item License: Please cite
 #'     }
-#'
 #'    \item mirounga_leonina
 #'     \itemize{
 #'       \item Description: Example elephant seal Argos tracking data
-#'       \item Source: Data were sourced from the Integrated Marine Observing System (IMOS) - IMOS is supported by the Australian Government through the National Collaborative Research Infrastructure Strategy and the Super Science Initiative.
+#'       \item Source: Data were sourced from the Integrated Marine Observing System (IMOS) - IMOS is supported by the Australian Government through the National Collaborative Research Infrastructure Strategy and the Super Science Initiative
 #'       \item URL: https://github.com/ianjonsen/bsam
 #'       \item License: Please cite
+#'     }
+#'    \item ADD_coastline_med
+#'     \itemize{
+#'       \item Description: Medium-resolution coastline data from the SCAR Antarctic Digital Database. This coastline only covers continental Antarctica: see the GSHHS_i_L1 data for the remainder of the southern hemisphere
+#'       \item Source: SCAR
+#'       \item URL: https://add.data.bas.ac.uk/repository/entry/show?entryid=f477219b-9121-44d6-afa6-d8552762dc45
+#'       \item License: CC-BY. Citation: SCAR Antarctic Digital Database (2018)
+#'     }
+#'    \item GSHHS_i_L1
+#'     \itemize{
+#'       \item Description: Coastline data (excluding Antarctica) from the Global Self-consistent, Hierarchical, High-resolution Geography Database. Only southern hemisphere, level 1 (boundary between land and ocean, except Antarctica), intermediate resolution data are included here
+#'       \item Source: Wessel P, Smith WHF (1996) A Global Self-consistent, Hierarchical, High-resolution Shoreline Database. J. Geophys. Res. 101:8741-8743
+#'       \item URL: http://www.soest.hawaii.edu/wessel/gshhg/
+#'       \item License: LGPL
 #'     }
 #' }
 #' @keywords datasets

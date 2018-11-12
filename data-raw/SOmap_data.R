@@ -4,12 +4,13 @@ psproj <- "+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum
 ## CCAMLR reference data
 library(sp)
 library(raster)
+require(curl)
 
-get_unzip_data <- function(this_url) {
+get_unzip_data <- function(this_url, fname = basename(this_url)) {
     working_dir <- tempfile()
     if (!dir.exists(working_dir)) dir.create(working_dir)
-    download.file(this_url, destfile = file.path(working_dir, basename(this_url)))
-    unzip(file.path(working_dir, basename(this_url)), exdir = working_dir)
+    curl::curl_download(this_url, destfile = file.path(working_dir, fname))
+    unzip(file.path(working_dir, fname), exdir = working_dir)
 }
 
 ## MPAs
@@ -44,6 +45,37 @@ files <- get_unzip_data("https://data.ccamlr.org/sites/default/files/ssmu-shapef
 SSMU1 <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
 chk <- sapply(names(SSMU1), function(z) length(tools::showNonASCII(SSMU1[[z]])) > 0)
 if (any(chk)) stop("non-ASCII chars in SSMU1 data")
+
+## VMEs
+## Defined areas of registered vulnerable marine ecosystems as defined under CM 22-09.
+files <- get_unzip_data("https://gis.ccamlr.org/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:vme_polygons&outputFormat=shape-zip", fname = "vme_polygons.zip")
+VME_polygons <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
+VME_polygons$comment <- stringi::stri_enc_toascii(VME_polygons$comment)
+chk <- sapply(names(VME_polygons), function(z) length(tools::showNonASCII(VME_polygons[[z]])) > 0)
+if (any(chk)) stop("non-ASCII chars in VME_polygons data")
+
+## other possible layers, not yet included here:
+
+##<Title>VME Fine Scale Rectangles (FSR)</Title>
+## VME Fine-Scale Rectangles identified under CM 22-07.
+files <- get_unzip_data("https://gis.ccamlr.org/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:vme_fsr&outputFormat=shape-zip", fname = "vme_fsr.zip")
+VME_fsr <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
+chk <- sapply(names(VME_fsr), function(z) length(tools::showNonASCII(VME_fsr[[z]])) > 0)
+if (any(chk)) stop("non-ASCII chars in VME_fsr data")
+
+##<Title>VME Risk Areas</Title>
+##<Abstract>VME Risk Areas declared under CM 22-07.</Abstract>
+files <- get_unzip_data("https://gis.ccamlr.org/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:vme_risk_areas&outputFormat=shape-zip", fname = "vme_risk_areas.zip")
+VME_risk_areas <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
+chk <- sapply(names(VME_risk_areas), function(z) length(tools::showNonASCII(VME_risk_areas[[z]])) > 0)
+if (any(chk)) stop("non-ASCII chars in VME_risk_areas data")
+
+##<Title>VME lines</Title>
+##Vulnerable Marine Ecosystem (VME) transects. VMEs notified under CM 22-06 (encounters with VMEs).
+files <- get_unzip_data("https://gis.ccamlr.org/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:vme_lines&outputFormat=shape-zip", fname = "vme_lines.zip")
+VME_lines <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
+chk <- sapply(names(VME_lines), function(z) length(tools::showNonASCII(VME_lines[[z]])) > 0)
+if (any(chk)) stop("non-ASCII chars in VME_lines data")
 
 
 ## continent (was land1)
@@ -141,6 +173,7 @@ GSHHS_i_L1 <- spTransform(GSHHS_i_L1, psproj)
 
 SOmap_data <- list(CCAMLR_MPA = MPA1, CCAMLR_statistical_areas = CCAMLR1, CCAMLR_research_blocks = RB1,
                    CCAMLR_SSRU = SSRU1, CCAMLR_SSMU = SSMU1,
+                   CCAMLR_VME_polygons = VME_polygons,
                    continent = continent, fronts_orsi = fronts_orsi,
                    seaice_feb = seaice_feb, seaice_oct = seaice_oct,
                    mirounga_leonina = mirounga_leonina,
