@@ -54,28 +54,36 @@ VME_polygons$comment <- stringi::stri_enc_toascii(VME_polygons$comment)
 chk <- sapply(names(VME_polygons), function(z) length(tools::showNonASCII(VME_polygons[[z]])) > 0)
 if (any(chk)) stop("non-ASCII chars in VME_polygons data")
 
-## other possible layers, not yet included here:
+if (FALSE) {
+    ## other possible layers, not yet included here:
 
-##<Title>VME Fine Scale Rectangles (FSR)</Title>
-## VME Fine-Scale Rectangles identified under CM 22-07.
-files <- get_unzip_data("https://gis.ccamlr.org/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:vme_fsr&outputFormat=shape-zip", fname = "vme_fsr.zip")
-VME_fsr <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
-chk <- sapply(names(VME_fsr), function(z) length(tools::showNonASCII(VME_fsr[[z]])) > 0)
-if (any(chk)) stop("non-ASCII chars in VME_fsr data")
+    ##<Title>VME Fine Scale Rectangles (FSR)</Title>
+    ## VME Fine-Scale Rectangles identified under CM 22-07.
+    files <- get_unzip_data("https://gis.ccamlr.org/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:vme_fsr&outputFormat=shape-zip", fname = "vme_fsr.zip")
+    VME_fsr <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
+    chk <- sapply(names(VME_fsr), function(z) length(tools::showNonASCII(VME_fsr[[z]])) > 0)
+    if (any(chk)) stop("non-ASCII chars in VME_fsr data")
 
-##<Title>VME Risk Areas</Title>
-##<Abstract>VME Risk Areas declared under CM 22-07.</Abstract>
-files <- get_unzip_data("https://gis.ccamlr.org/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:vme_risk_areas&outputFormat=shape-zip", fname = "vme_risk_areas.zip")
-VME_risk_areas <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
-chk <- sapply(names(VME_risk_areas), function(z) length(tools::showNonASCII(VME_risk_areas[[z]])) > 0)
-if (any(chk)) stop("non-ASCII chars in VME_risk_areas data")
+    ##<Title>VME Risk Areas</Title>
+    ##<Abstract>VME Risk Areas declared under CM 22-07.</Abstract>
+    files <- get_unzip_data("https://gis.ccamlr.org/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:vme_risk_areas&outputFormat=shape-zip", fname = "vme_risk_areas.zip")
+    VME_risk_areas <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
+    chk <- sapply(names(VME_risk_areas), function(z) length(tools::showNonASCII(VME_risk_areas[[z]])) > 0)
+    if (any(chk)) stop("non-ASCII chars in VME_risk_areas data")
 
-##<Title>VME lines</Title>
-##Vulnerable Marine Ecosystem (VME) transects. VMEs notified under CM 22-06 (encounters with VMEs).
-files <- get_unzip_data("https://gis.ccamlr.org/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:vme_lines&outputFormat=shape-zip", fname = "vme_lines.zip")
-VME_lines <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
-chk <- sapply(names(VME_lines), function(z) length(tools::showNonASCII(VME_lines[[z]])) > 0)
-if (any(chk)) stop("non-ASCII chars in VME_lines data")
+    ##<Title>VME lines</Title>
+    ##Vulnerable Marine Ecosystem (VME) transects. VMEs notified under CM 22-06 (encounters with VMEs).
+    files <- get_unzip_data("https://gis.ccamlr.org/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:vme_lines&outputFormat=shape-zip", fname = "vme_lines.zip")
+    VME_lines <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
+    chk <- sapply(names(VME_lines), function(z) length(tools::showNonASCII(VME_lines[[z]])) > 0)
+    if (any(chk)) stop("non-ASCII chars in VME_lines data")
+}
+
+## planning domains
+files <- get_unzip_data("https://gis.ccamlr.org/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:CCAMLR_MPA_Planning_Domains&outputFormat=shape-zip", fname = "planning_domains.zip")
+planning_domains <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
+chk <- sapply(names(planning_domains), function(z) length(tools::showNonASCII(planning_domains[[z]])) > 0)
+if (any(chk)) stop("non-ASCII chars in planning_domains data")
 
 
 ## continent (was land1)
@@ -174,6 +182,7 @@ GSHHS_i_L1 <- spTransform(GSHHS_i_L1, psproj)
 SOmap_data <- list(CCAMLR_MPA = MPA1, CCAMLR_statistical_areas = CCAMLR1, CCAMLR_research_blocks = RB1,
                    CCAMLR_SSRU = SSRU1, CCAMLR_SSMU = SSMU1,
                    CCAMLR_VME_polygons = VME_polygons,
+                   CCAMLR_planning_domains = planning_domains,
                    continent = continent, fronts_orsi = fronts_orsi,
                    seaice_feb = seaice_feb, seaice_oct = seaice_oct,
                    mirounga_leonina = mirounga_leonina,

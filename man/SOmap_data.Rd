@@ -48,6 +48,13 @@
       \item URL: https://gis.ccamlr.org/geoserver/ows?service=wfs&version=1.0.0&request=GetCapabilities
       \item License: Not specified
     }
+  \item CCAMLR_planning_domains
+    \itemize{
+      \item Description: Nine planning domains were defined during the 2011 CCAMLR workshop on marine protected areas (SC-CAMLR-XXX, Annex 6). These planning domains provide comprehensive coverage of bioregions in the Southern Ocean and may be used as reporting and auditing units for work related to the development of MPAs and as a means to organise future activities related to this effort.
+      \item Source: CCAMLR
+      \item URL: https://gis.ccamlr.org/geoserver/ows?service=wfs&version=1.0.0&request=GetCapabilities
+      \item License: Not specified
+    }
   \item continent
     \itemize{
       \item Description: Coastline, details TBA
