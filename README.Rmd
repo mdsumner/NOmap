@@ -9,6 +9,7 @@ editor_options:
   [![Coverage status](https://codecov.io/gh/AustralianAntarcticDivision/SOmap/branch/master/graph/badge.svg)](https://codecov.io/github/AustralianAntarcticDivision/SOmap?branch=master)
 [![CRAN status](https://www.r-pkg.org/badges/version/SOmap)](https://cran.r-project.org/package=SOmap)
  
+ 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r setup, include = FALSE}
