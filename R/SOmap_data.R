@@ -50,6 +50,20 @@
 #'       \item URL: https://gis.ccamlr.org/geoserver/ows?service=wfs&version=1.0.0&request=GetCapabilities
 #'       \item License: Not specified
 #'     }
+#'   \item CCAMLR_VME_fsr
+#'     \itemize{
+#'       \item Description: Vulnerable marine ecosystem fine-scale rectangles identified under CM 22-07.
+#'       \item Source: CCAMLR
+#'       \item URL: https://gis.ccamlr.org/geoserver/ows?service=wfs&version=1.0.0&request=GetCapabilities
+#'       \item License: Not specified
+#'     }
+#'   \item CCAMLR_VME_risk_areas
+#'     \itemize{
+#'       \item Description: Vulnerable marine ecosystem risk areas declared under CM 22-07.
+#'       \item Source: CCAMLR
+#'       \item URL: https://gis.ccamlr.org/geoserver/ows?service=wfs&version=1.0.0&request=GetCapabilities
+#'       \item License: Not specified
+#'     }
 #'   \item CCAMLR_planning_domains
 #'     \itemize{
 #'       \item Description: Nine planning domains were defined during the 2011 CCAMLR workshop on marine protected areas (SC-CAMLR-XXX, Annex 6). These planning domains provide comprehensive coverage of bioregions in the Southern Ocean and may be used as reporting and auditing units for work related to the development of MPAs and as a means to organise future activities related to this effort.
