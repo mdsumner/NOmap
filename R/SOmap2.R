@@ -37,6 +37,10 @@
 #' Insert CCAMLE Marine Protected Areas.
 #' @param MPAlab
 #' Insert CCAMLE Marine Protected Area labels.
+#' @param Domains
+#' Insert CCAMLR Marine Protected Areas planning Domains.
+#' @param Domainslab
+#' Insert CCAMLR Marine Protected Area planning Domains labels.
 #' @param IWC
 #' Insert International Whaling Commission boundaries.
 #' @param IWClab
@@ -61,6 +65,8 @@
 #' Color for graticule grid; Default is grey.
 #' @param iwccol
 #' Color for IWC boundaries; Default is blue.
+#' @param domcol
+#' Color for the Domain boundaries. Default is magenta.
 #' @param straight
 #' Do you need a blank space on the side for a straight legend.
 #' @param land
@@ -101,6 +107,8 @@ SOmap2<-function(Bathleg=TRUE,
                 EEZlab=FALSE,
                 MPA=FALSE,
                 MPAlab=FALSE,
+                Domains=FALSE,
+                Domainslab=FALSE,
                 IWC=FALSE,
                 IWClab=FALSE,
                 straight=FALSE,
@@ -115,7 +123,8 @@ SOmap2<-function(Bathleg=TRUE,
                 mpacol= "yellow",
                 bordercol=c("white","black"),
                 gratcol="grey70",
-                iwccol="blue"){
+                iwccol="blue",
+                domcol="magenta"){
 
     ## data
     Bathy <- NULL
@@ -131,7 +140,7 @@ SOmap2<-function(Bathleg=TRUE,
   bord<-graticule::graticule(lons = seq(-180,180, by=15),lats = c(Trim+2,Trim), tiles = TRUE, proj = raster::projection(Bathy))
   if(Bathleg==TRUE){
  #### White Mask #
-  j<-graticule::graticule(lons = seq(-180,180, by=1),lats = c(-10,Trim+2), tiles = TRUE, proj = raster::projection(Bathy))
+  j<-graticule::graticule(lons = seq(-180,180, by=1),lats = c(-5,Trim+2), tiles = TRUE, proj = raster::projection(Bathy))
 #### Legend #
   ##Colored legend
   bleg<-graticule::graticule(lons = seq(185,265, by=1),lats = c(Trim+3,Trim+5), tiles = TRUE, proj = raster::projection(Bathy))
@@ -245,6 +254,20 @@ SOmap2<-function(Bathleg=TRUE,
     }
   if(MPAlab==TRUE){
     text(MPA1, labels = MPA1@data$ShortLabel, col=mpacol,cex = 0.35, pos=1, offset=0.2)}
+  if(Domains==TRUE){
+    plot(SOmap_data$CCAMLR_planning_domains ,border=domcol, add = TRUE)}
+  if(Domainslab==TRUE){
+    labs<-c("Domain  8", "Domain  9", "", "", "Domain  3", "", "Domain  4", "Domain  5", "Domain  6")
+    labs1<-c("", "", "Domain  1", "", "", "", "", "", "")
+    labs2<-c("", "", "", "", "", "Domain  2", "", "", "")
+    labs7<-c("", "", "", "Domain  7", "", "", "", "", "")
+
+    text(SOmap_data$CCAMLR_planning_domains, labels = labs,col=domcol, cex = 0.7, pos=3, offset=0.05)
+    text(SOmap_data$CCAMLR_planning_domains, labels = labs1,col=domcol, cex = 0.7, pos=1, offset=3.)
+    text(SOmap_data$CCAMLR_planning_domains, labels = labs2,col=domcol, cex = 0.7, pos=3, offset=0.5)
+    text(SOmap_data$CCAMLR_planning_domains, labels = labs7,col=domcol, cex = 0.7, pos=4, offset=0.9)
+
+  }
   #Legend
   if(Bathleg==TRUE) {raster::plot(j, border=F,col="white", add=T) #White mask
     raster::plot(btick, add=T, col=1)

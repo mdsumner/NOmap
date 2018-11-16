@@ -8,10 +8,11 @@ SOmanagement(CCAMLR = FALSE, CCAMLRlab = FALSE, SSRU = FALSE,
   SSRUlab = FALSE, SSMU = FALSE, SSMUlab = FALSE, RB = FALSE,
   RBlab = FALSE, SPRFMORB = FALSE, Trim = -45, Grats = FALSE,
   EEZ = FALSE, EEZlab = FALSE, MPA = FALSE, MPAlab = FALSE,
-  IWC = FALSE, IWClab = FALSE, rbcol = 3, sprfmocol = "grey50",
-  ccamlrcol = 2, ssrucol = "grey50", ssmucol = "grey70",
-  eezcol = "maroon", mpacol = "yellow", bordercol = c("white",
-  "black"), gratcol = "grey70", iwccol = "blue")
+  IWC = FALSE, IWClab = FALSE, Domains = FALSE, Domainslab = FALSE,
+  rbcol = 3, sprfmocol = "grey50", ccamlrcol = 2,
+  ssrucol = "grey50", ssmucol = "grey70", eezcol = "maroon",
+  mpacol = "yellow", bordercol = c("white", "black"),
+  gratcol = "grey70", iwccol = "blue", domcol = "magenta")
 }
 \arguments{
 \item{CCAMLR}{Insert the CCAMLR boundaries.}
@@ -48,6 +49,10 @@ SOmanagement(CCAMLR = FALSE, CCAMLRlab = FALSE, SSRU = FALSE,
 
 \item{IWClab}{Insert International Whaling Commission labels.}
 
+\item{Domains}{Insert CCAMLR Marine Protected Area planning Domains.}
+
+\item{Domainslab}{Insert CCAMLR Marine Protected Area planning Domains labels.}
+
 \item{rbcol}{Color for CCAMLR research blocks.}
 
 \item{sprfmocol}{Color for SPRFMO toothfish research blocks}
@@ -67,6 +72,8 @@ SOmanagement(CCAMLR = FALSE, CCAMLRlab = FALSE, SSRU = FALSE,
 \item{gratcol}{Color for graticule grid; Default is grey.}
 
 \item{iwccol}{Color for IWC boundaries; Default is blue.}
+
+\item{domcol}{Color for the Domain boundaries. Default is magenta.}
 }
 \value{
 Produces at the very base a round bathymetry map of the southern hemisphere.
