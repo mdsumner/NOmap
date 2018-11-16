@@ -33,6 +33,10 @@
 #' Insert CCAMLR Marine Protected Areas.
 #' @param MPAlab
 #' Insert CCAMLR Marine Protected Area labels.
+#' @param Domains
+#' Insert CCAMLR Marine Protected Area planning Domains.
+#' @param Domainslab
+#' Insert CCAMLR Marine Protected Area planning Domains labels.
 #' @param IWC
 #' Insert International Whaling Commission boundaries.
 #' @param IWClab
@@ -57,6 +61,8 @@
 #' Color for graticule grid; Default is grey.
 #' @param iwccol
 #' Color for IWC boundaries; Default is blue.
+#' @param domcol
+#' Color for the Domain boundaries. Default is magenta.
 #'
 #' @return
 #' Produces at the very base a round bathymetry map of the southern hemisphere.
@@ -89,6 +95,8 @@ SOmanagement<-function(CCAMLR= FALSE,
                 MPAlab=FALSE,
                 IWC=FALSE,
                 IWClab=FALSE,
+                Domains=FALSE,
+                Domainslab=FALSE,
                 rbcol=3,
                 sprfmocol='grey50',
                 ccamlrcol=2,
@@ -98,8 +106,9 @@ SOmanagement<-function(CCAMLR= FALSE,
                 mpacol= "yellow",
                 bordercol=c("white","black"),
                 gratcol="grey70",
-                iwccol="blue"){
-    
+                iwccol="blue",
+                domcol="magenta"){
+
     ## data
     SOmap_data <- NULL
     Bathy <- NULL
@@ -186,12 +195,26 @@ SOmanagement<-function(CCAMLR= FALSE,
   }
   if(MPAlab==TRUE){
     text(SOmap_data$CCAMLR_MPA, labels = SOmap_data$CCAMLR_MPA$ShortLabel, col=mpacol,cex = 0.35, pos=1, offset=0.2)}
+  if(Domains==TRUE){
+    #load("SSRU.rda")
+    plot(SOmap_data$CCAMLR_planning_domains ,border=domcol, add = TRUE)}
+  if(Domainslab==TRUE){
+    labs<-c("Domain  8", "Domain  9", "", "", "Domain  3", "", "Domain  4", "Domain  5", "Domain  6")
+    labs1<-c("", "", "Domain  1", "", "", "", "", "", "")
+    labs2<-c("", "", "", "", "", "Domain  2", "", "", "")
+    labs7<-c("", "", "", "Domain  7", "", "", "", "", "")
+
+    text(SOmap_data$CCAMLR_planning_domains, labels = labs,col=domcol, cex = 0.7, pos=3, offset=0.05)
+    text(SOmap_data$CCAMLR_planning_domains, labels = labs1,col=domcol, cex = 0.7, pos=1, offset=3.)
+    text(SOmap_data$CCAMLR_planning_domains, labels = labs2,col=domcol, cex = 0.7, pos=3, offset=0.5)
+    text(SOmap_data$CCAMLR_planning_domains, labels = labs7,col=domcol, cex = 0.7, pos=4, offset=0.9)
+
+    }
 
   ## Return Par
   #print("ooooh pretty!")
   invisible(NULL)
 }
-
 
 
 
