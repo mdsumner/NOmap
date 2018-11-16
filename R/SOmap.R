@@ -61,7 +61,7 @@ SOmap<-function(Bathleg=TRUE,
     bord<-graticule::graticule(lons = seq(-180,180, by=15),lats = c(Trim+2,Trim), tiles = TRUE, proj = raster::projection(Bathy))
     if (Bathleg) {
         ## White Mask #
-        j<-graticule::graticule(lons = seq(-180,180, by=1),lats = c(-10,Trim+2), tiles = TRUE, proj = raster::projection(Bathy))
+        j<-graticule::graticule(lons = seq(-180,180, by=1),lats = c(-5,Trim+2), tiles = TRUE, proj = raster::projection(Bathy))
         ## Legend #
         ##Colored legend
         bleg<-graticule::graticule(lons = seq(185,265, by=1),lats = c(Trim+3,Trim+5), tiles = TRUE, proj = raster::projection(Bathy))
