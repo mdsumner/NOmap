@@ -5,7 +5,7 @@
 ## this is much faster than naively plotting bathy using geom_tile or similar
 ## example usage along the lines of:
 ## cst <- fortify(SOmap_data$ADD_coastline_med)
-## ggplot() + bathy_raster() + geom_path(data = cst, aes(long, lat, group = group), colour = "black")
+## ggplot() + SOmap:::bathy_raster() + geom_path(data = cst, aes(long, lat, group = group), colour = "black")
 
 bathy_raster <- function() {
     bathy_grob <- NULL
