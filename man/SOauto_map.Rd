@@ -9,7 +9,8 @@ SOauto_map(x, y, centre_lon = NULL, centre_lat = NULL,
   bathy = TRUE, coast = TRUE, input_points = TRUE,
   input_lines = TRUE, graticule = TRUE, buffer = 0.05,
   contours = TRUE, levels = c(-500, -1000, -2000),
-  trim_background = TRUE, mask = FALSE)
+  trim_background = TRUE, mask = FALSE, ppch = 19, pcol = 2,
+  pcex = 1)
 }
 \arguments{
 \item{x}{optional input data longitudes}
@@ -45,6 +46,12 @@ SOauto_map(x, y, centre_lon = NULL, centre_lat = NULL,
 \item{trim_background}{crop the resulting bathymetry to its margin of valid values}
 
 \item{mask}{logical, `FALSE` by default used to mask the raster and coastline to the graticule}
+
+\item{ppch}{set point character (default=19)}
+
+\item{pcol}{set point col (default=19)}
+
+\item{pcex}{set point cex (default=1)}
 }
 \value{
 the derived target extent and the map projection used, bathymetry, and coastline data
