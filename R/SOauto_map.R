@@ -26,6 +26,9 @@
 #' @param levels contour levels if `contours = TRUE`
 #' @param trim_background crop the resulting bathymetry to its margin of valid values
 #' @param mask logical, `FALSE` by default used to mask the raster and coastline to the graticule
+#' @param ppch set point character (default=19)
+#' @param pcol set point col (default=19)
+#' @param pcex set point cex (default=1)
 #'
 #' @return the derived target extent and the map projection used, bathymetry, and coastline data
 #' @export
@@ -52,7 +55,7 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
                           graticule = TRUE, buffer=0.05,
                           contours=TRUE, levels=c(-500, -1000, -2000),
                           trim_background = TRUE,
-                          mask = FALSE) {
+                          mask = FALSE, ppch=19, pcol=2, pcex=1) {
 
     ## data
     SOmap_data <- NULL
@@ -242,7 +245,7 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
   if (coast) plot(coastline, add = TRUE)
   par(op)
   if (input_points || input_lines) xy <- rgdal::project(cbind(x, y), prj)
-  if (input_points) points(xy, cex = 0.75)
+  if (input_points) points(xy,pch=ppch, cex = pcex,col=pcol)
 
   if (input_lines) lines(xy)
 
