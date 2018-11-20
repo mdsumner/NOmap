@@ -15,6 +15,7 @@ RoxygenNote: 6.1.0
 Depends: R (>= 3.3.0), raster, sp
 Imports:
     rgdal,
+    ggplot2,
     graticule,
     methods,
     proj4,
