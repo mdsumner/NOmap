@@ -257,13 +257,14 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
     graticule <- grat
   }
 
-  par(pp)
   # if (croptograt){
   # plot(erase(poly, g), add = TRUE, col = "white")
   # invisible(list(bathy = bathymetry, coastline = coastline, target = target))
   # } else {
   if (!exists("xy")) xy <- NULL
-  invisible(structure(list(bathy = bathymetry, coastline = coastline, target = target, data = xy, graticule = graticule, crs = prj), class = "SOmap"))
+  invisible(structure(list(bathy = bathymetry, coastline = coastline, target = target, data = xy,
+                           graticule = graticule, crs = prj,
+                           oldpar = pp), class = "SOmap"))
 
   #}
 }
@@ -279,7 +280,8 @@ default_somap <- function(...) {
 }
 ## from ?sf::st_graticule
 plot_graticule <- function(g) {
-  plot(sf::st_geometry(g), add = TRUE, col = 'grey')
+  #plot(sf::st_geometry(g), add = TRUE, col = 'grey', reset = FALSE)
+  plot(as(g, "Spatial"), add = TRUE, col = "grey")
   # points(g$x_start, g$y_start, col = 'red')
   #points(g$x_end, g$y_end, col = 'blue')
 
