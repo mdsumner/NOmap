@@ -4,23 +4,39 @@
 \alias{SOleg}
 \title{SOleg creating rounded legends for SOmap}
 \usage{
-SOleg(x, position = "topright", col = grDevices::heat.colors(80),
-  ticks = 6, tlabs = "", Trim = -45, label = "Heat")
+SOleg(x = NULL, position = "topright", col = NULL, ticks = NULL,
+  tlabs = NULL, Trim = -45, type = "discrete", label = "",
+  ladj = 0.5, lsrt = 0, lcex = 0.75, tadj = 0.5, tcex = 1,
+  rnd = NULL)
 }
 \arguments{
-\item{x}{Object to plot (currently not used)}
+\item{x}{Object to obtain min and max values from for type='continuous' default=NULL}
 
 \item{position}{Where you want the legend ("topleft","topright", "bottomright")}
 
 \item{col}{Color pattern to use.}
 
-\item{ticks}{Number of ticks to include on the legend.}
+\item{ticks}{Number of ticks to include on the legend. Only used with type='continuous'}
 
-\item{tlabs}{Tick labels.}
+\item{tlabs}{Tick labels. Needed for type='discrete' optonal for type='continuous' if x is given}
 
 \item{Trim}{Trim that was used to create the SOmap.}
 
+\item{type}{Type of legend to be plotted 'discrete' or 'continuous' default='discrete'}
+
 \item{label}{Legend label.}
+
+\item{ladj}{Distance to adjust the tick labels from the ticks. default = 0.5}
+
+\item{lsrt}{Angle of the tick labels. default = 0}
+
+\item{lcex}{Size of the tick labels. default = 0.75}
+
+\item{tadj}{Distance to adjust the title from the ticks. default = 0.5}
+
+\item{tcex}{Size of the title text. default=1}
+
+\item{rnd}{optional rounding factor for continuous legends using the round() function. default = NULL.}
 }
 \value{
 Creates rounded legends
@@ -30,11 +46,25 @@ SOleg creating rounded legends for SOmap
 }
 \examples{
 \dontrun{
+#Discrete Legend
+
 SOleg(position="topleft",
-      col=heat.colors(80),
-      ticks=4,
-      tlabs = c("1","10","100","1000"),
+      col=viridis::viridis(5),
+      tlabs = c("a","b","c","d", "e"),
       Trim=-45,
-      label="Heat")
+      label="Species")
+
+#Continuous Legend
+
+nums<-runif(100)
+
+SOleg(x=nums,
+      position="topright",
+      col=viridis::viridis(80),
+      ticks55,
+      Trim=-45,
+      label="Species"
+      rnd=1,
+      type="continuous")
 }
 }

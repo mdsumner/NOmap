@@ -59,7 +59,7 @@
 
 #' }
 
-SOleg2<-function(x=NULL,
+SOleg<-function(x=NULL,
                 position="topright",
                 col= NULL,
                 ticks=NULL,
@@ -166,8 +166,6 @@ SOleg2<-function(x=NULL,
 
 
 
-is.discrete <- function(x) {
-  is.factor(x) || is.character(x) || is.numeric(x)|| is.integer(x)
-}
+
 
 
