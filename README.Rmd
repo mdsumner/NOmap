@@ -54,7 +54,7 @@ There is also `SOmanagement()` which have management layers for the Southern Oce
  spiritedMedium <- grDevices::colorRampPalette(c("#4D4140", "#596F7E", "#168B98", "#ED5B67", "#E27766", "#DAAD50", "#EAC3A6"))
  spirited <- spiritedMedium(80)
  
-SOmap::SOmap()
+SOmap::SOmap2(Trim = -40)
 SOleg(position = "topright",
       col = spirited,
       ticks = 6,
@@ -62,7 +62,7 @@ SOleg(position = "topright",
       Trim = -45,
       label = "Sea Ice")
 plot(ice, col = spirited, add=TRUE, legend = FALSE, alpha = 0.95) ## From raadtools
-SOmanagement(EEZ = TRUE)
+SOmanagement(EEZ=TRUE)
 ```
 
 An **automatic** plot function `SOauto_map()` will take any data in the form of longitude and latitude vectors and create a guess at a map. It returns the data used to make the map so that further customization can be made. 
