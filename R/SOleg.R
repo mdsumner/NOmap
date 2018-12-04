@@ -109,9 +109,16 @@ SOleg<-function(x=NULL,
       if(is.discrete(cols)==TRUE){
     ramp<-grDevices::colorRampPalette(col)
     cols<-ramp(80)} else(cols<-col(80))
-      if(is.null(x)==FALSE & is.null(tlabs)==TRUE){
+      if(is.null(x)==FALSE & is.null(tlabs)==TRUE & !inherits(x, "BasicRaster")){
         lmins<-min(x)
         lmax<-max(x)
+        lbs<-seq(from=lmins,to= lmax, length.out = ticks)
+        if(is.null(rnd)==FALSE){lbs<-base::round(lbs, digits = rnd)}
+        tlabs<-as.character(lbs)
+        }
+      if(is.null(x)==FALSE & is.null(tlabs)==TRUE & inherits(x, "BasicRaster")){
+        lmins<-cellStats(x,stat='min', na.rm=T)
+        lmax<-cellStats(x, stat='max', na.rm=T)
         lbs<-seq(from=lmins,to= lmax, length.out = ticks)
         if(is.null(rnd)==FALSE){lbs<-base::round(lbs, digits = rnd)}
         tlabs<-as.character(lbs)
@@ -161,10 +168,8 @@ SOleg<-function(x=NULL,
     raster::plot(bleg, lwd=2, add=T)
     raster::plot(bleg, border=F,  col=cols, add=T)
     raster::plot(k, border=F,col="white", add=T)
-    text(lab_pos2, labels=lab_pos2$a, cex= lcex, adj=0.5, srt=lsrt)
-    text(lab_pos3, labels=lab_pos3$a, cex= tcex, adj=0.5, srt=SRT) } ## Need to set SRT during the position if statements.
-
-
+    text(lab_pos2, labels=lab_pos2$a, cex= lcex, adj=ladj, srt=lsrt)
+    text(lab_pos3, labels=lab_pos3$a, cex= tcex, adj=tadj, srt=SRT) } ## Need to set SRT during the position if statements.
 
 
 
