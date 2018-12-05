@@ -123,4 +123,7 @@ SOmap<-function(Bathleg=TRUE,
     ## Return Par
     graphics::par(op)
     invisible(NULL)
+    if(runif(1)<=0.1){
+      message("Congratulations, you did a thing!")
+    }
 }

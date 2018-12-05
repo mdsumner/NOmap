@@ -88,7 +88,7 @@ SOleg <-function(x=NULL,
     stop("Number of ticks and breaks do not match. You do not need to use ticks if you have breaks")
   }
 
-  if(type=="continuous" & !is.null(breaks)){ if (!inherits(breaks, "numeric") || !inherits(breaks,"integer")){
+  if(type=="continuous" & !is.null(breaks)){ if (!inherits(breaks, "numeric")){
     stop("Breaks must be numeric or integer")
   }}
 
@@ -128,18 +128,25 @@ SOleg <-function(x=NULL,
     if(SOmap:::is.discrete(cols)==TRUE){
       ramp<-grDevices::colorRampPalette(col)
       cols<-ramp(80)} else(cols<-col(80))
-    if(is.null(x)==FALSE & is.null(tlabs)==TRUE & !inherits(x, "BasicRaster")){
+    if(!is.null(x) & is.null(tlabs) & !inherits(x, "BasicRaster")){
       lmins<-min(x)
       lmax<-max(x)
       lbs<-seq(from=lmins,to= lmax, length.out = ticks)
       if(is.null(rnd)==FALSE){lbs<-base::round(lbs, digits = rnd)}
       tlabs<-as.character(lbs)
     }
-    if(is.null(x)==FALSE & is.null(tlabs)==TRUE & inherits(x, "BasicRaster")){
+    if(!is.null(x) & is.null(tlabs) & inherits(x, "BasicRaster")){
       lmins<-cellStats(x,stat='min', na.rm=T)
       lmax<-cellStats(x, stat='max', na.rm=T)
       lbs<-seq(from=lmins,to= lmax, length.out = ticks)
       if(is.null(rnd)==FALSE){lbs<-base::round(lbs, digits = rnd)}
+      tlabs<-as.character(lbs)
+    }
+    if(is.null(x) & is.null(tlabs) & !is.null(breaks)){
+      lmins<-min(breaks)
+      lmax<-max(breaks)
+      lbs<-breaks
+      #if(is.null(rnd)==FALSE){lbs<-base::round(lbs, digits = rnd)}
       tlabs<-as.character(lbs)
     }
   }
