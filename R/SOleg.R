@@ -92,6 +92,7 @@ SOleg <-function(x=NULL,
     stop("Breaks must be numeric or integer")
   }}
 
+
   if(type=="continuous" && is.null(ticks) && !is.null(breaks)){
     ticks<-length(breaks)
   }
@@ -123,6 +124,7 @@ SOleg <-function(x=NULL,
     qbins<-80
     qticks<-ticks
     qtadjust<-0
+
     if(SOmap:::is.discrete(cols)==TRUE){
       ramp<-grDevices::colorRampPalette(col)
       cols<-ramp(80)} else(cols<-col(80))
