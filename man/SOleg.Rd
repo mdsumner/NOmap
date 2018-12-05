@@ -5,9 +5,9 @@
 \title{SOleg creating rounded legends for SOmap}
 \usage{
 SOleg(x = NULL, position = "topright", col = NULL, ticks = NULL,
-  tlabs = NULL, Trim = -45, type = "discrete", label = "",
-  ladj = 0.5, lsrt = 0, lcex = 0.75, tadj = 0.5, tcex = 1,
-  rnd = NULL)
+  tlabs = NULL, breaks = NULL, Trim = -45, type = "discrete",
+  label = "", ladj = 0.5, lsrt = 0, lcex = 0.75, tadj = 0.5,
+  tcex = 1, rnd = NULL)
 }
 \arguments{
 \item{x}{Object to obtain min and max values from for type='continuous' default=NULL}
@@ -19,6 +19,8 @@ SOleg(x = NULL, position = "topright", col = NULL, ticks = NULL,
 \item{ticks}{Number of ticks to include on the legend. Only used with type='continuous'}
 
 \item{tlabs}{Tick labels. Needed for type='discrete' optonal for type='continuous' if x is given}
+
+\item{breaks}{Numeric vector to create legend ticks for type='continuous' if x is given eg breaks<-c(1,2,3)}
 
 \item{Trim}{Trim that was used to create the SOmap.}
 
@@ -58,10 +60,12 @@ SOleg(position="topleft",
 
 nums<-runif(100)
 
+brks<-c(0.1,0.2,0.5,0.9)
+
 SOleg(x=nums,
       position="topright",
       col=viridis::viridis(80),
-      ticks55,
+      breaks=brks
       Trim=-45,
       label="Species"
       rnd=1,
