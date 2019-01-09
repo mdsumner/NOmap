@@ -29,6 +29,7 @@
 #' @param ppch set point character (default=19)
 #' @param pcol set point col (default=19)
 #' @param pcex set point cex (default=1)
+#' @param bathyleg optional bathymetry legend (default=FALSE). Note when FALSE plotting is done with raster::image when TRUE plotting uses raster::plot
 #'
 #' @return the derived target extent and the map projection used, bathymetry, and coastline data
 #' @export
@@ -55,7 +56,7 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
                           graticule = TRUE, buffer=0.05,
                           contours=TRUE, levels=c(-500, -1000, -2000),
                           trim_background = TRUE,
-                          mask = FALSE, ppch=19, pcol=2, pcex=1) {
+                          mask = FALSE, ppch=19, pcol=2, pcex=1, bathyleg=FALSE) {
 
     ## data
     SOmap_data <- NULL
@@ -238,7 +239,9 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
       })
     }
   }
-  if (bathy) raster::image(bathymetry, add = TRUE, col = bluepal, axes = FALSE)#grey(seq(0, 1, length = 40)))
+  if (bathy && !bathyleg) raster::image(bathymetry, add = TRUE, col = bluepal, axes = FALSE)#grey(seq(0, 1, length = 40)))
+
+  if (bathy && bathyleg) raster::plot(bathymetry, add = TRUE, col = bluepal, axes = FALSE)
 
   if (contours) contour(bathymetry, nlevels=1, levels=c(levels), col="black", add= TRUE)
   op <- par(xpd = FALSE)
