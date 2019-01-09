@@ -136,8 +136,8 @@ SOleg <-function(x=NULL,
       tlabs<-as.character(lbs)
     }
     if(!is.null(x) & is.null(tlabs) & inherits(x, "BasicRaster")){
-      lmins<-cellStats(x,stat='min', na.rm=T)
-      lmax<-cellStats(x, stat='max', na.rm=T)
+      lmins<-raster::cellStats(x,stat='min', na.rm=T)
+      lmax<-raster::cellStats(x, stat='max', na.rm=T)
       lbs<-seq(from=lmins,to= lmax, length.out = ticks)
       if(is.null(rnd)==FALSE){lbs<-base::round(lbs, digits = rnd)}
       tlabs<-as.character(lbs)

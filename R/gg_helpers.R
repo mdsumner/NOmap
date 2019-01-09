@@ -11,6 +11,6 @@ bathy_raster <- function() {
     bathy_grob <- NULL
     data("bathy_grob", package = "SOmap", envir = environment())
     ext <- attr(bathy_grob, "extent")
-    annotation_custom(bathy_grob, xmin = ext[1], xmax = ext[2], ymin = ext[3], ymax = ext[4])
+    ggplot2::annotation_custom(bathy_grob, xmin = ext[1], xmax = ext[2], ymin = ext[3], ymax = ext[4])
 }
 
