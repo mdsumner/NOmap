@@ -10,7 +10,7 @@ SOauto_map(x, y, centre_lon = NULL, centre_lat = NULL,
   input_lines = TRUE, graticule = TRUE, buffer = 0.05,
   contours = TRUE, levels = c(-500, -1000, -2000),
   trim_background = TRUE, mask = FALSE, ppch = 19, pcol = 2,
-  pcex = 1)
+  pcex = 1, bathyleg = FALSE)
 }
 \arguments{
 \item{x}{optional input data longitudes}
@@ -52,6 +52,8 @@ SOauto_map(x, y, centre_lon = NULL, centre_lat = NULL,
 \item{pcol}{set point col (default=19)}
 
 \item{pcex}{set point cex (default=1)}
+
+\item{bathyleg}{optional bathymetry legend (default=FALSE). Note when FALSE plotting is done with raster::image when TRUE plotting uses raster::plot}
 }
 \value{
 the derived target extent and the map projection used, bathymetry, and coastline data
