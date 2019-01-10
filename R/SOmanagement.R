@@ -159,7 +159,7 @@ SOmanagement<-function(CCAMLR= FALSE,
     #load("RB.rda")
     raster::plot(SOmap_data$CCAMLR_research_blocks, border=rbcol, add=TRUE)}
   if(RBlab==TRUE){
-    text(SOmap_data$CCAMLR_research_blocks, labels = SOmap_data$CCAMLR_research_blocks@data$ShortLabel,col=rbcol, cex = 0.4, pos=4, offset=0.3)}
+    text(SOmap_data$CCAMLR_research_blocks, labels = SOmap_data$CCAMLR_research_blocks$GAR_Short_,col=rbcol, cex = 0.4, pos=4, offset=0.3)}
   if(SPRFMORB==TRUE){
     sprfmoa<-graticule::graticule(lats=c(-59.9,-57.9),lons= c(-155.3333,-150),proj = raster::projection(Bathy))
     raster::plot(sprfmoa, add=TRUE, col=sprfmocol)
