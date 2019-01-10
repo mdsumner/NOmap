@@ -172,8 +172,10 @@ SOmap2<-function(Bathleg=TRUE,
   warning("Straight legends with round plots look terrible.", call. = "FALSE")
   potato(raster::trim(SOmap::latmask(Bathy, latitude = q)), col=bluepal,legend=FALSE, yaxt='n', xaxt='n', asp = 1)}else{
     potato<-raster::image
+
     potato(raster::trim(SOmap::latmask(Bathy, latitude = q)), col=bluepal, yaxt='n', xaxt='n', asp = 1)}
   graphics::box(col = "white")
+
     if (land) {
         if (CCAMLR) {
             notANT <- SOmap_data$continent[SOmap_data$continent$continent !="Antarctica",]
