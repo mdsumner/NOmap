@@ -170,9 +170,9 @@ SOmap2<-function(Bathleg=TRUE,
   ## Plot bathymetry
   if(straight==T){potato<-raster::plot
   warning("Straight legends with round plots look terrible.", call. = "FALSE")
-  potato(raster::trim(SOmap::latmask(Bathy, latitude = q)), col=bluepal,legend=FALSE, yaxt='n', xaxt='n')}else{
+  potato(raster::trim(SOmap::latmask(Bathy, latitude = q)), col=bluepal,legend=FALSE, yaxt='n', xaxt='n', asp = 1)}else{
     potato<-raster::image
-    potato(raster::trim(SOmap::latmask(Bathy, latitude = q)), col=bluepal, yaxt='n', xaxt='n')}
+    potato(raster::trim(SOmap::latmask(Bathy, latitude = q)), col=bluepal, yaxt='n', xaxt='n', asp = 1)}
   graphics::box(col = "white")
     if (land) {
         if (CCAMLR) {
