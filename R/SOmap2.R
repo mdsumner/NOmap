@@ -239,9 +239,9 @@ SOmap2<-function(Bathleg=TRUE,
     #load("CCAMLR.rda")
   plot(SOmap_data$CCAMLR_statistical_areas,border=ccamlrcol, add = TRUE)}
   if(CCAMLRlab==TRUE){
-    text(SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$GAR_Long_L!="48.1"&SOmap_data$CCAMLR_statistical_areas$GAR_Long_L!="58.4.2",], labels = cclabs, col=ccamlrcol,cex = 0.5, pos=1, offset=-0.3)
-    text(SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$GAR_Long_L=="58.4.2",], labels = "58.4.2", col=ccamlrcol,cex = 0.5, pos=3, offset=0.5)
-    text(SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$GAR_Long_L=="48.1",], labels = "48.1", col=ccamlrcol,cex = 0.5, pos=2, offset=-0.1)}
+    text(SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$LongLabel !="48.1"&SOmap_data$CCAMLR_statistical_areas$LongLabel!="58.4.2",], labels = cclabs, col=ccamlrcol,cex = 0.5, pos=1, offset=-0.3)
+    text(SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$LongLabel=="58.4.2",], labels = "58.4.2", col=ccamlrcol,cex = 0.5, pos=3, offset=0.5)
+    text(SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$LongLabel=="48.1",], labels = "48.1", col=ccamlrcol,cex = 0.5, pos=2, offset=-0.1)}
   # EEZ
   if(EEZ==TRUE){
 
