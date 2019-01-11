@@ -8,7 +8,6 @@
 #'
 #' @param ...
 #'
-#' @export
 #' @examples
 #' x <- SOauto_map()
 #' autophagy(a)
@@ -16,7 +15,6 @@ autophagy <- function(x, ...) {
   UseMethod("autophagy")
 }
 #' @name autophagy
-#' @export
 autophagy.SOmap <- function(x, ...) {
   plot_background(x)
   plot_polygons(x)

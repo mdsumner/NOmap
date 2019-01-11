@@ -133,9 +133,9 @@ SOmap2<-function(Bathleg=TRUE,
     data("Bathy", package = "SOmap", envir = environment())
 
 #### Set up color palette for bathy #
-  ramp2<-grDevices::colorRampPalette(c("#54A3D1","#60B3EB","#78C8F0","#98D1F5","#B5DCFF","#BDE1F0","#CDEBFA","#D6EFFF","#EBFAFF","grey92","grey94","grey96", "white"))
-  bluepal<-ramp2(68)
-  bluepal2<-ramp2(80)
+    ramp2<-grDevices::colorRampPalette(c("#54A3D1", "#60B3EB", "#78C8F0", "#98D1F5", "#B5DCFF", "#BDE1F0", "#CDEBFA", "#D6EFFF", "#EBFAFF","grey99", "grey90", "grey92", "grey94", "grey96", "white"))
+    bluepal<-ramp2(100)
+    bluepal2<-ramp2(80)
 #### Setup color border #
   bord<-graticule::graticule(lons = seq(-180,180, by=15),lats = c(Trim+2,Trim), tiles = TRUE, proj = raster::projection(Bathy))
   if(Bathleg==TRUE){
