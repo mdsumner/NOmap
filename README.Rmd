@@ -41,7 +41,7 @@ devtools::install_github("AustralianAntarcticDivision/SOmap")
 To make a simple map you can use the following function; use ?SOmap to see all the options for modifying layers.
 
 
-```{r examplemap, fig.height=5,fig.width=5, dpi=300}
+```{r examplemap, fig.height=8,fig.width=8, dpi=300}
 library(SOmap)
 SOmap()
 ```
@@ -49,7 +49,7 @@ SOmap()
 There is also `SOmanagement()` which have management layers for the Southern Ocean and `SOleg()` which gives custom rounded legends for added map layers
 
 
-```{r management, echo = T, fig.height=5,fig.width=5, dpi=300}
+```{r management, echo = T, fig.height=8,fig.width=8, dpi=300}
 ## custom colours
  spiritedMedium <- grDevices::colorRampPalette(c("#4D4140", "#596F7E", "#168B98", "#ED5B67", "#E27766", "#DAAD50", "#EAC3A6"))
  spirited <- spiritedMedium(80)
