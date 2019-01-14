@@ -99,7 +99,12 @@ SOmap<-function(Bathleg=TRUE,
     }
     graphics::box(col = "white")
     if (land) {
-        plot(SOmap_data$continent, border = 1, add = TRUE)
+      xland <-sf::st_as_sf(SOmap::SOmap_data$continent)
+      xland <- sf::st_buffer(xland, 0)
+      buf <- sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), 111111 * (90-abs(Trim+1)))), crs = raster::projection(SOmap_data$continent))
+      suppressWarnings(lat_continent <- sf::st_intersection(buf, xland))
+
+      plot(lat_continent$geometry,col=NA, border = 1, add = TRUE)
     }
     ## fronts
     if (fronts) {

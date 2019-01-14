@@ -14,3 +14,34 @@ test_that("auto map plots polygons", {
   vdiffr::expect_doppelganger("Soauto_map research blocks",
                               disp_resblocks)
 })
+
+#SOmap
+disp_somap <- function() SOmap()
+test_that("SOmap plots", {
+  vdiffr::expect_doppelganger("Somap basemap",
+                              disp_somap)
+})
+
+#SOmap2
+disp_somap2 <- function() SOmap2(CCAMLR=TRUE)
+test_that("SOmap2 plots", {
+  vdiffr::expect_doppelganger("Somap2 basemap",
+                              disp_somap2)
+})
+
+#SOleg
+disp_soleg <- function() {SOmap()
+  SOleg(ticks=6, tlabs = seq(1:6))}
+  test_that("SOmap legends", {
+  vdiffr::expect_doppelganger("SOmap legends",
+                              disp_soleg)
+})
+
+
+#SOmanagement
+disp_soman <- function() {SOmap()
+    SOmanagement(CCAMLR = TRUE)}
+test_that("SOmap management", {
+    vdiffr::expect_doppelganger("SOmap management",
+                                disp_soman)
+  })
