@@ -144,7 +144,7 @@ SOmanagement<-function(CCAMLR= FALSE,
     df3 <- data.frame(a = c("Area VI","Area I","Area II","Area III","Area IV","Area V"),
                       lon = c(-145,-90,-30,35,100,160),
                       lat=rep(-60, 6))
-    sp::coordinates(df3) <- c("lon", "lat")
+    sp::sp::coordinates(df3) <- c("lon", "lat")
     raster::projection(df3) <- "+init=epsg:4326"
     lab_pos3 <- sp::spTransform(df3, raster::crs(raster::projection(Bathy)))
 
@@ -159,7 +159,7 @@ SOmanagement<-function(CCAMLR= FALSE,
     #load("RB.rda")
     raster::plot(SOmap_data$CCAMLR_research_blocks, border=rbcol, add=TRUE)}
   if(RBlab==TRUE){
-    text(coordinates(SOmap_data$CCAMLR_research_blocks), labels = SOmap_data$CCAMLR_research_blocks$GAR_Short_,col=rbcol, cex = 0.4, pos=4, offset=0.3)}
+    text(sp::coordinates(SOmap_data$CCAMLR_research_blocks), labels = SOmap_data$CCAMLR_research_blocks$GAR_Short_,col=rbcol, cex = 0.4, pos=4, offset=0.3)}
   if(SPRFMORB==TRUE){
     sprfmoa<-graticule::graticule(lats=c(-59.9,-57.9),lons= c(-155.3333,-150),proj = raster::projection(Bathy))
     raster::plot(sprfmoa, add=TRUE, col=sprfmocol)
@@ -169,32 +169,32 @@ SOmanagement<-function(CCAMLR= FALSE,
     #load("SSRU.rda")
     plot(SOmap_data$CCAMLR_SSRU,border=ssrucol, add = TRUE)}
   if(SSRUlab==TRUE){
-    text(coordinates(SOmap_data$CCAMLR_SSRU), labels = SOmap_data$CCAMLR_SSRU@data$ShortLabel,col=ssrucol, cex = 0.4, pos=1, offset=-0.05)}
+    text(sp::coordinates(SOmap_data$CCAMLR_SSRU), labels = SOmap_data$CCAMLR_SSRU@data$ShortLabel,col=ssrucol, cex = 0.4, pos=1, offset=-0.05)}
   if(SSMU==TRUE){
     #load("SSMU.rda")
     plot(SOmap_data$CCAMLR_SSMU,border=ssmucol, add = TRUE)}
   if(SSMUlab==TRUE){
-    text(coordinates(SOmap_data$CCAMLR_SSMU), labels = SOmap_data$CCAMLR_SSMU@data$LongLabel,col=ssmucol, cex = 0.5, pos=1, offset=0.6)}
+    text(sp::coordinates(SOmap_data$CCAMLR_SSMU), labels = SOmap_data$CCAMLR_SSMU@data$LongLabel,col=ssmucol, cex = 0.5, pos=1, offset=0.6)}
   if(CCAMLR==TRUE){
     #load("CCAMLR.rda")
     plot(SOmap_data$CCAMLR_statistical_areas,border=ccamlrcol, add = TRUE)}
   if(CCAMLRlab==TRUE){
-    text(coordinates(SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$LongLabel!="48.1"&SOmap_data$CCAMLR_statistical_areas$LongLabel!="58.4.2",]), labels = cclabs, col=ccamlrcol,cex = 0.5, pos=1, offset=-0.3)
-    text(coordinates(SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$LongLabel=="58.4.2",]), labels = "58.4.2", col=ccamlrcol,cex = 0.5, pos=3, offset=0.5)
-    text(coordinates(SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$LongLabel=="48.1",]), labels = "48.1", col=ccamlrcol,cex = 0.5, pos=2, offset=-0.1)}
+    text(sp::sp::coordinates(SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$LongLabel!="48.1"&SOmap_data$CCAMLR_statistical_areas$LongLabel!="58.4.2",]), labels = cclabs, col=ccamlrcol,cex = 0.5, pos=1, offset=-0.3)
+    text(sp::sp::coordinates(SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$LongLabel=="58.4.2",]), labels = "58.4.2", col=ccamlrcol,cex = 0.5, pos=3, offset=0.5)
+    text(sp::coordinates(SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$LongLabel=="48.1",]), labels = "48.1", col=ccamlrcol,cex = 0.5, pos=2, offset=-0.1)}
 
   # EEZ
   if(EEZ==TRUE){
     plot(SOmap_data$EEZ,border=eezcol, add = TRUE)}
   if(EEZlab==TRUE){
-    text(coordinates(SOmap_data$EEZ), labels = SOmap_data$EEZ@data$Name, col=eezcol,cex = 0.35, pos=4, offset=0.8)}
+    text(sp::coordinates(SOmap_data$EEZ), labels = SOmap_data$EEZ@data$Name, col=eezcol,cex = 0.35, pos=4, offset=0.8)}
   # MPA
   if(MPA==TRUE){
     #load("MPA.rda")
     plot(SOmap_data$CCAMLR_MPA, border=mpacol, add = TRUE)
   }
   if(MPAlab==TRUE){
-    text(coordinates(SOmap_data$CCAMLR_MPA), labels = SOmap_data$CCAMLR_MPA$ShortLabel, col=mpacol,cex = 0.35, pos=1, offset=0.2)}
+    text(sp::coordinates(SOmap_data$CCAMLR_MPA), labels = SOmap_data$CCAMLR_MPA$ShortLabel, col=mpacol,cex = 0.35, pos=1, offset=0.2)}
   if(Domains==TRUE){
     #load("SSRU.rda")
     plot(SOmap_data$CCAMLR_planning_domains ,border=domcol, add = TRUE)}
@@ -204,10 +204,10 @@ SOmanagement<-function(CCAMLR= FALSE,
     labs2<-c("", "", "", "", "", "Domain  2", "", "", "")
     labs7<-c("", "", "", "Domain  7", "", "", "", "", "")
 
-    text(coordinates(SOmap_data$CCAMLR_planning_domains), labels = labs,col=domcol, cex = 0.7, pos=3, offset=0.05)
-    text(coordinates(SOmap_data$CCAMLR_planning_domains), labels = labs1,col=domcol, cex = 0.7, pos=1, offset=3.)
-    text(coordinates(SOmap_data$CCAMLR_planning_domains), labels = labs2,col=domcol, cex = 0.7, pos=3, offset=0.5)
-    text(coordinates(SOmap_data$CCAMLR_planning_domains), labels = labs7,col=domcol, cex = 0.7, pos=4, offset=0.9)
+    text(sp::coordinates(SOmap_data$CCAMLR_planning_domains), labels = labs,col=domcol, cex = 0.7, pos=3, offset=0.05)
+    text(sp::coordinates(SOmap_data$CCAMLR_planning_domains), labels = labs1,col=domcol, cex = 0.7, pos=1, offset=3.)
+    text(sp::coordinates(SOmap_data$CCAMLR_planning_domains), labels = labs2,col=domcol, cex = 0.7, pos=3, offset=0.5)
+    text(sp::coordinates(SOmap_data$CCAMLR_planning_domains), labels = labs7,col=domcol, cex = 0.7, pos=4, offset=0.9)
 
     }
 
