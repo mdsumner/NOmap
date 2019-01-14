@@ -4,13 +4,14 @@
 #'  - deconstruct SOauto_map to separate the plotting and aesthetics handling from the data prep
 #'  - etc.
 #'
-#'  @param x object to plot
+#' @param x object to plot.
 #'
 #' @param ...
+#' other plotting options.
 #'
 #' @examples
-#' x <- SOauto_map()
-#' autophagy(a)
+#' \dontrun{x <- SOauto_map()
+#' autophagy(a)}
 autophagy <- function(x, ...) {
   UseMethod("autophagy")
 }

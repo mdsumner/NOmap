@@ -144,7 +144,7 @@ SOmanagement<-function(CCAMLR= FALSE,
     df3 <- data.frame(a = c("Area VI","Area I","Area II","Area III","Area IV","Area V"),
                       lon = c(-145,-90,-30,35,100,160),
                       lat=rep(-60, 6))
-    sp::sp::coordinates(df3) <- c("lon", "lat")
+    sp::coordinates(df3) <- c("lon", "lat")
     raster::projection(df3) <- "+init=epsg:4326"
     lab_pos3 <- sp::spTransform(df3, raster::crs(raster::projection(Bathy)))
 
@@ -179,8 +179,8 @@ SOmanagement<-function(CCAMLR= FALSE,
     #load("CCAMLR.rda")
     plot(SOmap_data$CCAMLR_statistical_areas,border=ccamlrcol, add = TRUE)}
   if(CCAMLRlab==TRUE){
-    text(sp::sp::coordinates(SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$LongLabel!="48.1"&SOmap_data$CCAMLR_statistical_areas$LongLabel!="58.4.2",]), labels = cclabs, col=ccamlrcol,cex = 0.5, pos=1, offset=-0.3)
-    text(sp::sp::coordinates(SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$LongLabel=="58.4.2",]), labels = "58.4.2", col=ccamlrcol,cex = 0.5, pos=3, offset=0.5)
+    text(sp::coordinates(SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$LongLabel!="48.1"&SOmap_data$CCAMLR_statistical_areas$LongLabel!="58.4.2",]), labels = cclabs, col=ccamlrcol,cex = 0.5, pos=1, offset=-0.3)
+    text(sp::coordinates(SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$LongLabel=="58.4.2",]), labels = "58.4.2", col=ccamlrcol,cex = 0.5, pos=3, offset=0.5)
     text(sp::coordinates(SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$LongLabel=="48.1",]), labels = "48.1", col=ccamlrcol,cex = 0.5, pos=2, offset=-0.1)}
 
   # EEZ

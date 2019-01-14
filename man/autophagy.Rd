@@ -10,17 +10,16 @@ autophagy(x, ...)
 \method{autophagy}{SOmap}(x, ...)
 }
 \arguments{
-\item{...}{}
+\item{x}{object to plot.}
+
+\item{...}{other plotting options.}
 }
 \description{
 TODO:
  - deconstruct SOauto_map to separate the plotting and aesthetics handling from the data prep
  - etc.
 }
-\details{
-@param x object to plot
-}
 \examples{
-x <- SOauto_map()
-autophagy(a)
+\dontrun{x <- SOauto_map()
+autophagy(a)}
 }
