@@ -59,6 +59,13 @@ SOmap<-function(Bathleg=TRUE,
     bluepal2<-ramp2(80)
     ## Setup color border #
     bord<-graticule::graticule(lons = seq(-180,180, by=15),lats = c(Trim+2,Trim), tiles = TRUE, proj = raster::projection(Bathy))
+    ## fix trim without legend.
+    if (Border==FALSE){
+      Trim<-Trim-2
+    }
+
+
+    #bathy legend
     if (Bathleg) {
         ## White Mask #
         j<-graticule::graticule(lons = seq(-180,180, by=1),lats = c(35,Trim+2), tiles = TRUE, proj = raster::projection(Bathy))
@@ -98,14 +105,16 @@ SOmap<-function(Bathleg=TRUE,
         potato(raster::trim(SOmap::latmask(Bathy, latitude = q)), col=bluepal, yaxt='n', xaxt='n', asp = 1)
     }
     graphics::box(col = "white")
+
     if (land) {
       xland <-sf::st_as_sf(SOmap::SOmap_data$continent)
       xland <- sf::st_buffer(xland, 0)
-      buf <- sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), 111111 * (90-abs(Trim+1)))), crs = raster::projection(SOmap_data$continent))
+      buf <- sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), 111111 * (90-abs(q-3)))), crs = raster::projection(SOmap_data$continent))
       suppressWarnings(lat_continent <- sf::st_intersection(buf, xland))
 
       plot(lat_continent$geometry,col=NA, border = 1, add = TRUE)
     }
+
     ## fronts
     if (fronts) {
         plot(SOmap_data$fronts_orsi, add = TRUE, col = frontcols)
