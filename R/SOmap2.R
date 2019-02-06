@@ -140,7 +140,7 @@ SOmap2<-function(Bathleg=TRUE,
   bord<-graticule::graticule(lons = seq(-180,180, by=15),lats = c(Trim+2,Trim), tiles = TRUE, proj = raster::projection(Bathy))
   if(Bathleg==TRUE){
  #### White Mask #
-  j<-graticule::graticule(lons = seq(-180,180, by=1),lats = c(35,Trim+2), tiles = TRUE, proj = raster::projection(Bathy))
+  j<-graticule::graticule(lons = seq(-180,180, by=1),lats = c(Trim+11,Trim+2), tiles = TRUE, proj = raster::projection(Bathy))
 #### Legend #
   ##Colored legend
   bleg<-graticule::graticule(lons = seq(185,265, by=1),lats = c(Trim+3,Trim+5), tiles = TRUE, proj = raster::projection(Bathy))
@@ -178,8 +178,12 @@ SOmap2<-function(Bathleg=TRUE,
 
     if (land) {
         if (CCAMLR) {
-            notANT <- SOmap_data$continent[SOmap_data$continent$continent !="Antarctica",]
-            plot(notANT,border=1, add = TRUE)
+            notANT <- sf::st_as_sf(SOmap_data$continent[SOmap_data$continent$continent !="Antarctica",])
+            notANT <- sf::st_buffer(xland, 0)
+            buf <- sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), 111111 * (90-abs(q+3)))), crs = raster::projection(SOmap_data$continent))
+            suppressWarnings(lat_continent <- sf::st_intersection(buf, notANT))
+            plot(lat_continent$geometry,col=NA, border = 1, add = TRUE)
+
         } else {
           xland <-sf::st_as_sf(SOmap::SOmap_data$continent)
           xland <- sf::st_buffer(xland, 0)
