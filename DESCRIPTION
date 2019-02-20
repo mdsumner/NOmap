@@ -14,11 +14,12 @@ LazyData: true
 RoxygenNote: 6.1.1
 Depends: R (>= 3.3.0), raster, sp
 Imports:
-    rgdal,
+    assertthat,
     ggplot2,
     graticule,
     methods,
     proj4,
+    rgdal,
     rgeos,
     sf,
     spbabel,
