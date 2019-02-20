@@ -63,7 +63,7 @@
 
 #' }
 
-SOleg <-function(x=NULL,
+SOleg <-function(x = NULL,
                  position="topright",
                  col= NULL,
                  ticks=NULL,
@@ -79,133 +79,150 @@ SOleg <-function(x=NULL,
                  tcex=1,
                  rnd=NULL){
 
-  if(is.null(col)){col<-c("#440154FF",  "#3E4A89FF",  "#26828EFF", "#35B779FF",  "#B4DE2CFF" )}
+    if (is.null(col)) col <- c("#440154FF", "#3E4A89FF", "#26828EFF", "#35B779FF", "#B4DE2CFF")
 
-  ## data
-  Bathy <- NULL
-  data("Bathy", package = "SOmap", envir = environment())
-  if(type=="continuous" && !is.null(ticks) && !is.null(breaks)&& length(breaks)!= ticks ){
-    stop("Number of ticks and breaks do not match. You do not need to use ticks if you have breaks")
-  }
+    ## data
+    Bathy <- NULL
+    data("Bathy", package = "SOmap", envir = environment())
 
-  if(type=="continuous" & !is.null(breaks)){ if (!inherits(breaks, "numeric")){
-    stop("Breaks must be numeric or integer")
-  }}
-
-
-  if(type=="continuous" && is.null(ticks) && !is.null(breaks)){
-    ticks<-length(breaks)
-  }
-
-  if(type=="continuous" && is.null(ticks) && is.null(breaks)){
-    stop("Ticks number needs to be set for continuous legends")
-  }
-
-  if(type=="continuous" && !is.null(ticks) && !is.null(tlabs) && length(tlabs)!= ticks){
-    stop("Number of ticks and labels do not match")
-  }
-
-  if(type=="continuous" && is.factor(x)==TRUE || is.character(x)==TRUE){
-    stop("Discrete variable given to continuous legend. Try type='discrete'")
-  }
-
-  if(type=="discrete" && is.discrete(col)==FALSE){
-    stop("Continuous colors given for discrete variable")
-  }
-
-  if(type=="discrete"){
-    qbins   <-length(tlabs)
-    qtadjust<-(80/length(tlabs))/2} #how far in to move the tick marks each end.
-  qticks  <-length(tlabs)#(80-qtadjust)/(length(tlabs)-1)} #how far between ticks. Currenty deprecated.
-  cols<-col
-
-
-  if(type=="continuous"){
-    qbins<-80
-    qticks<-ticks
-    qtadjust<-0
-
-    if(is.discrete(cols)) {
-      ramp<-grDevices::colorRampPalette(col)
-      cols<-ramp(80)} else(cols<-col(80))
-    if(!is.null(x) & is.null(tlabs) & !inherits(x, "BasicRaster")){
-      lmins<-min(x)
-      lmax<-max(x)
-      lbs<-seq(from=lmins,to= lmax, length.out = ticks)
-      if(is.null(rnd)==FALSE){lbs<-base::round(lbs, digits = rnd)}
-      tlabs<-as.character(lbs)
+    if (type == "continuous" && !is.null(ticks) && !is.null(breaks) && length(breaks) != ticks ) {
+        stop("Number of ticks and breaks do not match. You do not need to use ticks if you have breaks")
     }
-    if(!is.null(x) & is.null(tlabs) & inherits(x, "BasicRaster")){
-      lmins<-raster::cellStats(x,stat='min', na.rm=T)
-      lmax<-raster::cellStats(x, stat='max', na.rm=T)
-      lbs<-seq(from=lmins,to= lmax, length.out = ticks)
-      if(is.null(rnd)==FALSE){lbs<-base::round(lbs, digits = rnd)}
-      tlabs<-as.character(lbs)
+
+    if (type == "continuous" && !is.null(breaks)) {
+        if (!inherits(breaks, "numeric")) {
+            stop("Breaks must be numeric or integer")
+        }
     }
-    if(is.null(x) & is.null(tlabs) & !is.null(breaks)){
-      lmins<-min(breaks)
-      lmax<-max(breaks)
-      lbs<-breaks
-      #if(is.null(rnd)==FALSE){lbs<-base::round(lbs, digits = rnd)}
-      tlabs<-as.character(lbs)
+
+    if (type == "continuous" && is.null(ticks) && !is.null(breaks)) {
+        ticks <- length(breaks)
     }
-  }
+
+    if (type == "continuous" && is.null(ticks) && is.null(breaks)) {
+        stop("Ticks number needs to be set for continuous legends")
+    }
+
+    if (type == "continuous" && !is.null(ticks) && !is.null(tlabs) && length(tlabs) != ticks) {
+        stop("Number of ticks and labels do not match")
+    }
+
+    if (type == "continuous" && is.factor(x) || is.character(x)) {
+        stop("Discrete variable given to continuous legend. Try type='discrete'")
+    }
+
+    if (type == "discrete" && !is.discrete(col)) {
+        stop("Continuous colors given for discrete variable")
+    }
+
+    if (type == "discrete") {
+        qbins <- length(tlabs)
+        qtadjust <- (80/length(tlabs))/2
+    } ## how far in to move the tick marks each end
+    qticks <-length(tlabs) ##(80-qtadjust)/(length(tlabs)-1)} #how far between ticks. Currently deprecated.
+    cols <- col
 
 
-  switch(position,
-         "topright"   ={jklons<-seq(  4,  86, by=1);
-         bllons<-seq(  5,  85, length.out=qbins+1);
-         btlons<-seq(  5+qtadjust,  85-qtadjust, length.out=qticks);
-         lablon<- 45;
-         SRT   <--45;
-         strt  <-  5},
-         "topleft"    ={jklons<-seq(274, 356, by=1);
-         bllons<-seq(275, 355, length.out =qbins+1);
-         btlons<-seq(275+qtadjust, 355-qtadjust, length.out=qticks);
-         lablon<-315;
-         SRT   <- 45;
-         strt  <-275},
-         "bottomright"={jklons<-seq( 94, 176, by=1);
-         bllons<-seq( 95, 175, length.out =qbins+1);
-         btlons<-seq( 95+qtadjust, 175-qtadjust, length.out=qticks);
-         lablon<-135;
-         SRT   <- 45;
-         strt  <- 95})
+    if (type == "continuous") {
+        qbins <- 80
+        qticks <- ticks
+        qtadjust <- 0
 
-  if(type=="continuous" & !is.null(breaks)){
-    nms<- (breaks-lmins)/(lmax-lmins)
-    btlons<-round(nms*80, 2) + strt
-    tlabs<-as.character(breaks)
+        if (is.discrete(cols)) {
+            ramp <- grDevices::colorRampPalette(col)
+            cols <- ramp(80)
+        } else {
+            cols <- col(80)
+        }
+        if (!is.null(x) && is.null(tlabs) && !inherits(x, "BasicRaster")) {
+            lmins <- min(x)
+            lmax <- max(x)
+            lbs <- seq(from = lmins, to = lmax, length.out = ticks)
+            if (!is.null(rnd)) {
+                lbs<-base::round(lbs, digits = rnd)
+            }
+            tlabs <- as.character(lbs)
+        }
+        if (!is.null(x) && is.null(tlabs) && inherits(x, "BasicRaster")) {
+            lmins <- raster::cellStats(x, stat = "min", na.rm = TRUE)
+            lmax <- raster::cellStats(x, stat = "max", na.rm = TRUE)
+            lbs <- seq(from = lmins, to = lmax, length.out = ticks)
+            if (!is.null(rnd)) {
+                lbs<-base::round(lbs, digits = rnd)
+            }
+            tlabs <- as.character(lbs)
+        }
+        if (is.null(x) && is.null(tlabs) && !is.null(breaks)) {
+            lmins <- min(breaks)
+            lmax <- max(breaks)
+            lbs <- breaks
+            ##if (!is.null(rnd)) lbs<-base::round(lbs, digits = rnd)
+            tlabs <- as.character(lbs)
+        }
+    }
 
-  }
+    switch(position,
+           "topright" = {
+               jklons <- seq(4, 86, by = 1)
+               bllons <- seq(5, 85, length.out = qbins+1)
+               btlons <- seq(5+qtadjust, 85-qtadjust, length.out = qticks)
+               lablon <- 45
+               SRT <- -45
+               strt <-  5
+           },
+           "topleft" = {
+               jklons <- seq(274, 356, by=1)
+               bllons <- seq(275, 355, length.out = qbins+1)
+               btlons <- seq(275+qtadjust, 355-qtadjust, length.out = qticks)
+               lablon <- 315
+               SRT <- 45
+               strt <- 275
+           },
+           "bottomright" = {
+               jklons <- seq(94, 176, by = 1)
+               bllons <- seq(95, 175, length.out = qbins+1)
+               btlons <- seq(95+qtadjust, 175-qtadjust, length.out = qticks)
+               lablon <- 135
+               SRT <- 45
+               strt <- 95
+           }
+           )
 
-  #Graticule for colors
-  bleg  <- graticule::graticule(lons = bllons,lats = c(Trim+3,Trim+5), tiles = TRUE, proj = raster::projection(Bathy))
-  #Graticule for ticks
-  btick <- graticule::graticule(lons = btlons ,lats=c(Trim+4,Trim+7),  proj=raster::projection(Bathy), tiles=F)
-  #Graticule for masks
-  k     <- graticule::graticule(lons = jklons,lats = c(Trim+10,Trim+6.75), tiles = TRUE, proj = raster::projection(Bathy))
-  j     <- graticule::graticule(lons = jklons,lats = c(Trim+15,Trim+2), tiles = TRUE, proj = raster::projection(Bathy))
+    if (type == "continuous" && !is.null(breaks)) {
+        nms <- (breaks-lmins)/(lmax-lmins)
+        btlons <- round(nms*80, 2) + strt
+        tlabs <- as.character(breaks)
+    }
 
-  #Tick labels
-  df2 <- data.frame(a = tlabs,lon = btlons, lat=rep(Trim+9, length(tlabs))) #Create dataframe with labels and locations.
-  sp::coordinates(df2) <- c("lon", "lat") #Assign the current coordinate type
-  raster::projection(df2) <- "+init=epsg:4326" #Assign the current projection type
-  lab_pos2 <- sp::spTransform(df2, raster::crs(raster::projection(Bathy))) #Reproject to the polar map coordinates.
+    ## Graticule for colors
+    bleg  <- graticule::graticule(lons = bllons,lats = c(Trim+3, Trim+5), tiles = TRUE, proj = raster::projection(Bathy))
+    ## Graticule for ticks
+    btick <- graticule::graticule(lons = btlons ,lats = c(Trim+4, Trim+7),  proj = raster::projection(Bathy), tiles = FALSE)
+    ## Graticule for masks
+    k <- graticule::graticule(lons = jklons, lats = c(Trim+10, Trim+6.75), tiles = TRUE, proj = raster::projection(Bathy))
+    j <- graticule::graticule(lons = jklons, lats = c(Trim+15, Trim+2), tiles = TRUE, proj = raster::projection(Bathy))
 
-  #Legend label
-  df3 <- data.frame(a = label,lon = lablon, lat=rep(Trim+12.5))
-  sp::coordinates(df3) <- c("lon", "lat")
-  raster::projection(df3) <- "+init=epsg:4326"
-  lab_pos3 <- sp::spTransform(df3, raster::crs(raster::projection(Bathy)))
+    ## Tick labels
+    df2 <- data.frame(a = tlabs,lon = btlons, lat=rep(Trim+9, length(tlabs))) ## Create dataframe with labels and locations.
+    sp::coordinates(df2) <- c("lon", "lat") ## Assign the current coordinate type
+    raster::projection(df2) <- "+init=epsg:4326" ## Assign the current projection type
+    lab_pos2 <- sp::spTransform(df2, raster::crs(raster::projection(Bathy))) ## Reproject to the polar map coordinates.
 
-  raster::plot(j, border=F,col="white", add=T) #White mask
-  raster::plot(btick, add=T, col=1)
-  raster::plot(bleg, lwd=2, add=T)
-  raster::plot(bleg, border=F,  col=cols, add=T)
-  raster::plot(k, border=F,col="white", add=T)
-  text(lab_pos2, labels=lab_pos2$a, cex= lcex, adj=ladj, srt=lsrt)
-  text(lab_pos3, labels=lab_pos3$a, cex= tcex, adj=tadj, srt=SRT) } ## Need to set SRT during the position if statements.
+    ## Legend label
+    df3 <- data.frame(a = label,lon = lablon, lat = rep(Trim+12.5))
+    sp::coordinates(df3) <- c("lon", "lat")
+    raster::projection(df3) <- "+init=epsg:4326"
+    lab_pos3 <- sp::spTransform(df3, raster::crs(raster::projection(Bathy)))
+
+    raster::plot(j, border = FALSE,col = "white", add = TRUE) #White mask
+    raster::plot(btick, add = TRUE, col = 1)
+    raster::plot(bleg, lwd = 2, add = TRUE)
+    raster::plot(bleg, border = FALSE,  col = cols, add = TRUE)
+    raster::plot(k, border = FALSE,col = "white", add = TRUE)
+    text(lab_pos2, labels = lab_pos2$a, cex =  lcex, adj = ladj, srt = lsrt)
+    text(lab_pos3, labels = lab_pos3$a, cex =  tcex, adj = tadj, srt = SRT)
+    ## Need to set SRT during the position if statements.
+}
 
 
 
