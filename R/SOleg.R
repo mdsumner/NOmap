@@ -125,7 +125,7 @@ SOleg <-function(x=NULL,
     qticks<-ticks
     qtadjust<-0
 
-    if(SOmap:::is.discrete(cols)==TRUE){
+    if(is.discrete(cols)) {
       ramp<-grDevices::colorRampPalette(col)
       cols<-ramp(80)} else(cols<-col(80))
     if(!is.null(x) & is.null(tlabs) & !inherits(x, "BasicRaster")){
