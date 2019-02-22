@@ -31,7 +31,7 @@
 #' @param pcex set point cex (default=1)
 #' @param bathyleg optional bathymetry legend (default=FALSE). Note when \code{bathyleg} is \code{FALSE}, plotting is done with \code{raster::image}, but when \code{bathyleg} is \code{TRUE} plotting uses \code{raster::plot}
 #'
-#' @return An object of class SOmap, containing the data and other details required to generate the map. Printing or plotting the object will cause it to be plotted.
+#' @return An object of class SOauto_map, containing the data and other details required to generate the map. Printing or plotting the object will cause it to be plotted.
 #' @export
 #' @examples
 #' SOauto_map(c(0, 50), c(-70, -50))
@@ -246,21 +246,21 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
                    ppch = ppch, pcol = pcol, pcex = pcex,
                    contours = contours, levels = levels, contour_colour = "black",
                    graticule = graticule, crs = prj),
-              class = "SOmap")
+              class = "SOauto_map")
 
 }
 
 
-#' @method plot SOmap
+#' @method plot SOauto_map
 #' @export
-plot.SOmap <- function (x, y, ...) {
+plot.SOauto_map <- function (x, y, ...) {
     print(x)
     invisible()
 }
 
-#' @method print SOmap
+#' @method print SOauto_map
 #' @export
-print.SOmap <- function(x, ...) {
+print.SOauto_map <- function(x, ...) {
     aspect <- if (raster::isLonLat(x$target)) 1/cos(mean(c(raster::xmin(x$target), raster::xmax(x$target))) * pi/180) else 1
     pp <- aspectplot.default(c(raster::xmin(x$target), raster::xmax(x$target)), c(raster::ymin(x$target), raster::ymax(x$target)), asp = aspect, mar = par("mar")/2.5)
     newextent <- raster::extent(par("usr"))

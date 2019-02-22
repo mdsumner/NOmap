@@ -56,7 +56,7 @@ SOauto_map(x, y, centre_lon = NULL, centre_lat = NULL,
 \item{bathyleg}{optional bathymetry legend (default=FALSE). Note when \code{bathyleg} is \code{FALSE}, plotting is done with \code{raster::image}, but when \code{bathyleg} is \code{TRUE} plotting uses \code{raster::plot}}
 }
 \value{
-An object of class SOmap, containing the data and other details required to generate the map. Printing or plotting the object will cause it to be plotted.
+An object of class SOauto_map, containing the data and other details required to generate the map. Printing or plotting the object will cause it to be plotted.
 }
 \description{
 Provide minimal input information to get a default map. The simplest case is
