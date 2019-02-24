@@ -144,4 +144,5 @@ print.SOmap <- function(x, ...) {
     }
     ## reset par
     graphics::par(op)
+    invisible(x)
 }
