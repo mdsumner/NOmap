@@ -10,7 +10,7 @@
 #' @param bordercol character: colours for longitude border
 #' @param gratcol string: colour for graticule grid
 #' @param straight logical: if \code{TRUE}, leave a blank space on the side for a straight legend
-#' @param land logical: if \code{TRUE}, plot land
+#' @param land logical: if \code{TRUE}, plot coastline
 #' @param fronts logical: if \code{TRUE}, plot ocean fronts (Subantarctic Front, Polar Front, Southern Antarctic Circumpolar Current Front)
 #' @param frontcols character: colours for fronts
 #'
@@ -66,13 +66,13 @@ SOmap<-function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, straig
 
     ## Set the Trim value depending on legend yes or no
     q <- ifelse(Bathleg, Trim+13, Trim+2)
-    out <- list(bathy = list(data = raster::trim(SOmap::latmask(Bathy, latitude = q)), col = bluepal), straight = straight, box = list(col = "white"))
+    out <- list(projection = projection(Bathy), bathy = list(data = raster::trim(SOmap::latmask(Bathy, latitude = q)), col = bluepal), straight = straight, box = list(col = "white"))
 
     if (land) {
       xland <-sf::st_as_sf(SOmap::SOmap_data$continent)
       xland <- sf::st_buffer(xland, 0)
       buf <- sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), 111111 * (90-abs(q-3)))), crs = raster::projection(SOmap_data$continent))
-      out$land <- list(data = suppressWarnings(sf::st_intersection(buf, xland)), col = "black")
+      out$coastline <- list(data = suppressWarnings(sf::st_intersection(buf, xland)), fillcol = NA, linecol = "black")
     }
 
     ## fronts
@@ -117,7 +117,7 @@ print.SOmap <- function(x, ...) {
     }
     graphics::box(col = x$box$col)
 
-    if (!is.null(x$land)) plot(x$land$data, col = NA, border = x$land$col, add = TRUE)
+    if (!is.null(x$coastline)) plot(x$coastline$data, col = x$coastline$fillcol, border = x$coastline$linecol, add = TRUE)
 
     ## fronts
     if (!is.null(x$fronts)) {

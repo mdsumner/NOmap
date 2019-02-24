@@ -27,9 +27,9 @@ SOauto_map(x, y, centre_lon = NULL, centre_lat = NULL,
 
 \item{dimXY}{dimensions of background bathmetry (if used) default is 300x300}
 
-\item{bathy}{optional bathymetry data to use (or `FALSE` for no bathmetry image)}
+\item{bathy}{logical: if \code{TRUE}, plot bathymetry. Alternatively, provide the bathymetry data to use as a \code{raster} object}
 
-\item{coast}{optional coastline data to use (or `FALSE` for no coastline)}
+\item{coast}{logical: if \code{TRUE}, plot coastline. Alternatively, provide the coastline data to use as a \code{Spatial} object}
 
 \item{input_points}{add points to plot (of x, y)}
 
@@ -63,8 +63,7 @@ Provide minimal input information to get a default map. The simplest case is
 to run the function without any inputs at all and it will provide a random default.
 }
 \details{
-To input your data, use input locations as `x` (longitude) and `y` (latitude) values, there must be at least
-two locations.
+To input your data, use input locations as `x` (longitude) and `y` (latitude) values, there must be at least two locations.
 
 Try families such as 'lcc', 'laea', 'gnom', 'merc', 'aea' if feeling adventurous.
 

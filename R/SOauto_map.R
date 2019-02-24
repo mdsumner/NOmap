@@ -3,12 +3,12 @@
 #' Provide minimal input information to get a default map. The simplest case is
 #' to run the function without any inputs at all and it will provide a random default.
 #'
-#' To input your data, use input locations as `x` (longitude) and `y` (latitude) values, there must be at least
-#' two locations.
+#' To input your data, use input locations as `x` (longitude) and `y` (latitude) values, there must be at least two locations.
 #'
 #' Try families such as 'lcc', 'laea', 'gnom', 'merc', 'aea' if feeling adventurous.
 #'
 #' Using `mask = TRUE` does not work well when the pole is included, so it's `FALSE` by default.
+#' 
 #' @param x optional input data longitudes
 #' @param y optional input data latitudes
 #' @param centre_lon optional centre longitude (of the map projection, also used to for plot range if `expand = TRUE`)
@@ -16,8 +16,8 @@
 #' @param family optional projection family (default is `stere`ographic)
 #' @param expand re-compute range of plot to incorporate centre_lon and centre_lat with the data as a natural middle
 #' @param dimXY dimensions of background bathmetry (if used) default is 300x300
-#' @param bathy optional bathymetry data to use (or `FALSE` for no bathmetry image)
-#' @param coast optional coastline data to use (or `FALSE` for no coastline)
+#' @param bathy logical: if \code{TRUE}, plot bathymetry. Alternatively, provide the bathymetry data to use as a \code{raster} object
+#' @param coast logical: if \code{TRUE}, plot coastline. Alternatively, provide the coastline data to use as a \code{Spatial} object
 #' @param input_points add points to plot (of x, y)
 #' @param input_lines add lines to plot   (of x, y)
 #' @param graticule flag to add a basic graticule
@@ -191,7 +191,6 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
 
     if (isTRUE(coast)) {
         suppressWarnings({
-
             coastline <- try(as(sf::st_crop(sf::st_buffer(sf::st_transform(sf::st_as_sf(SOmap_data$continent), prj), 0), xmin = raster::xmin(target), xmax = raster::xmax(target), ymin = raster::ymin(target), ymax = raster::ymax(target)), "Spatial"), silent = TRUE)
             if (inherits(coastline, "try-error")) {
                 coast <- FALSE
@@ -240,8 +239,9 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
   # invisible(list(bathy = bathymetry, coastline = coastline, target = target))
   # } else {
     if (!exists("xy")) xy <- NULL
-    structure(list(bathy = bathymetry, bathyleg = bathyleg, bathy_palette = bluepal,
-                   coastline = coastline, target = target, ##data = xy,
+    structure(list(projection = projection(target),
+                   bathy = bathymetry, bathyleg = bathyleg, bathy_palette = bluepal,
+                   coastline = list(data = coastline, fillcol = NA, linecol = "black"), target = target, ##data = xy,
                    lines_data = if (input_lines) xy else NULL, points_data = if (input_points) xy else NULL,
                    ppch = ppch, pcol = pcol, pcex = pcex,
                    contours = contours, levels = levels, contour_colour = "black",
@@ -263,6 +263,7 @@ plot.SOauto_map <- function (x, y, ...) {
 print.SOauto_map <- function(x, ...) {
     aspect <- if (raster::isLonLat(x$target)) 1/cos(mean(c(raster::xmin(x$target), raster::xmax(x$target))) * pi/180) else 1
     pp <- aspectplot.default(c(raster::xmin(x$target), raster::xmax(x$target)), c(raster::ymin(x$target), raster::ymax(x$target)), asp = aspect, mar = par("mar")/2.5)
+    ## shouldn't we be resetting par(pp) when we exit this function?
     newextent <- raster::extent(par("usr"))
 
     if (!is.null(x$bathy)) {
@@ -276,7 +277,7 @@ print.SOauto_map <- function(x, ...) {
     ## nlevels = 1
     if (x$contours && !is.null(x$bathy)) contour(x$bathy, levels = x$levels, col = x$contour_colour, add = TRUE)
     op <- par(xpd = FALSE)
-    if (!is.null(x$coastline)) plot(x$coastline, add = TRUE)
+    if (!is.null(x$coastline)) plot(x$coastline$data, col = x$coastline$fillcol, border = x$coastline$linecol, add = TRUE)
     par(op)
     if (!is.null(x$points_data)) points(x$points_data, pch = x$ppch, cex = x$pcex, col = x$pcol)
     if (!is.null(x$lines_data)) lines(x$lines_data)
@@ -287,16 +288,6 @@ print.SOauto_map <- function(x, ...) {
         par(op)
     }
     invisible(x)
-}
-
-#' Deprecated function
-#'
-#' Deprecated from SOmap
-#' @param ... all arguments passed to new function
-#'
-#' @export
-default_somap <- function(...) {
-  .Deprecated("SOauto_map")
 }
 
 ## from ?sf::st_graticule
@@ -324,28 +315,36 @@ plot_graticule <- function(g) {
 }
 
 
-aspectplot.default <- function(xlim,ylim,asp, ...) {
+aspectplot.default <- function(xlim, ylim, asp, ...) {
   plot.new()
   xlim <- sort(xlim)
   ylim <- sort(ylim)
   r <- asp * abs(diff(ylim)/diff(xlim))
   if(r <= 1) {  # X = 0, 1
     recip <- r / 2
-    figure <- c(0, 1,
-                0.5 - recip, 0.5 + recip)
+    figure <- c(0, 1, 0.5 - recip, 0.5 + recip)
   } else {     # Y = 0, 1
     recip <- (1/r) / 2
-    figure <- c(0.5 - recip, 0.5 + recip,
-                0, 1)
+    figure <- c(0.5 - recip, 0.5 + recip, 0, 1)
   }
 
   p <- par(fig = figure, new = FALSE, ...)
-  plot.window(xlim=xlim,ylim=ylim,xaxs="i",yaxs="i", asp = asp)
-  return(p)
+  plot.window(xlim = xlim, ylim = ylim, xaxs = "i", yaxs = "i", asp = asp)
+  p
 }
 
 fast_mask <- function(ras, poly) {
   cells <- tabularaster::cellnumbers(ras, sf::st_as_sf(poly))
   ras[setdiff(1:ncell(ras), cells$cell_)] <- NA
   ras
+}
+
+#' Deprecated function
+#'
+#' Deprecated from SOmap
+#' @param ... all arguments passed to new function
+#'
+#' @export
+default_somap <- function(...) {
+  .Deprecated("SOauto_map")
 }

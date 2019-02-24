@@ -20,7 +20,7 @@ SOmap(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE,
 
 \item{straight}{logical: if \code{TRUE}, leave a blank space on the side for a straight legend}
 
-\item{land}{logical: if \code{TRUE}, plot land}
+\item{land}{logical: if \code{TRUE}, plot coastline}
 
 \item{fronts}{logical: if \code{TRUE}, plot ocean fronts (Subantarctic Front, Polar Front, Southern Antarctic Circumpolar Current Front)}
 
