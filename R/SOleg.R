@@ -214,16 +214,36 @@ SOleg <-function(x = NULL,
     raster::projection(df3) <- "+init=epsg:4326"
     lab_pos3 <- sp::spTransform(df3, raster::crs(raster::projection(Bathy)))
 
-    raster::plot(j, border = FALSE,col = "white", add = TRUE) #White mask
-    raster::plot(btick, add = TRUE, col = 1)
-    raster::plot(bleg, lwd = 2, add = TRUE)
-    raster::plot(bleg, border = FALSE,  col = cols, add = TRUE)
-    raster::plot(k, border = FALSE,col = "white", add = TRUE)
-    text(lab_pos2, labels = lab_pos2$a, cex =  lcex, adj = ladj, srt = lsrt)
-    text(lab_pos3, labels = lab_pos3$a, cex =  tcex, adj = tadj, srt = SRT)
-    ## Need to set SRT during the position if statements.
+    structure(list(
+        mask = list(data = j, col = "white", border = FALSE),
+        ticks = list(data = btick, col = "black"),
+        legend = list(data = bleg, lwd = 2, border = FALSE, col = cols),
+        mask2 = list(data = k, border = FALSE, col = "white"),
+        tick_labels = list(data = lab_pos2, cex = lcex, adj = ladj, srt = lsrt),
+        legend_labels = list(data = lab_pos3, cex = tcex, adj = tadj, srt = SRT)
+    ), class = "SOmap_legend")
 }
 
+#' @method plot SOmap_legend
+#' @export
+plot.SOmap_legend <- function (x, y, ...) {
+    print(x)
+    invisible()
+}
+
+#' @method print SOmap_legend
+#' @export
+print.SOmap_legend <- function(x, ...) {
+    raster::plot(x$mask$data, border = x$mask$border, col = x$mask$col, add = TRUE) ## mask
+    raster::plot(x$ticks$data, add = TRUE, col = x$ticks$col)
+    raster::plot(x$legend$data, lwd = x$legend$lwd, add = TRUE)
+    raster::plot(x$legend$data, border = x$legend$border,  col = x$legend$cols, add = TRUE)
+    raster::plot(x$mask2$data, border = x$mask2$border, col = x$mask2$col, add = TRUE)
+    text(x$tick_labels$data, labels = x$tick_labels$data$a, cex =  x$tick_labels$cex, adj = x$tick_labels$adj, srt = x$tick_labels$srt)
+    text(x$legend_labels$data, labels = x$legend_labels$data$a, cex =  x$legend_labels$cex, adj = x$legend_labels$adj, srt = x$legend_labels$srt)
+    ## Need to set SRT during the position if statements.
+    invisible(x)
+}
 
 
 
