@@ -229,6 +229,7 @@ print.SOmap_management <- function(x, ...) {
 }
 
 ## each management layer has a specific function, which can be called by the SOmap_management plot method, or by the SOmap plot method
+## these functions are not exported to the user
 plot_iwc <- function(z) {
     if (!is.null(z)) {
         for (ii in seq_len(length(z$data))) {

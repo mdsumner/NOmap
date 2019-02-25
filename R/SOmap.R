@@ -23,7 +23,7 @@
 #' @export
 #'
 
-SOmap<-function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, straight = FALSE, land = TRUE, fronts = FALSE, frontcols = c("hotpink", "orchid", "plum"), bordercol = c("white", "black"), gratcol = "grey70") {
+SOmap <- function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, straight = FALSE, land = TRUE, fronts = FALSE, frontcols = c("hotpink", "orchid", "plum"), bordercol = c("white", "black"), gratcol = "grey70") {
     ## data
     SOmap_data <- NULL
     Bathy <- NULL
