@@ -211,7 +211,7 @@ print.SOmap_management <- function(x, ...) {
     ## print the management layers
     ## expects that an existing SOmap has already been plotted
     op <- graphics::par(mar = rep(0.01, 4), oma= rep(0.0, 4), mai= rep(0.0, 4))
-
+    on.exit(graphics::par(op))
     ## plot each layer (if it's null, the plot_* function won't do anything)
     plot_iwc(x$iwc)
     plot_research_blocks(x$research_blocks)
@@ -222,9 +222,6 @@ print.SOmap_management <- function(x, ...) {
     plot_eez(x$eez)
     plot_mpa(x$mpa)
     plot_domains(x$ccamlr_planning_domains)
-
-    ## reset par
-    graphics::par(op)
     invisible(x)
 }
 

@@ -263,7 +263,9 @@ plot.SOauto_map <- function (x, y, ...) {
 print.SOauto_map <- function(x, ...) {
     aspect <- if (raster::isLonLat(x$target)) 1/cos(mean(c(raster::xmin(x$target), raster::xmax(x$target))) * pi/180) else 1
     pp <- aspectplot.default(c(raster::xmin(x$target), raster::xmax(x$target)), c(raster::ymin(x$target), raster::ymax(x$target)), asp = aspect, mar = par("mar")/2.5)
-    ## shouldn't we be resetting par(pp) when we exit this function?
+    ## reset par(pp) when we exit this function
+    on.exit(graphics::par(pp))
+    
     newextent <- raster::extent(par("usr"))
 
     if (!is.null(x$bathy)) {
