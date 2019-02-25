@@ -121,12 +121,12 @@ print.SOmap <- function(x, ...) {
 
     if (!is.null(x$coastline)) plot(x$coastline$data, col = x$coastline$fillcol, border = x$coastline$linecol, add = TRUE)
 
-    if (!is.null(x$IWC)) {
-        for (ii in seq_len(length(x$IWC$data))) {
-            graphics::lines(x$IWC$data[[ii]], col=x$IWC$col)
+    if (!is.null(x$iwc)) {
+        for (ii in seq_len(length(x$iwc$data))) {
+            graphics::lines(x$iwc$data[[ii]], col=x$iwc$col)
         }
-        if (!is.null(x$IWC$labels)) {
-            text(x$IWC$labels$data, labels = x$IWC$labels$labels, col = x$IWC$labels$col, cex = x$IWC$labels$cex, pos = x$IWC$labels$pos, offset = x$IWC$labels$offset)
+        if (!is.null(x$iwc$labels)) {
+            text(x$iwc$labels$data, labels = x$iwc$labels$labels, col = x$iwc$labels$col, cex = x$iwc$labels$cex, pos = x$iwc$labels$pos, offset = x$iwc$labels$offset)
         }
     }
 

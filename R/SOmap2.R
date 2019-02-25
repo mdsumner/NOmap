@@ -81,7 +81,7 @@
 #'
 #' @examples
 #' \dontrun{
-#'   SOmap2(CCAMLR = TRUE, MPA = TRUE, Domains = TRUE, Trim = -45)
+#'   SOmap2(CCAMLR = TRUE, MPA = TRUE, Trim = -45)
 #' }
 #' @export
 #'
@@ -126,16 +126,24 @@ SOmap2<-function(Bathleg=TRUE,
     out <- SOmap(Bathleg = Bathleg, Border = Border, Trim = Trim, Grats = Grats, straight = straight, land = land, fronts = fronts, frontcols = frontcols, bordercol = bordercol, gratcol = gratcol)
 
     ## data
-    Bathy <- NULL
     SOmap_data <- NULL
     data("SOmap_data", package = "SOmap", envir = environment())
-    data("Bathy", package = "SOmap", envir = environment())
 
-    ## CCAMLR Labels
-    cclabs<-c("88.3", "48.4", "88.2", "48.2", "48.3", "58.4.3a", "58.4.3b", "58.5.2", "48.5", "48.6", "58.4.1", "88.1", "58.4.4a", "58.7", "58.6", "58.5.1", "58.4.4b")
+    ## get the management layer details from SOmanagement
+    mx <- SOmanagement(CCAMLR = CCAMLR, CCAMLRlab = CCAMLRlab, ccamlrcol = ccamlrcol,
+                       SSRU = SSRU, SSRUlab = SSRUlab, ssrucol = ssrucol,
+                       SSMU = SSMU, SSMUlab = SSMUlab, ssmucol = ssmucol,
+                       RB = RB, RBlab = RBlab, rbcol = rbcol,
+                       SPRFMORB = SPRFMORB, sprfmocol = sprfmocol,
+                       Trim = Trim,
+                       EEZ = EEZ, EEZlab = EEZlab, eezcol = eezcol,
+                       MPA = MPA, MPAlab = MPAlab, mpacol= mpacol,
+                       Domains = Domains, Domainslab = Domainslab, domcol = domcol,
+                       IWC = IWC, IWClab = IWClab, iwccol = iwccol)
 
     ## Set the Trim value depending on legend yes or no
     q <- ifelse(Bathleg, Trim+13, Trim+2)
+
     if (land) {
         if (CCAMLR) {
             ## change coastline data
@@ -146,104 +154,10 @@ SOmap2<-function(Bathleg=TRUE,
         }
     }
 
-    if (IWC) {
-        out$IWC <- list(data = list(
-                                    rgdal::project(rbind(c(-170, Trim), c(-170, -78.40)), out$projection),
-                                    rgdal::project(rbind(c(-120, Trim), c(-120, -73.844137)), out$projection),
-                                    rgdal::project(rbind(c(-60, -65.168), c(-60, -75.146206)), out$projection),
-                                    rgdal::project(rbind(c(-60, Trim), c(-60, -62.4505)), out$projection),
-                                    rgdal::project(rbind(c(0, Trim), c(0, -69.596701)), out$projection),
-                                    rgdal::project(rbind(c(70, Trim), c(70, -68.366691)), out$projection),
-                                    rgdal::project(rbind(c(130, Trim), c(130, -66.295027)), out$projection)),
-                        col = iwccol)
-        if (IWClab) {
-            df3 <- data.frame(a = c("Area VI", "Area I", "Area II", "Area III", "Area IV", "Area V"),
-                              lon = c(-145, -90, -30, 35, 100, 160),
-                              lat=rep(-60, 6))
-            sp::coordinates(df3) <- c("lon", "lat")
-            raster::projection(df3) <- "+init=epsg:4326"
-            lab_pos3 <- sp::spTransform(df3, raster::crs(out$projection))
-            out$IWC$labels <- list(data = lab_pos3, labels = lab_pos3$a, col = iwccol, cex = 0.4, pos = 1, offset = -0.05)
-        }
-    }
-    
-    if (RB) {
-        out$research_blocks <- list(data = SOmap_data$CCAMLR_research_blocks, border = rbcol)
-        if (RBlab) {
-            out$research_blocks$labels <- list(data = SOmap_data$CCAMLR_research_blocks, labels = SOmap_data$CCAMLR_research_blocks$GAR_Short_, col = rbcol, cex = 0.4, pos = 4, offset = 0.3)
-        }
-    }
-
-    if (SPRFMORB) {
-        sprfmoa <- graticule::graticule(lats = c(-59.9, -57.9), lons = c(-155.3333, -150), proj = out$projection)
-        sprfmob <- graticule::graticule(lats = c(-59.0, -60.0),lons = c(-142.1666667, -145.833333), proj = out$projection)
-        out$sprfmo_research_blocks <- list(data = list(sprfmoa, sprfmob), col = sprfmocol)
-    }
-
-    if (SSRU) {
-        out$ccamlr_ssru <- list(data = SOmap_data$CCAMLR_SSRU, border = ssrucol)
-        if (SSRUlab) {
-            out$ccamlr_ssru$labels <- list(data = SOmap_data$CCAMLR_SSRU, labels = SOmap_data$CCAMLR_SSRU@data$ShortLabel, col = ssrucol, cex = 0.4, pos = 1, offset = -0.05)
-        }
-    }
-
-    if (SSMU) {
-        out$ccamlr_ssmu <- list(data = SOmap_data$CCAMLR_SSMU, border = ssmucol)
-        if (SSMUlab) {
-            out$ccamlr_ssmu$labels <- list(data = SOmap_data$CCAMLR_SSMU, labels = SOmap_data$CCAMLR_SSMU$ShortLabel, col = ssmucol, cex = 0.5, pos = 1, offset = 0.6)
-        }
-    }
-
-    if (CCAMLR) {
-        out$ccamlr_statistical_areas <- list(data = SOmap_data$CCAMLR_statistical_areas, border = ccamlrcol)
-        if (CCAMLRlab) {
-            out$ccamlr_statistical_areas$labels <- list(
-                list(data = SOmap_data$CCAMLR_statistical_areas[!SOmap_data$CCAMLR_statistical_areas$LongLabel %in% c("48.1", "58.4.2"), ], labels = cclabs, col = ccamlrcol, cex = 0.5, pos = 1, offset = -0.3),
-                list(data = SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$LongLabel == "58.4.2", ], labels = "58.4.2", col = ccamlrcol,cex = 0.5, pos = 3, offset = 0.5),
-                list(data = SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$LongLabel == "48.1", ], labels = "48.1", col = ccamlrcol, cex = 0.5, pos = 2, offset = -0.1))
-        }
-    }
-
-    if (EEZ) {
-        out$eez <- list(data = SOmap_data$EEZ, border = eezcol)
-        if (EEZlab) {
-            out$eez$labels <- list(data = SOmap_data$EEZ, labels = SOmap_data$EEZ$Name, col = eezcol, cex = 0.35, pos = 4, offset = 0.8)
-        }
-    }
-
-    if (MPA) {
-        out$mpa <- list(data = SOmap_data$CCAMLR_MPA, border = mpacol)
-        if (MPAlab) {
-            out$mpa$labels <- list(data = SOmap_data$CCAMLR_MPA, labels = SOmap_data$CCAMLR_MPA@data$ShortLabel, col = mpacol, cex = 0.35, pos = 1, offset =0.2)
-        }
-    }
-
-    if (Domains) {
-        out$ccamlr_planning_domains <- list(data = SOmap_data$CCAMLR_planning_domains, border = domcol)
-        if (Domainslab) {
-            labs <- c("Domain  8", "Domain  9", "", "", "Domain  3", "", "Domain  4", "Domain  5", "Domain  6")
-            labs1 <- c("", "", "Domain  1", "", "", "", "", "", "")
-            labs2 <- c("", "", "", "", "", "Domain  2", "", "", "")
-            labs7 <- c("", "", "", "Domain  7", "", "", "", "", "")
-            out$ccamlr_planning_domains$labels <- list(
-                list(data = SOmap_data$CCAMLR_planning_domains, labels = labs, col = domcol, cex = 0.7, pos = 3, offset = 0.05),
-                list(data = SOmap_data$CCAMLR_planning_domains, labels = labs1, col = domcol, cex = 0.7, pos = 1, offset = 3.0),
-                list(data = SOmap_data$CCAMLR_planning_domains, labels = labs2, col = domcol, cex = 0.7, pos = 3, offset = 0.5),
-                list(data = SOmap_data$CCAMLR_planning_domains, labels = labs7, col = domcol, cex = 0.7, pos = 4, offset = 0.9)
-            )
-        }
+    ## copy management layers into out
+    for (mxn in setdiff(names(mx), "projection")) {
+        out[[mxn]] <- mx[[mxn]]
     }
     out
 }
-
-
-
-
-
-
-
-
-
-
-
 
