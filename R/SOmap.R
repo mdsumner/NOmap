@@ -67,7 +67,7 @@ SOmap <- function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, stra
     ## Set the Trim value depending on legend yes or no
     q <- ifelse(Bathleg, Trim+13, Trim+2)
     Bathy <- raster::trim(SOmap::latmask(Bathy, latitude = q))
-    out <- list(projection = projection(Bathy), target = raster(Bathy), bathy = list(data = Bathy, col = bluepal), straight = straight, box = list(col = "white"))
+    out <- list(projection = raster::projection(Bathy), target = raster(Bathy), bathy = list(data = Bathy, col = bluepal), straight = straight, box = list(col = "white"))
 
     if (land) {
       xland <-sf::st_as_sf(SOmap::SOmap_data$continent)
@@ -83,7 +83,7 @@ SOmap <- function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, stra
     }
     ## Graticule grid
     if (Grats) {
-        out$graticule <- list(data = grat, col = gratcol, lty = 3, labels = list(data = gratlab, col = gratcol, cex = 0.5))
+        out$graticule <- list(data = grat, col = gratcol, lty = 3, labels = list(data = gratlab, labels = gratlab$lab, col = gratcol, cex = 0.5))
     }
     ## Legend
     if (Bathleg) {
@@ -92,7 +92,7 @@ SOmap <- function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, stra
             ticks = list(ticks = btick, col = "black"),
             legend = list(legend = bleg, lwd = 2, col = bluepal2, border = FALSE),
             graticules = list(graticules = spud, border = FALSE, col = "white"),
-            labels = list(data = lab_pos2, cex = 0.75, adj = 0.5))
+            labels = list(data = lab_pos2, labels = lab_pos2$a, cex = 0.75, adj = 0.5))
     }
     if (Border) {
         out$border <- list(data = bord, col = bordercol)
@@ -132,7 +132,7 @@ print.SOmap <- function(x, ...) {
     ## Graticule grid
     if (!is.null(x$graticule)) {
         raster::plot(x$graticule$data, add = TRUE, col = x$graticule$col, lty = x$graticule$lty)
-        text(x$graticule$labels$data, lab = parse(text = x$graticule$labels$data$lab), col = x$graticule$labels$col, cex = x$graticule$labels$cex)
+        text(x$graticule$labels$data, lab = parse(text = x$graticule$labels$labels), col = x$graticule$labels$col, cex = x$graticule$labels$cex)
     }
 
     ## the plot_* function for each management layer is defined in SOmanagement.R
@@ -152,7 +152,7 @@ print.SOmap <- function(x, ...) {
         raster::plot(x$bathy_legend$legend$legend, lwd = x$bathy_legend$legend$lwd, add = TRUE)
         raster::plot(x$bathy_legend$legend$legend, border = x$bathy_legend$legend$border, col = x$bathy_legend$legend$col, add = TRUE)
         raster::plot(x$bathy_legend$graticules$graticules, border = x$bathy_legend$graticules$border, col = x$bathy_legend$graticules$col, add = TRUE)
-        text(x$bathy_legend$labels$data, labels = x$bathy_legend$labels$data$a, cex = x$bathy_legend$labels$cex, adj = x$bathy_legend$labels$adj)
+        text(x$bathy_legend$labels$data, labels = x$bathy_legend$labels$labels, cex = x$bathy_legend$labels$cex, adj = x$bathy_legend$labels$adj)
     }
     if (!is.null(x$border)) {
         raster::plot(x$border$data, col = x$border$col, add = TRUE)
