@@ -146,30 +146,27 @@ SOmap2<-function(Bathleg=TRUE,
         }
     }
 
-  if (IWC) {
-      ## iwc<-graticule::graticule(c(-170,-120,-60,0,70,130,-230), c(-90,Trim+0.5), proj=raster::projection(Bathy))
-      ## plot(iwc,col=iwccol, add = TRUE)
-
-      out$IWC <- list(data = list(
-                          rgdal::project(rbind(c(-170, Trim), c(-170, -78.40)), out$projection),
-                          rgdal::project(rbind(c(-120, Trim), c(-120, -73.844137)), out$projection),
-                          rgdal::project(rbind(c(-60, -65.168), c(-60, -75.146206)), out$projection),
-                          rgdal::project(rbind(c(-60, Trim), c(-60, -62.4505)), out$projection),
-                          rgdal::project(rbind(c(0, Trim), c(0, -69.596701)), out$projection),
-                          rgdal::project(rbind(c(70, Trim), c(70, -68.366691)), out$projection),
-                          rgdal::project(rbind(c(130, Trim), c(130, -66.295027)), out$projection)),
-                      col = iwccol)
-      if (IWClab) {
-          df3 <- data.frame(a = c("Area VI", "Area I", "Area II", "Area III", "Area IV", "Area V"),
-                            lon = c(-145, -90, -30, 35, 100, 160),
-                            lat=rep(-60, 6))
-          sp::coordinates(df3) <- c("lon", "lat")
-          raster::projection(df3) <- "+init=epsg:4326"
-          lab_pos3 <- sp::spTransform(df3, raster::crs(out$projection))
-          out$IWC$labels <- list(data = lab_pos3, labels = lab_pos3$a, col = iwccol, cex = 0.4, pos = 1, offset = -0.05)
-      }
-  }
-
+    if (IWC) {
+        out$IWC <- list(data = list(
+                                    rgdal::project(rbind(c(-170, Trim), c(-170, -78.40)), out$projection),
+                                    rgdal::project(rbind(c(-120, Trim), c(-120, -73.844137)), out$projection),
+                                    rgdal::project(rbind(c(-60, -65.168), c(-60, -75.146206)), out$projection),
+                                    rgdal::project(rbind(c(-60, Trim), c(-60, -62.4505)), out$projection),
+                                    rgdal::project(rbind(c(0, Trim), c(0, -69.596701)), out$projection),
+                                    rgdal::project(rbind(c(70, Trim), c(70, -68.366691)), out$projection),
+                                    rgdal::project(rbind(c(130, Trim), c(130, -66.295027)), out$projection)),
+                        col = iwccol)
+        if (IWClab) {
+            df3 <- data.frame(a = c("Area VI", "Area I", "Area II", "Area III", "Area IV", "Area V"),
+                              lon = c(-145, -90, -30, 35, 100, 160),
+                              lat=rep(-60, 6))
+            sp::coordinates(df3) <- c("lon", "lat")
+            raster::projection(df3) <- "+init=epsg:4326"
+            lab_pos3 <- sp::spTransform(df3, raster::crs(out$projection))
+            out$IWC$labels <- list(data = lab_pos3, labels = lab_pos3$a, col = iwccol, cex = 0.4, pos = 1, offset = -0.05)
+        }
+    }
+    
     if (RB) {
         out$research_blocks <- list(data = SOmap_data$CCAMLR_research_blocks, border = rbcol)
         if (RBlab) {
