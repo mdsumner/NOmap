@@ -8,7 +8,7 @@
 #' Try families such as 'lcc', 'laea', 'gnom', 'merc', 'aea' if feeling adventurous.
 #'
 #' Using `mask = TRUE` does not work well when the pole is included, so it's `FALSE` by default.
-#' 
+#'
 #' @param x optional input data longitudes
 #' @param y optional input data latitudes
 #' @param centre_lon optional centre longitude (of the map projection, also used to for plot range if `expand = TRUE`)
@@ -107,7 +107,7 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
 
       testx <- head(do.call(rbind, lapply(split(testx, paste(testx$object_, testx$branch_, sep = ":")), function(x) rbind(x, NA))), -1)
       testx <- as.matrix(testx[c("x_", "y_")])
-      if (!raster::isLonLat(projection(x))) {
+      if (!raster::isLonLat(raster::projection(x))) {
           testx <- rgdal::project(testx, raster::projection(x), inv = TRUE)
           midpoint <- NULL
           if (do_midpoint) {
@@ -212,7 +212,7 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
 
     if (mask) {
         gratmask <- graticule::graticule(seq(xlim[1], xlim[2], length = 30),
-                                         seq(ylim[1], ylim[2], length = 5), proj = projection(target), tiles = TRUE)
+                                         seq(ylim[1], ylim[2], length = 5), proj = raster::projection(target), tiles = TRUE)
         if (bathy) {
             bathymetry <- fast_mask(bathymetry, gratmask)
         }
@@ -225,7 +225,7 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
     if (input_points || input_lines) xy <- rgdal::project(cbind(x, y), prj)
 
     if (graticule) {
-        graticule <- sf::st_graticule(c(raster::xmin(target), raster::ymin(target), raster::xmax(target), raster::ymax(target)), crs = projection(target))
+        graticule <- sf::st_graticule(c(raster::xmin(target), raster::ymin(target), raster::xmax(target), raster::ymax(target)), crs = raster::projection(target))
     } else {
         graticule <- NULL
     }
@@ -239,7 +239,7 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
   # invisible(list(bathy = bathymetry, coastline = coastline, target = target))
   # } else {
     if (!exists("xy")) xy <- NULL
-    structure(list(projection = projection(target),
+    structure(list(projection = raster::projection(target),
                    bathy = bathymetry, bathyleg = bathyleg, bathy_palette = bluepal,
                    coastline = list(data = coastline, fillcol = NA, linecol = "black"), target = target, ##data = xy,
                    lines_data = if (input_lines) xy else NULL, points_data = if (input_points) xy else NULL,
@@ -265,7 +265,7 @@ print.SOauto_map <- function(x, ...) {
     pp <- aspectplot.default(c(raster::xmin(x$target), raster::xmax(x$target)), c(raster::ymin(x$target), raster::ymax(x$target)), asp = aspect, mar = par("mar")/2.5)
     ## reset par(pp) when we exit this function
     on.exit(graphics::par(pp))
-    
+
     newextent <- raster::extent(par("usr"))
 
     if (!is.null(x$bathy)) {

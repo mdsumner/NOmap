@@ -67,7 +67,7 @@ SOmap <- function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, stra
     ## Set the Trim value depending on legend yes or no
     q <- ifelse(Bathleg, Trim+13, Trim+2)
     Bathy <- raster::trim(SOmap::latmask(Bathy, latitude = q))
-    out <- list(projection = raster::projection(Bathy), target = raster(Bathy), bathy = list(data = Bathy, col = bluepal), straight = straight, box = list(col = "white"))
+    out <- list(projection = raster::projection(Bathy), target = raster::raster(Bathy), bathy = list(data = Bathy, col = bluepal), straight = straight, box = list(col = "white"))
 
     if (land) {
       xland <-sf::st_as_sf(SOmap::SOmap_data$continent)
