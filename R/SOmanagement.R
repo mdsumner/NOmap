@@ -212,77 +212,116 @@ print.SOmap_management <- function(x, ...) {
     ## expects that an existing SOmap has already been plotted
     op <- graphics::par(mar = rep(0.01, 4), oma= rep(0.0, 4), mai= rep(0.0, 4))
 
-    if (!is.null(x$iwc)) {
-        for (ii in seq_len(length(x$iwc$data))) {
-            graphics::lines(x$iwc$data[[ii]], col=x$iwc$col)
-        }
-        if (!is.null(x$iwc$labels)) {
-            text(x$iwc$labels$data, labels = x$iwc$labels$labels, col = x$iwc$labels$col, cex = x$iwc$labels$cex, pos = x$iwc$labels$pos, offset = x$iwc$labels$offset)
-        }
-    }
-
-    if (!is.null(x$research_blocks)) {
-        raster::plot(x$research_blocks$data, border = x$research_blocks$border, add = TRUE)
-        if (!is.null(x$research_blocks$labels)) {
-            text(sp::coordinates(x$research_blocks$labels$data), labels = x$research_blocks$labels$labels, col = x$research_blocks$labels$col, cex = x$research_blocks$labels$cex, pos = x$research_blocks$labels$pos, offset = x$research_blocks$labels$offset)
-        }
-    }
-
-    if (!is.null(x$sprfmo_research_blocks)) {
-        for (ii in seq_len(length(x$sprfmo_research_blocks$data))) {
-            raster::plot(x$sprfmo_research_blocks$data[[ii]], add = TRUE, col = x$sprfmo_research_blocks$col)
-        }
-    }
-
-    if (!is.null(x$ccamlr_ssru)) {
-        plot(x$ccamlr_ssru$data, border = x$ccamlr_ssru$border, add = TRUE)
-        if (!is.null(x$ccamlr_ssru$labels)) {
-            text(sp::coordinates(x$ccamlr_ssru$labels$data), labels = x$ccamlr_ssru$labels$labels, col = x$ccamlr_ssru$labels$col, cex = x$ccamlr_ssru$labels$cex, pos = x$ccamlr_ssru$labels$pos, offset = x$ccamlr_ssru$labels$offset)
-        }
-    }
-
-    if (!is.null(x$ccamlr_ssmu)) {
-        plot(x$ccamlr_ssmu$data, border = x$ccamlr_ssmu$border, add = TRUE)
-        if (!is.null(x$ccamlr_ssmu$labels)) {
-            text(sp::coordinates(x$ccamlr_ssmu$labels$data), labels = x$ccamlr_ssmu$labels$labels, col = x$ccamlr_ssmu$labels$col, cex = x$ccamlr_ssmu$labels$cex, pos = x$ccamlr_ssmu$labels$pos, offset = x$ccamlr_ssmu$labels$offset)
-        }
-    }
-
-    if (!is.null(x$ccamlr_statistical_areas)) {
-        plot(x$ccamlr_statistical_areas$data, border = x$ccamlr_statistical_areas$border, add = TRUE)
-        if (!is.null(x$ccamlr_statistical_areas$labels)) {
-            ## labels is a list of stuff, plot each in turn
-            for (ii in seq_len(length(x$ccamlr_statistical_areas$labels))) {
-                text(sp::coordinates(x$ccamlr_statistical_areas$labels[[ii]]$data), labels = x$ccamlr_statistical_areas$labels[[ii]]$labels, col = x$ccamlr_statistical_areas$labels[[ii]]$col, cex = x$ccamlr_statistical_areas$labels[[ii]]$cex, pos = x$ccamlr_statistical_areas$labels[[ii]]$pos, offset = x$ccamlr_statistical_areas$labels[[ii]]$offset)
-            }
-        }
-    }
-
-    if (!is.null(x$eez)) {
-        plot(x$eez$data, border = x$eez$border, add = TRUE)
-        if (!is.null(x$eez$labels)) {
-            text(sp::coordinates(x$eez$labels$data), labels = x$eez$labels$labels, col = x$eez$labels$col, cex = x$eez$labels$cex, pos = x$eez$labels$pos, offset = x$eez$labels$offset)
-        }
-    }
-
-    if (!is.null(x$mpa)) {
-        plot(x$mpa$data, border = x$mpa$border, add = TRUE)
-        if (!is.null(x$mpa$labels)) {
-            text(sp::coordinates(x$mpa$labels$data), labels = x$mpa$labels$labels, col = x$mpa$labels$col, cex = x$mpa$labels$cex, pos = x$mpa$labels$pos, offset = x$mpa$labels$offset)
-        }
-    }
-
-    if (!is.null(x$ccamlr_planning_domains)) {
-        plot(x$ccamlr_planning_domains$data, border = x$ccamlr_planning_domains$border, add = TRUE)
-        if (!is.null(x$ccamlr_planning_domains$labels)) {
-            ## labels is a list, plot each in turn
-            for (ii in seq_len(length(x$ccamlr_planning_domains$labels))) {
-                text(sp::coordinates(x$ccamlr_planning_domains$labels[[ii]]$data), labels = x$ccamlr_planning_domains$labels[[ii]]$labels, col = x$ccamlr_planning_domains$labels[[ii]]$col, cex = x$ccamlr_planning_domains$labels[[ii]]$cex, pos = x$ccamlr_planning_domains$labels[[ii]]$pos, offset = x$ccamlr_planning_domains$labels[[ii]]$offset)
-            }
-        }
-    }
+    ## plot each layer (if it's null, the plot_* function won't do anything)
+    plot_iwc(x$iwc)
+    plot_research_blocks(x$research_blocks)
+    plot_sprfmo(x$sprfmo_research_blocks)
+    plot_ssru(x$ccamlr_ssru)
+    plot_ssmu(x$ccamlr_ssmu)
+    plot_ccamlr_areas(x$ccamlr_statistical_areas)
+    plot_eez(x$eez)
+    plot_mpa(x$mpa)
+    plot_domains(x$ccamlr_planning_domains)
 
     ## reset par
     graphics::par(op)
     invisible(x)
+}
+
+## each management layer has a specific function, which can be called by the SOmap_management plot method, or by the SOmap plot method
+plot_iwc <- function(z) {
+    if (!is.null(z)) {
+        for (ii in seq_len(length(z$data))) {
+            graphics::lines(z$data[[ii]], col=z$col)
+        }
+        if (!is.null(z$labels)) {
+            text(z$labels$data, labels = z$labels$labels, col = z$labels$col, cex = z$labels$cex, pos = z$labels$pos, offset = z$labels$offset)
+        }
+    }
+    invisible(NULL)
+}
+
+plot_research_blocks <- function(z) {
+    if (!is.null(z)) {
+        raster::plot(z$data, border = z$border, add = TRUE)
+        if (!is.null(z$labels)) {
+            text(sp::coordinates(z$labels$data), labels = z$labels$labels, col = z$labels$col, cex = z$labels$cex, pos = z$labels$pos, offset = z$labels$offset)
+        }
+    }
+    invisible(NULL)
+}
+
+plot_sprfmo <- function(z) {
+    if (!is.null(z)) {
+        for (ii in seq_len(length(z$data))) {
+            raster::plot(z$data[[ii]], add = TRUE, col = z$col)
+        }
+    }
+    invisible(NULL)
+}
+
+plot_ssru <- function(z) {
+    if (!is.null(z)) {
+        plot(z$data, border = z$border, add = TRUE)
+        if (!is.null(z$labels)) {
+            text(sp::coordinates(z$labels$data), labels = z$labels$labels, col = z$labels$col, cex = z$labels$cex, pos = z$labels$pos, offset = z$labels$offset)
+        }
+    }
+    invisible(NULL)
+}
+
+plot_ssmu <- function(z) {
+    if (!is.null(z)) {
+        plot(z$data, border = z$border, add = TRUE)
+        if (!is.null(z$labels)) {
+            text(sp::coordinates(z$labels$data), labels = z$labels$labels, col = z$labels$col, cex = z$labels$cex, pos = z$labels$pos, offset = z$labels$offset)
+        }
+    }
+    invisible(NULL)
+}
+
+plot_ccamlr_areas <- function(z) {
+    if (!is.null(z)) {
+        plot(z$data, border = z$border, add = TRUE)
+        if (!is.null(z$labels)) {
+            ## labels is a list of stuff, plot each in turn
+            for (ii in seq_len(length(z$labels))) {
+                text(sp::coordinates(z$labels[[ii]]$data), labels = z$labels[[ii]]$labels, col = z$labels[[ii]]$col, cex = z$labels[[ii]]$cex, pos = z$labels[[ii]]$pos, offset = z$labels[[ii]]$offset)
+            }
+        }
+    }
+    invisible(NULL)
+}
+
+plot_eez <- function(z) {
+    if (!is.null(z)) {
+        plot(z$data, border = z$border, add = TRUE)
+        if (!is.null(z$labels)) {
+            text(sp::coordinates(z$labels$data), labels = z$labels$labels, col = z$labels$col, cex = z$labels$cex, pos = z$labels$pos, offset = z$labels$offset)
+        }
+    }
+    invisible(NULL)
+}
+
+plot_mpa <- function(z) {
+    if (!is.null(z)) {
+        plot(z$data, border = z$border, add = TRUE)
+        if (!is.null(z$labels)) {
+            text(sp::coordinates(z$labels$data), labels = z$labels$labels, col = z$labels$col, cex = z$labels$cex, pos = z$labels$pos, offset = z$labels$offset)
+        }
+    }
+    invisible(NULL)
+}
+
+plot_domains <- function(z) {
+    if (!is.null(z)) {
+        plot(z$data, border = z$border, add = TRUE)
+        if (!is.null(z$labels)) {
+            ## labels is a list, plot each in turn
+            for (ii in seq_len(length(z$labels))) {
+                text(sp::coordinates(z$labels[[ii]]$data), labels = z$labels[[ii]]$labels, col = z$labels[[ii]]$col, cex = z$labels[[ii]]$cex, pos = z$labels[[ii]]$pos, offset = z$labels[[ii]]$offset)
+            }
+        }
+    }
+    invisible(NULL)
 }

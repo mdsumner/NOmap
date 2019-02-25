@@ -121,14 +121,7 @@ print.SOmap <- function(x, ...) {
 
     if (!is.null(x$coastline)) plot(x$coastline$data, col = x$coastline$fillcol, border = x$coastline$linecol, add = TRUE)
 
-    if (!is.null(x$iwc)) {
-        for (ii in seq_len(length(x$iwc$data))) {
-            graphics::lines(x$iwc$data[[ii]], col=x$iwc$col)
-        }
-        if (!is.null(x$iwc$labels)) {
-            text(x$iwc$labels$data, labels = x$iwc$labels$labels, col = x$iwc$labels$col, cex = x$iwc$labels$cex, pos = x$iwc$labels$pos, offset = x$iwc$labels$offset)
-        }
-    }
+    plot_iwc(x$iwc)
 
     ## fronts
     if (!is.null(x$fronts)) {
@@ -141,66 +134,15 @@ print.SOmap <- function(x, ...) {
         text(x$graticule$labels$data, lab = parse(text = x$graticule$labels$data$lab), col = x$graticule$labels$col, cex = x$graticule$labels$cex)
     }
 
-    if (!is.null(x$research_blocks)) {
-        raster::plot(x$research_blocks$data, border = x$research_blocks$border, add = TRUE)
-        if (!is.null(x$research_blocks$labels)) {
-            text(sp::coordinates(x$research_blocks$labels$data), labels = x$research_blocks$labels$labels, col = x$research_blocks$labels$col, cex = x$research_blocks$labels$cex, pos = x$research_blocks$labels$pos, offset = x$research_blocks$labels$offset)
-        }
-    }
-
-    if (!is.null(x$sprfmo_research_blocks)) {
-        for (ii in seq_len(length(x$sprfmo_research_blocks$data))) {
-            raster::plot(x$sprfmo_research_blocks$data[[ii]], add = TRUE, col = x$sprfmo_research_blocks$col)
-        }
-    }
-
-    if (!is.null(x$ccamlr_ssru)) {
-        plot(x$ccamlr_ssru$data, border = x$ccamlr_ssru$border, add = TRUE)
-        if (!is.null(x$ccamlr_ssru$labels)) {
-            text(sp::coordinates(x$ccamlr_ssru$labels$data), labels = x$ccamlr_ssru$labels$labels, col = x$ccamlr_ssru$labels$col, cex = x$ccamlr_ssru$labels$cex, pos = x$ccamlr_ssru$labels$pos, offset = x$ccamlr_ssru$labels$offset)
-        }
-    }
-
-    if (!is.null(x$ccamlr_ssmu)) {
-        plot(x$ccamlr_ssmu$data, border = x$ccamlr_ssmu$border, add = TRUE)
-        if (!is.null(x$ccamlr_ssmu$labels)) {
-            text(sp::coordinates(x$ccamlr_ssmu$labels$data), labels = x$ccamlr_ssmu$labels$labels, col = x$ccamlr_ssmu$labels$col, cex = x$ccamlr_ssmu$labels$cex, pos = x$ccamlr_ssmu$labels$pos, offset = x$ccamlr_ssmu$labels$offset)
-        }
-    }
-
-    if (!is.null(x$ccamlr_statistical_areas)) {
-        plot(x$ccamlr_statistical_areas$data, border = x$ccamlr_statistical_areas$border, add = TRUE)
-        if (!is.null(x$ccamlr_statistical_areas$labels)) {
-            ## labels is a list of stuff, plot each in turn
-            for (ii in seq_len(length(x$ccamlr_statistical_areas$labels))) {
-                text(sp::coordinates(x$ccamlr_statistical_areas$labels[[ii]]$data), labels = x$ccamlr_statistical_areas$labels[[ii]]$labels, col = x$ccamlr_statistical_areas$labels[[ii]]$col, cex = x$ccamlr_statistical_areas$labels[[ii]]$cex, pos = x$ccamlr_statistical_areas$labels[[ii]]$pos, offset = x$ccamlr_statistical_areas$labels[[ii]]$offset)
-            }
-        }
-    }
-
-    if (!is.null(x$eez)) {
-        plot(x$eez$data, border = x$eez$border, add = TRUE)
-        if (!is.null(x$eez$labels)) {
-            text(sp::coordinates(x$eez$labels$data), labels = x$eez$labels$labels, col = x$eez$labels$col, cex = x$eez$labels$cex, pos = x$eez$labels$pos, offset = x$eez$labels$offset)
-        }
-    }
-
-    if (!is.null(x$mpa)) {
-        plot(x$mpa$data, border = x$mpa$border, add = TRUE)
-        if (!is.null(x$mpa$labels)) {
-            text(sp::coordinates(x$mpa$labels$data), labels = x$mpa$labels$labels, col = x$mpa$labels$col, cex = x$mpa$labels$cex, pos = x$mpa$labels$pos, offset = x$mpa$labels$offset)
-        }
-    }
-
-    if (!is.null(x$ccamlr_planning_domains)) {
-        plot(x$ccamlr_planning_domains$data, border = x$ccamlr_planning_domains$border, add = TRUE)
-        if (!is.null(x$ccamlr_planning_domains$labels)) {
-            ## labels is a list, plot each in turn
-            for (ii in seq_len(length(x$ccamlr_planning_domains$labels))) {
-                text(sp::coordinates(x$ccamlr_planning_domains$labels[[ii]]$data), labels = x$ccamlr_planning_domains$labels[[ii]]$labels, col = x$ccamlr_planning_domains$labels[[ii]]$col, cex = x$ccamlr_planning_domains$labels[[ii]]$cex, pos = x$ccamlr_planning_domains$labels[[ii]]$pos, offset = x$ccamlr_planning_domains$labels[[ii]]$offset)
-            }
-        }
-    }
+    ## the plot_* function for each management layer is defined in SOmanagement.R
+    plot_research_blocks(x$research_blocks)
+    plot_sprfmo(x$sprfmo_research_blocks)
+    plot_ssru(x$ccamlr_ssru)
+    plot_ssmu(x$ccamlr_ssmu)
+    plot_ccamlr_areas(x$ccamlr_statistical_areas)
+    plot_eez(x$eez)
+    plot_mpa(x$mpa)
+    plot_domains(x$ccamlr_planning_domains)
 
     ## Legend
     if (!is.null(x$bathy_legend)) {
