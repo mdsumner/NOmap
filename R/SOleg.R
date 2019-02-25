@@ -34,8 +34,9 @@
 #'
 #' @return
 #' Creates rounded legends
+#'
 #' @export
-#' @importFrom grDevices heat.colors
+#'
 #' @examples
 #' \dontrun{
 #' #Discrete Legend

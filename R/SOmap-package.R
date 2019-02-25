@@ -6,6 +6,7 @@
 #' @docType package
 #' @importFrom assertthat assert_that is.flag
 #' @importFrom graphics contour lines par plot plot.new plot.window points text
+#' @importFrom grDevices heat.colors
 #' @importFrom methods as
 #' @importFrom raster aggregate contour crop extend extent ncell plot projectExtent projectRaster xmin xmax ymin ymax
 #' @importFrom rgdal project
