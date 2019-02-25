@@ -65,20 +65,20 @@
 #' }
 
 SOleg <-function(x = NULL,
-                 position="topright",
-                 col= NULL,
-                 ticks=NULL,
-                 tlabs=NULL,
-                 breaks=NULL,
-                 Trim=-45,
-                 type="discrete",
-                 label="",
-                 ladj=0.5,
-                 lsrt=0,
-                 lcex=0.75,
-                 tadj=0.5,
-                 tcex=1,
-                 rnd=NULL){
+                 position = "topright",
+                 col = NULL,
+                 ticks = NULL,
+                 tlabs = NULL,
+                 breaks = NULL,
+                 Trim = -45,
+                 type = "discrete",
+                 label = "",
+                 ladj = 0.5,
+                 lsrt = 0,
+                 lcex = 0.75,
+                 tadj = 0.5,
+                 tcex = 1,
+                 rnd = NULL) {
 
     if (is.null(col)) col <- c("#440154FF", "#3E4A89FF", "#26828EFF", "#35B779FF", "#B4DE2CFF")
 
@@ -91,8 +91,8 @@ SOleg <-function(x = NULL,
     }
 
     if (type == "continuous" && !is.null(breaks)) {
-        if (!inherits(breaks, "numeric")) {
-            stop("Breaks must be numeric or integer")
+        if (!inherits(breaks, c("numeric", "integer"))) {
+            stop("breaks must be numeric or integer")
         }
     }
 
@@ -101,7 +101,7 @@ SOleg <-function(x = NULL,
     }
 
     if (type == "continuous" && is.null(ticks) && is.null(breaks)) {
-        stop("Ticks number needs to be set for continuous legends")
+        stop("Number of ticks needs to be set for continuous legends via the ticks parameter")
     }
 
     if (type == "continuous" && !is.null(ticks) && !is.null(tlabs) && length(tlabs) != ticks) {
@@ -122,7 +122,6 @@ SOleg <-function(x = NULL,
     } ## how far in to move the tick marks each end
     qticks <-length(tlabs) ##(80-qtadjust)/(length(tlabs)-1)} #how far between ticks. Currently deprecated.
     cols <- col
-
 
     if (type == "continuous") {
         qbins <- 80
@@ -238,7 +237,7 @@ print.SOmap_legend <- function(x, ...) {
     raster::plot(x$mask$data, border = x$mask$border, col = x$mask$col, add = TRUE) ## mask
     raster::plot(x$ticks$data, add = TRUE, col = x$ticks$col)
     raster::plot(x$legend$data, lwd = x$legend$lwd, add = TRUE)
-    raster::plot(x$legend$data, border = x$legend$border,  col = x$legend$cols, add = TRUE)
+    raster::plot(x$legend$data, border = x$legend$border,  col = x$legend$col, add = TRUE)
     raster::plot(x$mask2$data, border = x$mask2$border, col = x$mask2$col, add = TRUE)
     text(x$tick_labels$data, labels = x$tick_labels$data$a, cex =  x$tick_labels$cex, adj = x$tick_labels$adj, srt = x$tick_labels$srt)
     text(x$legend_labels$data, labels = x$legend_labels$data$a, cex =  x$legend_labels$cex, adj = x$legend_labels$adj, srt = x$legend_labels$srt)
