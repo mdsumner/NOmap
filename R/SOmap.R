@@ -110,8 +110,8 @@ plot.SOmap <- function (x, y, ...) {
 #' @method print SOmap
 #' @export
 print.SOmap <- function(x, ...) {
-    op <- graphics::par(mar = rep(0.01, 4), oma= rep(0.0, 4), mai= rep(0.0, 4))
-    on.exit(graphics::par(op))
+    op <- par(mar = rep(0.01, 4), oma= rep(0.0, 4), mai= rep(0.0, 4))
+    on.exit(par(op))
     ## Plot bathymetry
     if (x$straight) {
         raster::plot(x$bathy$data, col = x$bathy$col, legend = FALSE, yaxt = "n", xaxt = "n", asp = 1)

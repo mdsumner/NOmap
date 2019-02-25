@@ -60,71 +60,69 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
     data("SOmap_data", package = "SOmap", envir = environment())
     data("Bathy", package = "SOmap", envir = environment())
 
-  if (missing(x) && missing(y)) {
-    xlim <- sort(runif(2, -359, 359))
-    ylim <- sort(runif(2, -89, -20))
+    if (missing(x) && missing(y)) {
+        xlim <- sort(runif(2, -359, 359))
+        ylim <- sort(runif(2, -89, -20))
 
-    x <- runif(30, xlim[1], xlim[2])
-    y <- runif(30, ylim[1], ylim[2])
-    xy <- cbind(x, y)
-    xy <- xy[order(xy[, 1], xy[,2]), ]
-    x <- xy[,1]
-    y <- xy[,2]
-  }
-
-  if (is.numeric(x) && is.numeric(y)) {
-      testx <- cbind(x, y)
-  } else {
-      testx <- x  ## assume we have some kind of object
-  }
-  ## ignore y
-  if (is.matrix(testx)) {
-    if (nrow(testx) ==2 ) {
-      testx <- rbind(testx, testx)  ## because raster::extent(cbind(145:146, -42:-43))
+        x <- runif(30, xlim[1], xlim[2])
+        y <- runif(30, ylim[1], ylim[2])
+        xy <- cbind(x, y)
+        xy <- xy[order(xy[, 1], xy[,2]), ]
+        x <- xy[,1]
+        y <- xy[,2]
     }
-    if (!raster::couldBeLonLat(testx, warnings = FALSE)) {
-      warning("'x' doesn't look like longlat data")
+
+    if (is.numeric(x) && is.numeric(y)) {
+        testx <- cbind(x, y)
+    } else {
+        testx <- x  ## assume we have some kind of object
     }
-  } else {
-      do_midpoint <- FALSE
-      ## we have some kind of object
-      if (inherits(x, "BasicRaster")) {
-          warning("input 'x' is a raster, converting to an extent for a simple plot of input_points/input_lines")
-          x <- spex::spex(x)
-          do_midpoint <- TRUE
-      }
-      testx <- try(spbabel::sptable(x))  ##
+    ## ignore y
+    if (is.matrix(testx)) {
+        if (nrow(testx) ==2 ) {
+            testx <- rbind(testx, testx)  ## because raster::extent(cbind(145:146, -42:-43))
+        }
+        if (!raster::couldBeLonLat(testx, warnings = FALSE)) {
+            warning("'x' doesn't look like longlat data")
+        }
+    } else {
+        do_midpoint <- FALSE
+        ## we have some kind of object
+        if (inherits(x, "BasicRaster")) {
+            warning("input 'x' is a raster, converting to an extent for a simple plot of input_points/input_lines")
+            x <- spex::spex(x)
+            do_midpoint <- TRUE
+        }
+        testx <- try(spbabel::sptable(x))  ##
 
-      if (inherits(x, "SpatialPoints")) {
-          input_lines <- FALSE
-      }
-      if (inherits(x, "SpatialLines") || inherits(x, "SpatialPolygons")) {
-          input_points <- FALSE
-      }
+        if (inherits(x, "SpatialPoints")) {
+            input_lines <- FALSE
+        }
+        if (inherits(x, "SpatialLines") || inherits(x, "SpatialPolygons")) {
+            input_points <- FALSE
+        }
 
-      if (inherits(testx, "try-error")) stop("don't understand how to get lon,lat from 'x'")
-      ## split on branch
+        if (inherits(testx, "try-error")) stop("don't understand how to get lon,lat from 'x'")
+        ## split on branch
 
-      testx <- head(do.call(rbind, lapply(split(testx, paste(testx$object_, testx$branch_, sep = ":")), function(x) rbind(x, NA))), -1)
-      testx <- as.matrix(testx[c("x_", "y_")])
-      if (!raster::isLonLat(raster::projection(x))) {
-          testx <- rgdal::project(testx, raster::projection(x), inv = TRUE)
-          midpoint <- NULL
-          if (do_midpoint) {
-              midpoint <- cbind(mean(range(testx$x_)), mean(range(testx$y_)))
-              midpoint <- rgdal::project(midpoint, raster::projection(x), inv = TRUE)
-          }
-          ## add the midpoint for good measure
-          testx <- rbind(testx,midpoint)
-      }
-      x <- testx[,1]
-      y <- testx[,2]
-  }
+        testx <- head(do.call(rbind, lapply(split(testx, paste(testx$object_, testx$branch_, sep = ":")), function(x) rbind(x, NA))), -1)
+        testx <- as.matrix(testx[c("x_", "y_")])
+        if (!raster::isLonLat(raster::projection(x))) {
+            testx <- rgdal::project(testx, raster::projection(x), inv = TRUE)
+            midpoint <- NULL
+            if (do_midpoint) {
+                midpoint <- cbind(mean(range(testx$x_)), mean(range(testx$y_)))
+                midpoint <- rgdal::project(midpoint, raster::projection(x), inv = TRUE)
+            }
+            ## add the midpoint for good measure
+            testx <- rbind(testx,midpoint)
+        }
+        x <- testx[,1]
+        y <- testx[,2]
+    }
 
-  #x <- na.omit(x)
-  #y <- na.omit(y)
-  stopifnot(length(x) > 1)
-  stopifnot(length(y) > 1)
+    stopifnot(length(x) > 1)
+    stopifnot(length(y) > 1)
 
 
     xlim <- range(x, na.rm = TRUE)
@@ -264,7 +262,7 @@ print.SOauto_map <- function(x, ...) {
     aspect <- if (raster::isLonLat(x$target)) 1/cos(mean(c(raster::xmin(x$target), raster::xmax(x$target))) * pi/180) else 1
     pp <- aspectplot.default(c(raster::xmin(x$target), raster::xmax(x$target)), c(raster::ymin(x$target), raster::ymax(x$target)), asp = aspect, mar = par("mar")/2.5)
     ## reset par(pp) when we exit this function
-    on.exit(graphics::par(pp))
+    on.exit(par(pp))
 
     newextent <- raster::extent(par("usr"))
 

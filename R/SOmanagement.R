@@ -210,8 +210,8 @@ plot.SOmap_management <- function (x, y, ...) {
 print.SOmap_management <- function(x, ...) {
     ## print the management layers
     ## expects that an existing SOmap has already been plotted
-    op <- graphics::par(mar = rep(0.01, 4), oma= rep(0.0, 4), mai= rep(0.0, 4))
-    on.exit(graphics::par(op))
+    op <- par(mar = rep(0.01, 4), oma= rep(0.0, 4), mai= rep(0.0, 4))
+    on.exit(par(op))
     ## plot each layer (if it's null, the plot_* function won't do anything)
     plot_iwc(x$iwc)
     plot_research_blocks(x$research_blocks)
@@ -230,7 +230,7 @@ print.SOmap_management <- function(x, ...) {
 plot_iwc <- function(z) {
     if (!is.null(z)) {
         for (ii in seq_len(length(z$data))) {
-            graphics::lines(z$data[[ii]], col=z$col)
+            lines(z$data[[ii]], col=z$col)
         }
         if (!is.null(z$labels)) {
             text(z$labels$data, labels = z$labels$labels, col = z$labels$col, cex = z$labels$cex, pos = z$labels$pos, offset = z$labels$offset)

@@ -8,11 +8,9 @@
 #' @importFrom graphics contour lines par plot plot.new plot.window points text
 #' @importFrom grDevices heat.colors
 #' @importFrom methods as
-#' @importFrom raster aggregate contour crop extend extent ncell plot projectExtent projectRaster xmin xmax ymin ymax
-#' @importFrom rgdal project
-#' @importFrom sf st_graticule st_as_sf
+#' @importFrom raster contour crop extend extent ncell plot
 #' @importFrom sp plot
-#' @importFrom stats na.omit runif
+#' @importFrom stats runif
 #' @importFrom utils data head
 NULL
 
