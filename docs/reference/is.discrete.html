@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sea ice — ice â€¢ SOmap</title>
+<title>used in SOleg to test color palettes — is.discrete â€¢ SOmap</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -27,10 +27,9 @@
 <script src="../pkgdown.js"></script>
   
   
-<meta property="og:title" content="Sea ice — ice" />
+<meta property="og:title" content="used in SOleg to test color palettes — is.discrete" />
 
-<meta property="og:description" content="Example sea ice concentration data from the Southern Ocean (2018-10-15).
-(See "data-raw/ice.R")." />
+<meta property="og:description" content="used in SOleg to test color palettes" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -92,27 +91,37 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Sea ice</h1>
+    <h1>used in SOleg to test color palettes</h1>
     </div>
 
     
-    <p>Example sea ice concentration data from the Southern Ocean (2018-10-15).
-(See "data-raw/ice.R").</p>
+    <p>used in SOleg to test color palettes</p>
     
 
-        
+    <pre class="usage"><span class='fu'>is.discrete</span>(<span class='no'>x</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>Object to test for is it discrete</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>xy</span> <span class='kw'>&lt;-</span> <span class='fu'>coordinates</span>(<span class='fu'>spTransform</span>(<span class='fu'>as</span>(<span class='no'>SOmap_data</span>$<span class='no'>fronts_orsi</span>, <span class='st'>"SpatialPoints"</span>), <span class='st'>"+init=epsg:4326"</span>))
-<span class='co'>## just because you can doesn't mean you should ...</span>
-<span class='fu'><a href='SOauto_map.html'>SOauto_map</a></span>(<span class='no'>xy</span>[,<span class='fl'>1</span>], <span class='no'>xy</span>[,<span class='fl'>2</span>], <span class='kw'>bathy</span> <span class='kw'>=</span> <span class='no'>ice</span>, <span class='kw'>input_points</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>15</span>, <span class='fl'>30</span>, <span class='fl'>60</span>, <span class='fl'>90</span>))</div><div class='img'><img src='ice-1.png' alt='' width='700' height='432.632880098887' /></div></pre>
+    <p>returns true false</p>
+    
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-            
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
 
   </div>
 </div>

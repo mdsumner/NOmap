@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Southern Ocean management map layers — SOmanagement • SOmap</title>
+<title>Southern Ocean management map layers — SOmanagement â€¢ SOmap</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -21,24 +21,18 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
-
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
+<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
-
-
+  
+  
 <meta property="og:title" content="Southern Ocean management map layers — SOmanagement" />
 
 <meta property="og:description" content="Function for adding management layers to SOmap" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
-
-
-
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -61,12 +55,8 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">SOmap</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.3</span>
-      </span>
+      <a class="navbar-brand" href="../index.html">SOmap</a>
     </div>
-
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -78,6 +68,9 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -88,7 +81,6 @@
   </a>
 </li>
       </ul>
-      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -96,30 +88,26 @@
       
       </header>
 
-<div class="row">
+      <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Southern Ocean management map layers</h1>
-    <small class="dont-index">Source: <a href='https://github.com/AustralianAntarcticDivision/SOmap/blob/master/R/SOmanagement.R'><code>R/SOmanagement.R</code></a></small>
-    <div class="hidden name"><code>SOmanagement.Rd</code></div>
     </div>
 
-    <div class="ref-description">
     
     <p>Function for adding management layers to SOmap</p>
     
-    </div>
 
     <pre class="usage"><span class='fu'>SOmanagement</span>(<span class='kw'>CCAMLR</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>CCAMLRlab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>SSRU</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>SSRUlab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>SSMU</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>SSMUlab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>RB</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>RBlab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>SPRFMORB</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>Trim</span> <span class='kw'>=</span> -<span class='fl'>45</span>, <span class='kw'>Grats</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>EEZ</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>EEZlab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>MPA</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>MPAlab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>IWC</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>IWClab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>rbcol</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>sprfmocol</span> <span class='kw'>=</span> <span class='st'>"grey50"</span>,
-  <span class='kw'>ccamlrcol</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>ssrucol</span> <span class='kw'>=</span> <span class='st'>"grey50"</span>, <span class='kw'>ssmucol</span> <span class='kw'>=</span> <span class='st'>"grey70"</span>,
-  <span class='kw'>eezcol</span> <span class='kw'>=</span> <span class='st'>"maroon"</span>, <span class='kw'>mpacol</span> <span class='kw'>=</span> <span class='st'>"yellow"</span>, <span class='kw'>bordercol</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"white"</span>,
-  <span class='st'>"black"</span>), <span class='kw'>gratcol</span> <span class='kw'>=</span> <span class='st'>"grey70"</span>, <span class='kw'>iwccol</span> <span class='kw'>=</span> <span class='st'>"blue"</span>)</pre>
+  <span class='kw'>RBlab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>SPRFMORB</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>Trim</span> <span class='kw'>=</span> -<span class='fl'>45</span>, <span class='kw'>EEZ</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>EEZlab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>MPA</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>MPAlab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>IWC</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>IWClab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>Domains</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>Domainslab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>rbcol</span> <span class='kw'>=</span> <span class='st'>"green"</span>, <span class='kw'>sprfmocol</span> <span class='kw'>=</span> <span class='st'>"grey50"</span>, <span class='kw'>ccamlrcol</span> <span class='kw'>=</span> <span class='st'>"red"</span>,
+  <span class='kw'>ssrucol</span> <span class='kw'>=</span> <span class='st'>"grey50"</span>, <span class='kw'>ssmucol</span> <span class='kw'>=</span> <span class='st'>"grey70"</span>, <span class='kw'>eezcol</span> <span class='kw'>=</span> <span class='st'>"maroon"</span>,
+  <span class='kw'>mpacol</span> <span class='kw'>=</span> <span class='st'>"yellow"</span>, <span class='kw'>iwccol</span> <span class='kw'>=</span> <span class='st'>"blue"</span>, <span class='kw'>domcol</span> <span class='kw'>=</span> <span class='st'>"magenta"</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -163,10 +151,6 @@
       <td><p>Longitude to trim map to.</p></td>
     </tr>
     <tr>
-      <th>Grats</th>
-      <td><p>Insert graticule grid.</p></td>
-    </tr>
-    <tr>
       <th>EEZ</th>
       <td><p>Insert Exclusive Economic Zones.</p></td>
     </tr>
@@ -189,6 +173,14 @@
     <tr>
       <th>IWClab</th>
       <td><p>Insert International Whaling Commission labels.</p></td>
+    </tr>
+    <tr>
+      <th>Domains</th>
+      <td><p>Insert CCAMLR Marine Protected Area planning Domains.</p></td>
+    </tr>
+    <tr>
+      <th>Domainslab</th>
+      <td><p>Insert CCAMLR Marine Protected Area planning Domains labels.</p></td>
     </tr>
     <tr>
       <th>rbcol</th>
@@ -219,16 +211,12 @@
       <td><p>Color for CCAMLR Marine Protected Areas; Default is yellow.</p></td>
     </tr>
     <tr>
-      <th>bordercol</th>
-      <td><p>Colors for longitude border; Default is c("black","white").</p></td>
-    </tr>
-    <tr>
-      <th>gratcol</th>
-      <td><p>Color for graticule grid; Default is grey.</p></td>
-    </tr>
-    <tr>
       <th>iwccol</th>
       <td><p>Color for IWC boundaries; Default is blue.</p></td>
+    </tr>
+    <tr>
+      <th>domcol</th>
+      <td><p>Color for the Domain boundaries. Default is magenta.</p></td>
     </tr>
     </table>
     
@@ -239,11 +227,8 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>Dat.Dir</span><span class='kw'>&lt;-</span><span class='fu'>getwd</span>()
-<span class='fu'>png</span>(<span class='fu'>paste</span>(<span class='no'>Dat.Dir</span>,<span class='st'>'/SOmap.png'</span>, <span class='kw'>sep</span><span class='kw'>=</span><span class='st'>''</span>), <span class='kw'>width</span><span class='kw'>=</span><span class='fl'>22</span>, <span class='kw'>height</span><span class='kw'>=</span><span class='fl'>20</span>, <span class='kw'>units</span><span class='kw'>=</span><span class='st'>'cm'</span>, <span class='kw'>res</span><span class='kw'>=</span><span class='fl'>600</span>)
-<span class='fu'><a href='SOmap.html'>SOmap</a></span>(<span class='kw'>Trim</span><span class='kw'>=</span>-<span class='fl'>45</span>)
-<span class='fu'>SOmanagement</span>(<span class='kw'>CCAMLR</span><span class='kw'>=</span><span class='no'>T</span>, <span class='kw'>CCAMLRlab</span><span class='kw'>=</span><span class='no'>T</span>, <span class='kw'>Trim</span><span class='kw'>=</span>-<span class='fl'>45</span>)
-<span class='fu'>dev.off</span>()
+  <span class='fu'><a href='SOmap.html'>SOmap</a></span>(<span class='kw'>Trim</span> <span class='kw'>=</span> -<span class='fl'>45</span>)
+  <span class='fu'>SOmanagement</span>(<span class='kw'>CCAMLR</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>CCAMLRlab</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>Trim</span> <span class='kw'>=</span> -<span class='fl'>45</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -271,8 +256,5 @@
       </footer>
    </div>
 
-  
-
   </body>
 </html>
-

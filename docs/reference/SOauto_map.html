@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Default Southern Ocean map — SOauto_map • SOmap</title>
+<title>Default Southern Ocean map — SOauto_map â€¢ SOmap</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -21,15 +21,12 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
-
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
+<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
-
-
+  
+  
 <meta property="og:title" content="Default Southern Ocean map — SOauto_map" />
 
 <meta property="og:description" content="Provide minimal input information to get a default map. The simplest case is
@@ -37,9 +34,6 @@ to run the function without any inputs at all and it will provide a random defau
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
-
-
-
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -62,12 +56,8 @@ to run the function without any inputs at all and it will provide a random defau
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">SOmap</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.3</span>
-      </span>
+      <a class="navbar-brand" href="../index.html">SOmap</a>
     </div>
-
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -79,6 +69,9 @@ to run the function without any inputs at all and it will provide a random defau
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -89,7 +82,6 @@ to run the function without any inputs at all and it will provide a random defau
   </a>
 </li>
       </ul>
-      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -97,29 +89,26 @@ to run the function without any inputs at all and it will provide a random defau
       
       </header>
 
-<div class="row">
+      <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Default Southern Ocean map</h1>
-    <small class="dont-index">Source: <a href='https://github.com/AustralianAntarcticDivision/SOmap/blob/master/R/SOauto_map.R'><code>R/SOauto_map.R</code></a></small>
-    <div class="hidden name"><code>SOauto_map.Rd</code></div>
     </div>
 
-    <div class="ref-description">
     
     <p>Provide minimal input information to get a default map. The simplest case is
 to run the function without any inputs at all and it will provide a random default.</p>
     
-    </div>
 
     <pre class="usage"><span class='fu'>SOauto_map</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>centre_lon</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>centre_lat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"stere"</span>, <span class='kw'>expand</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>dimXY</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>300</span>, <span class='fl'>300</span>),
   <span class='kw'>bathy</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>coast</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>input_points</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>input_lines</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>graticule</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>buffer</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
   <span class='kw'>contours</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'>c</span>(-<span class='fl'>500</span>, -<span class='fl'>1000</span>, -<span class='fl'>2000</span>),
-  <span class='kw'>trim_background</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>mask</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>trim_background</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>mask</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ppch</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>pcol</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>pcex</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>bathyleg</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -152,11 +141,11 @@ to run the function without any inputs at all and it will provide a random defau
     </tr>
     <tr>
       <th>bathy</th>
-      <td><p>optional bathymetry data to use (or `FALSE` for no bathmetry image)</p></td>
+      <td><p>logical: if <code>TRUE</code>, plot bathymetry. Alternatively, provide the bathymetry data to use as a <code>raster</code> object</p></td>
     </tr>
     <tr>
       <th>coast</th>
-      <td><p>optional coastline data to use (or `FALSE` for no coastline)</p></td>
+      <td><p>logical: if <code>TRUE</code>, plot coastline. Alternatively, provide the coastline data to use as a <code>Spatial</code> object</p></td>
     </tr>
     <tr>
       <th>input_points</th>
@@ -176,11 +165,11 @@ to run the function without any inputs at all and it will provide a random defau
     </tr>
     <tr>
       <th>contours</th>
-      <td><p>add contours</p></td>
+      <td><p>logical: add contours?</p></td>
     </tr>
     <tr>
       <th>levels</th>
-      <td><p>contour levels if `contours = TRUE`</p></td>
+      <td><p>numeric: contour levels to use if <code>contours</code> is <code>TRUE</code></p></td>
     </tr>
     <tr>
       <th>trim_background</th>
@@ -188,27 +177,43 @@ to run the function without any inputs at all and it will provide a random defau
     </tr>
     <tr>
       <th>mask</th>
-      <td><p>logical, `FALSE` by default used to mask the raster and coastline to the graticule</p></td>
+      <td><p>logical: if <code>TRUE</code>, mask the raster and coastline to the graticule</p></td>
+    </tr>
+    <tr>
+      <th>ppch</th>
+      <td><p>set point character (default=19)</p></td>
+    </tr>
+    <tr>
+      <th>pcol</th>
+      <td><p>set point col (default=19)</p></td>
+    </tr>
+    <tr>
+      <th>pcex</th>
+      <td><p>set point cex (default=1)</p></td>
+    </tr>
+    <tr>
+      <th>bathyleg</th>
+      <td><p>optional bathymetry legend (default=FALSE). Note when <code>bathyleg</code> is <code>FALSE</code>, plotting is done with <code><a href='http://www.rdocumentation.org/packages/raster/topics/image'>raster::image</a></code>, but when <code>bathyleg</code> is <code>TRUE</code> plotting uses <code><a href='http://www.rdocumentation.org/packages/raster/topics/plot'>raster::plot</a></code></p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>the derived target extent and the map projection used, bathymetry, and coastline data</p>
+    <p>An object of class SOauto_map, containing the data and other details required to generate the map. Printing or plotting the object will cause it to be plotted.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>To input your data, use input locations as `x` (longitude) and `y` (latitude) values, there must be at least
-two locations.</p>
+    <p>To input your data, use input locations as `x` (longitude) and `y` (latitude) values, there must be at least two locations.</p>
 <p>Try families such as 'lcc', 'laea', 'gnom', 'merc', 'aea' if feeling adventurous.</p>
 <p>Using `mask = TRUE` does not work well when the pole is included, so it's `FALSE` by default.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>SOauto_map</span>(<span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>50</span>), <span class='fu'>c</span>(-<span class='fl'>70</span>, -<span class='fl'>50</span>))</div><div class='img'><img src='SOauto_map-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>SOauto_map</span>(<span class='fu'>runif</span>(<span class='fl'>10</span>, <span class='fl'>130</span>, <span class='fl'>200</span>), <span class='fu'>runif</span>(<span class='fl'>10</span>, -<span class='fl'>80</span>, -<span class='fl'>10</span>))</div><div class='img'><img src='SOauto_map-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>SOauto_map</span>(<span class='fu'>runif</span>(<span class='fl'>10</span>, <span class='fl'>130</span>, <span class='fl'>200</span>), <span class='fu'>runif</span>(<span class='fl'>10</span>, -<span class='fl'>85</span>, -<span class='fl'>60</span>))</div><div class='img'><img src='SOauto_map-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'>## save the result to explore later!</span>
-<span class='no'>protomap</span> <span class='kw'>&lt;-</span> <span class='fu'>SOauto_map</span>(<span class='fu'>runif</span>(<span class='fl'>10</span>, <span class='fl'>60</span>, <span class='fl'>160</span>), <span class='fu'>runif</span>(<span class='fl'>10</span>, -<span class='fl'>73</span>, -<span class='fl'>50</span>))</div><div class='img'><img src='SOauto_map-4.png' alt='' width='700' height='433' /></div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>SOauto_map</span>(<span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>50</span>), <span class='fu'>c</span>(-<span class='fl'>70</span>, -<span class='fl'>50</span>))</div><div class='img'><img src='SOauto_map-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>SOauto_map</span>(<span class='fu'>runif</span>(<span class='fl'>10</span>, <span class='fl'>130</span>, <span class='fl'>200</span>), <span class='fu'>runif</span>(<span class='fl'>10</span>, -<span class='fl'>80</span>, -<span class='fl'>10</span>))</div><div class='img'><img src='SOauto_map-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'>SOauto_map</span>(<span class='fu'>runif</span>(<span class='fl'>10</span>, <span class='fl'>130</span>, <span class='fl'>200</span>), <span class='fu'>runif</span>(<span class='fl'>10</span>, -<span class='fl'>85</span>, -<span class='fl'>60</span>))</div><div class='img'><img src='SOauto_map-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='co'>## save the result to explore later!</span>
+<span class='no'>protomap</span> <span class='kw'>&lt;-</span> <span class='fu'>SOauto_map</span>(<span class='fu'>runif</span>(<span class='fl'>10</span>, <span class='fl'>60</span>, <span class='fl'>160</span>), <span class='fu'>runif</span>(<span class='fl'>10</span>, -<span class='fl'>73</span>, -<span class='fl'>50</span>))
+
 <span class='fu'>SOauto_map</span>(<span class='fu'>runif</span>(<span class='fl'>50</span>, <span class='fl'>40</span>, <span class='fl'>180</span>), <span class='fu'>runif</span>(<span class='fl'>50</span>, -<span class='fl'>73</span>, -<span class='fl'>10</span>), <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"aea"</span>, <span class='kw'>centre_lat</span> <span class='kw'>=</span> -<span class='fl'>15</span>,
-              <span class='kw'>input_lines</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 6042 projected point(s) not finite</span></div><div class='img'><img src='SOauto_map-5.png' alt='' width='700' height='433' /></div></pre>
+              <span class='kw'>input_lines</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 6042 projected point(s) not finite</span></div><div class='img'><img src='SOauto_map-4.png' alt='' width='700' height='432.632880098887' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -237,8 +242,5 @@ two locations.</p>
       </footer>
    </div>
 
-  
-
   </body>
 </html>
-
