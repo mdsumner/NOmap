@@ -6,7 +6,7 @@
 #'
 #' @examples
 #' \dontrun{
-#'   p <- SOmap2(Trim = -45, IWC = TRUE, IWClab = TRUE, Grats = TRUE)
+#'   p <- SOmap2(Trim = -45, IWC = TRUE, IWClab = TRUE, Grats = TRUE, fronts = TRUE)
 #'   SOgg(p)
 #' }
 #'
@@ -32,12 +32,15 @@ SOgg <- function(x) {
     } else {
         p <- p + scale_fill_gradientn(colours = x$bathy$col, na.value = "#FFFFFF00", guide = NULL)
     }
+
+    ## buffer to use for cropping things back to our extent of interest
+    buf <- sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), 111111 * (90-abs(x$trim+2)))), crs = raster::projection(SOmap_data$continent))
+
     if (!is.null(x$coastline)) {
         ## the coastline data has to be trimmed to our northernmost latitude
         ## masking (using e.g. x$bathy_legend$mask$graticule) is likely to be problematic because of z-ordering
         ## TODO check that this trimming is robust
         this <- x$coastline$data
-        buf <- sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), 111111 * (90-abs(x$trim+2)))), crs = raster::projection(SOmap_data$continent))
         this <- suppressWarnings(sf::st_intersection(buf, x$coastline$data))
         p <- p + geom_sf(data = this, fill = x$coastline$fillcol, col = x$coastline$linecol, inherit.aes = FALSE)
     }
@@ -54,9 +57,13 @@ SOgg <- function(x) {
     }
 
     ## fronts
-##    if (!is.null(x$fronts)) {
-##        plot(x$fronts$data, add = TRUE, col = x$fronts$col)
-##    }
+    if (!is.null(x$fronts)) {
+        this <-sf::st_as_sf(x$fronts$data)
+        this <- suppressWarnings(sf::st_intersection(buf, this))
+        thiscol <- rep(x$fronts$col, ceiling(nrow(this)/length(x$fronts$col)))
+        thiscol <- thiscol[seq_len(nrow(this))]
+        p <- p + geom_sf(data = this, col = thiscol, inherit.aes = FALSE)
+    }
 
     ## Graticule grid
     if (!is.null(x$graticule)) {

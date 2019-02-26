@@ -17,7 +17,7 @@ Generate a ggplot2 representation of an SOmap object
 }
 \examples{
 \dontrun{
-  p <- SOmap2(Trim = -45, IWC = TRUE, IWClab = TRUE, Grats = TRUE)
+  p <- SOmap2(Trim = -45, IWC = TRUE, IWClab = TRUE, Grats = TRUE, fronts = TRUE)
   SOgg(p)
 }
 
