@@ -120,7 +120,7 @@ print.SOmap <- function(x, ...) {
     }
     graphics::box(col = x$box$col)
 
-    if (!is.null(x$coastline)) plot(x$coastline$data, col = x$coastline$fillcol, border = x$coastline$linecol, add = TRUE)
+    if (!is.null(x$coastline)) plot(x$coastline$data$geometry, col = x$coastline$fillcol, border = x$coastline$linecol, add = TRUE)
 
     plot_iwc(x$iwc)
 
