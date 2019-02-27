@@ -27,8 +27,11 @@
 #' @param trim_background crop the resulting bathymetry to its margin of valid values
 #' @param mask logical: if \code{TRUE}, mask the raster and coastline to the graticule
 #' @param ppch set point character (default=19)
-#' @param pcol set point col (default=19)
+#' @param pcol set point color (default=19)
 #' @param pcex set point cex (default=1)
+#' @param llty set line type
+#' @param llwd set line width
+#' @param lcol set line color
 #' @param bathyleg optional bathymetry legend (default=FALSE). Note when \code{bathyleg} is \code{FALSE}, plotting is done with \code{raster::image}, but when \code{bathyleg} is \code{TRUE} plotting uses \code{raster::plot}
 #'
 #' @return An object of class SOauto_map, containing the data and other details required to generate the map. Printing or plotting the object will cause it to be plotted.
@@ -49,7 +52,7 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
                        graticule = TRUE, buffer = 0.05,
                        contours = TRUE, levels = c(-500, -1000, -2000),
                        trim_background = TRUE,
-                       mask = FALSE, ppch = 19, pcol = 2, pcex = 1, bathyleg = FALSE) {
+                       mask = FALSE, ppch = 19, pcol = 2, pcex = 1, bathyleg = FALSE, llty = 1, llwd = 1, lcol = 1) {
     ## check inputs
     assert_that(is.flag(contours), !is.na(contours))
     assert_that(is.numeric(levels), length(levels) > 0)
@@ -242,6 +245,7 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
                    coastline = list(data = coastline, fillcol = NA, linecol = "black"), target = target, ##data = xy,
                    lines_data = if (input_lines) xy else NULL, points_data = if (input_points) xy else NULL,
                    ppch = ppch, pcol = pcol, pcex = pcex,
+                   llty = llty, llwd = llwd, lcol = lcol,
                    contours = contours, levels = levels, contour_colour = "black",
                    graticule = graticule, crs = prj),
               class = "SOauto_map")
@@ -280,7 +284,7 @@ print.SOauto_map <- function(x, ...) {
     if (!is.null(x$coastline)) plot(x$coastline$data, col = x$coastline$fillcol, border = x$coastline$linecol, add = TRUE)
     par(op)
     if (!is.null(x$points_data)) points(x$points_data, pch = x$ppch, cex = x$pcex, col = x$pcol)
-    if (!is.null(x$lines_data)) lines(x$lines_data)
+    if (!is.null(x$lines_data)) lines(x$lines_data, lty = x$llty, lwd = x$llwd, col = x$lcol)
 
     if (!is.null(x$graticule)) {
         op <- par(xpd = NA)
