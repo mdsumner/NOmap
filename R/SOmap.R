@@ -72,14 +72,15 @@ SOmap <- function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, stra
     if (land) {
       xland <-sf::st_as_sf(SOmap::SOmap_data$continent)
       xland <- sf::st_buffer(xland, 0)
-      buf <- sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), 111111 * (90-abs(q-3)))), crs = raster::projection(SOmap_data$continent))
+      buf <- sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), 111111 * (90-abs(Trim+2)))), crs = raster::projection(SOmap_data$continent))
       out$coastline <- list(data = suppressWarnings(sf::st_intersection(buf, xland)), fillcol = NA, linecol = "black")
-      ## NOTE: the q-3 above was q+3 in SOmap2 code: which one is correct?
     }
 
     ## fronts
     if (fronts) {
-        out$fronts <- list(data = SOmap_data$fronts_orsi, col = frontcols)
+      xfront <-sf::st_as_sf(SOmap::SOmap_data$fronts_orsi)
+      buf <- sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), 111111 * (90-abs(Trim+2)))), crs = raster::projection(SOmap_data$continent))
+      out$fronts <- list(data = suppressWarnings(sf::st_intersection(buf, xfront)), linecol = frontcols)
     }
     ## Graticule grid
     if (Grats) {
@@ -126,7 +127,7 @@ print.SOmap <- function(x, ...) {
 
     ## fronts
     if (!is.null(x$fronts)) {
-        plot(x$fronts$data, add = TRUE, col = x$fronts$col)
+        plot(x$fronts$data$geometry, add = TRUE, col = x$fronts$linecol)
     }
 
     ## Graticule grid
