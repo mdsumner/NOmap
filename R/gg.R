@@ -6,7 +6,7 @@
 #'
 #' @examples
 #' \dontrun{
-#'   p <- SOmap2(Trim = -45, IWC = TRUE, IWClab = TRUE, Grats = TRUE, fronts = TRUE)
+#'   p <- SOmap2(Trim = -45, IWC = TRUE, IWClab = TRUE, Grats = TRUE, fronts = TRUE, MPA = TRUE, MPAlab = TRUE)
 #'   SOgg(p)
 #' }
 #'
@@ -18,6 +18,7 @@ SOgg <- function(x) {
     bdf <- raster::as.data.frame(raster::trim(SOmap::latmask(x$bathy$data, latitude = x$trim)), xy = TRUE)
     names(bdf)[3] <- "Depth"
     p <- ggplot(data = bdf, aes_string(x = "x", y = "y")) + geom_raster(aes_string(fill = "Depth"))
+    p <- p + coord_sf(default = TRUE) ## default = TRUE makes this the default coordinate system for geom_sf objects
     if (!is.null(x$bathy_legend)) {
         p <- p + scale_fill_gradientn(colours = x$bathy$col, na.value = "#FFFFFF00")
 ##        raster::plot(x$bathy_legend$mask$graticule, border = x$bathy_legend$mask$border, col = x$bathy_legend$mask$col, add = TRUE) ## white mask
@@ -76,7 +77,6 @@ SOgg <- function(x) {
         p <- p + geom_text(data = this, aes_string(label = "lab"), parse = TRUE, col = x$graticule$labels$col)##, cex = x$graticule$labels$cex
     }
 
-    p <- p + coord_sf()
     p <- p + labs() + theme(axis.title = element_blank(),
                             axis.text.x = element_blank(), axis.ticks.x = element_blank(),
                             axis.text.y = element_blank(), axis.ticks.y = element_blank(),
@@ -89,7 +89,16 @@ SOgg <- function(x) {
 ##    plot_ssmu(x$ccamlr_ssmu)
 ##    plot_ccamlr_areas(x$ccamlr_statistical_areas)
 ##    plot_eez(x$eez)
-##    plot_mpa(x$mpa)
+    if (!is.null(x$mpa)) {
+        this <- suppressWarnings(sf::st_intersection(buf, sf::st_as_sf(x$mpa$data)))
+        p <- p + geom_sf(data = this, col = x$mpa$border, fill = NA, inherit.aes = FALSE) ## TODO allow fill colour, see https://github.com/AustralianAntarcticDivision/SOmap/issues/21
+        if (!is.null(x$mpa$labels)) {
+            this <- x$mpa$labels$data
+            this$lab <- x$mpa$labels$labels
+            this <- suppressWarnings(sf::st_intersection(buf, sf::st_as_sf(this)))
+            p <- p + geom_sf_text(data = this, aes_string(label = "lab"), parse = TRUE, col = x$mpa$labels$col, inherit.aes = FALSE)##, cex = x$mpa$labels$cex, pos = x$mpa$labels$pos, offset = x$mpa$labels$offset)
+        }
+    }
 ##    plot_domains(x$ccamlr_planning_domains)
 
     if (!is.null(x$border)) {
