@@ -10,7 +10,7 @@ SOauto_map(x, y, centre_lon = NULL, centre_lat = NULL,
   input_lines = TRUE, graticule = TRUE, buffer = 0.05,
   contours = TRUE, levels = c(-500, -1000, -2000),
   trim_background = TRUE, mask = FALSE, ppch = 19, pcol = 2,
-  pcex = 1, bathyleg = FALSE)
+  pcex = 1, bathyleg = FALSE, llty = 1, llwd = 1, lcol = 1)
 }
 \arguments{
 \item{x}{optional input data longitudes}
@@ -49,11 +49,17 @@ SOauto_map(x, y, centre_lon = NULL, centre_lat = NULL,
 
 \item{ppch}{set point character (default=19)}
 
-\item{pcol}{set point col (default=19)}
+\item{pcol}{set point color (default=19)}
 
 \item{pcex}{set point cex (default=1)}
 
 \item{bathyleg}{optional bathymetry legend (default=FALSE). Note when \code{bathyleg} is \code{FALSE}, plotting is done with \code{raster::image}, but when \code{bathyleg} is \code{TRUE} plotting uses \code{raster::plot}}
+
+\item{llty}{set line type}
+
+\item{llwd}{set line width}
+
+\item{lcol}{set line color}
 }
 \value{
 An object of class SOauto_map, containing the data and other details required to generate the map. Printing or plotting the object will cause it to be plotted.
