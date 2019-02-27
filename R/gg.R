@@ -1,5 +1,7 @@
 #' Generate a ggplot2 representation of an SOmap object
 #'
+#' Note: this function is still experimental! Use at your own risk.
+#' 
 #' @param x SOmap: object as returned by \code{SOmap} or \code{SOmap2}
 #'
 #' @return A ggplot object

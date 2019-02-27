@@ -13,7 +13,7 @@ SOgg(x)
 A ggplot object
 }
 \description{
-Generate a ggplot2 representation of an SOmap object
+Note: this function is still experimental! Use at your own risk.
 }
 \examples{
 \dontrun{
