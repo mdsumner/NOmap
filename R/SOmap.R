@@ -143,8 +143,3 @@ SOmap<-function(Bathleg=TRUE,
       message("Congratulations, you did a thing!")
     }
 }
-
-
-
-SOmap(Trim = -45, Grats = TRUE, Bathleg = F)
-SOmap(Trim = -45, Grats = TRUE, Bathleg = T)
