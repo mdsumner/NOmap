@@ -6,7 +6,8 @@
 #'
 #' @examples
 #' \dontrun{
-#'   p <- SOmap2(Trim = -45, IWC = TRUE, IWClab = TRUE, Grats = TRUE, fronts = TRUE, MPA = TRUE, MPAlab = TRUE)
+#'   p <- SOmap2(Trim = -45, IWC = TRUE, IWClab = TRUE, Grats = TRUE, fronts = TRUE,
+#'               MPA = TRUE, MPAlab = TRUE)
 #'   SOgg(p)
 #' }
 #'
@@ -35,7 +36,7 @@ SOgg <- function(x) {
     }
 
     ## buffer to use for cropping things back to our extent of interest
-    buf <- sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), 111111 * (90-abs(x$trim+2)))), crs = raster::projection(SOmap_data$continent))
+    buf <- sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), 111111 * (90-abs(x$trim+2)))), crs = x$projection)
 
     if (!is.null(x$coastline)) {
         ## the coastline data has to be trimmed to our northernmost latitude
@@ -61,7 +62,7 @@ SOgg <- function(x) {
     if (!is.null(x$fronts)) {
         this <-sf::st_as_sf(x$fronts$data)
         this <- suppressWarnings(sf::st_intersection(buf, this))
-        thiscol <- rep(x$fronts$col, ceiling(nrow(this)/length(x$fronts$col)))
+        thiscol <- rep(x$fronts$linecol, ceiling(nrow(this)/length(x$fronts$linecol)))
         thiscol <- thiscol[seq_len(nrow(this))]
         p <- p + geom_sf(data = this, col = thiscol, inherit.aes = FALSE)
     }
