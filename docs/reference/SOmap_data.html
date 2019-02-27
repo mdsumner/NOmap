@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Contextual data for Southern Ocean maps — SOmap_data • SOmap</title>
+<title>Contextual data for Southern Ocean maps — SOmap_data â€¢ SOmap</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -21,24 +21,18 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
-
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
+<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
-
-
+  
+  
 <meta property="og:title" content="Contextual data for Southern Ocean maps — SOmap_data" />
 
 <meta property="og:description" content="Various spatial datasets that are commonly used on Southern Ocean maps." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
-
-
-
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -61,12 +55,8 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">SOmap</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.3</span>
-      </span>
+      <a class="navbar-brand" href="../index.html">SOmap</a>
     </div>
-
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -78,6 +68,9 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -88,7 +81,6 @@
   </a>
 </li>
       </ul>
-      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -96,19 +88,15 @@
       
       </header>
 
-<div class="row">
+      <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Contextual data for Southern Ocean maps</h1>
-    <small class="dont-index">Source: <a href='https://github.com/AustralianAntarcticDivision/SOmap/blob/master/R/SOmap_data.R'><code>R/SOmap_data.R</code></a></small>
-    <div class="hidden name"><code>SOmap_data.Rd</code></div>
     </div>
 
-    <div class="ref-description">
     
     <p>Various spatial datasets that are commonly used on Southern Ocean maps.</p>
     
-    </div>
 
     <pre class="usage"><span class='fu'>data</span>(<span class='no'>SOmap_data</span>)</pre>
         
@@ -145,6 +133,30 @@
 <li><p>URL: https://data.ccamlr.org/dataset/statistical-areas-subareas-and-divisions</p></li>
 <li><p>License: Public domain</p></li>
 </ul></li>
+<li><p>CCAMLR_VME_polygons</p><ul>
+<li><p>Description: Defined areas of registered vulnerable marine ecosystems as defined under CM 22-09.</p></li>
+<li><p>Source: CCAMLR</p></li>
+<li><p>URL: https://gis.ccamlr.org/geoserver/ows?service=wfs&amp;version=1.0.0&amp;request=GetCapabilities</p></li>
+<li><p>License: Not specified</p></li>
+</ul></li>
+<li><p>CCAMLR_VME_fsr</p><ul>
+<li><p>Description: Vulnerable marine ecosystem fine-scale rectangles identified under CM 22-07.</p></li>
+<li><p>Source: CCAMLR</p></li>
+<li><p>URL: https://gis.ccamlr.org/geoserver/ows?service=wfs&amp;version=1.0.0&amp;request=GetCapabilities</p></li>
+<li><p>License: Not specified</p></li>
+</ul></li>
+<li><p>CCAMLR_VME_risk_areas</p><ul>
+<li><p>Description: Vulnerable marine ecosystem risk areas declared under CM 22-07.</p></li>
+<li><p>Source: CCAMLR</p></li>
+<li><p>URL: https://gis.ccamlr.org/geoserver/ows?service=wfs&amp;version=1.0.0&amp;request=GetCapabilities</p></li>
+<li><p>License: Not specified</p></li>
+</ul></li>
+<li><p>CCAMLR_planning_domains</p><ul>
+<li><p>Description: Nine planning domains were defined during the 2011 CCAMLR workshop on marine protected areas (SC-CAMLR-XXX, Annex 6). These planning domains provide comprehensive coverage of bioregions in the Southern Ocean and may be used as reporting and auditing units for work related to the development of MPAs and as a means to organise future activities related to this effort.</p></li>
+<li><p>Source: CCAMLR</p></li>
+<li><p>URL: https://gis.ccamlr.org/geoserver/ows?service=wfs&amp;version=1.0.0&amp;request=GetCapabilities</p></li>
+<li><p>License: Not specified</p></li>
+</ul></li>
 <li><p>continent</p><ul>
 <li><p>Description: Coastline, details TBA</p></li>
 <li><p>Source: TBA</p></li>
@@ -171,9 +183,21 @@
 </ul></li>
 <li><p>mirounga_leonina</p><ul>
 <li><p>Description: Example elephant seal Argos tracking data</p></li>
-<li><p>Source: Data were sourced from the Integrated Marine Observing System (IMOS) - IMOS is supported by the Australian Government through the National Collaborative Research Infrastructure Strategy and the Super Science Initiative.</p></li>
+<li><p>Source: Data were sourced from the Integrated Marine Observing System (IMOS) - IMOS is supported by the Australian Government through the National Collaborative Research Infrastructure Strategy and the Super Science Initiative</p></li>
 <li><p>URL: https://github.com/ianjonsen/bsam</p></li>
 <li><p>License: Please cite</p></li>
+</ul></li>
+<li><p>ADD_coastline_med</p><ul>
+<li><p>Description: Medium-resolution coastline data from the SCAR Antarctic Digital Database. This coastline only covers continental Antarctica: see the GSHHS_i_L1 data for the remainder of the southern hemisphere</p></li>
+<li><p>Source: SCAR</p></li>
+<li><p>URL: https://add.data.bas.ac.uk/repository/entry/show?entryid=f477219b-9121-44d6-afa6-d8552762dc45</p></li>
+<li><p>License: CC-BY. Citation: SCAR Antarctic Digital Database (2018)</p></li>
+</ul></li>
+<li><p>GSHHS_i_L1</p><ul>
+<li><p>Description: Coastline data (excluding Antarctica) from the Global Self-consistent, Hierarchical, High-resolution Geography Database. Only southern hemisphere, level 1 (boundary between land and ocean, except Antarctica), intermediate resolution data are included here</p></li>
+<li><p>Source: Wessel P, Smith WHF (1996) A Global Self-consistent, Hierarchical, High-resolution Shoreline Database. J. Geophys. Res. 101:8741-8743</p></li>
+<li><p>URL: http://www.soest.hawaii.edu/wessel/gshhg/</p></li>
+<li><p>License: LGPL</p></li>
 </ul></li>
 </ul>
     
@@ -201,8 +225,5 @@
       </footer>
    </div>
 
-  
-
   </body>
 </html>
-
