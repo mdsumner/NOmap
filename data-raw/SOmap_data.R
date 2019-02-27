@@ -100,6 +100,18 @@ continent <- continent %>% st_as_sf() %>%  st_buffer(dist = 0) %>%
 
 #plot(st_as_sf(continent[2, ]))
 
+## alternative continent with actual ice shelves, eh!
+notANT <- sf::st_as_sf(continent[continent$continent != "Antarctica",])
+notANT <- sf::st_buffer(notANT, 0)
+##buf <- sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), 111111 * (90-abs(q+3)))), crs = psproj)
+antonly <- quantarcticR::qa_get("ADD Coastlines (low)", verbose = TRUE, cache = "persistent")
+antonly <- sf::st_as_sf(antonly)
+coast_ice <- antonly$geometry[antonly$SURFACE != "land"] ## ice shelves, tongues, rumples, etc
+coast_land <- sf::st_union(antonly$geometry[antonly$SURFACE == "land"]) ## collapse down
+coast_land <- sf::st_union(c(coast_land, st_geometry(notANT))) ## join with the not-Antarctic land
+## then we can plot coast_ice with appropriate col (fill colour) and border (line colour) separately to coast_land with its own fill and border
+## NB if we wanted to keep non-Antarctic land separate from Antarctic land, we could do that here, and then they could be potentially plotted in different colours (or handled differently in other ways)
+
 
 g <- graticule::graticule(seq(-180, 180, by = 5), c(-84, 0), proj = psproj, tiles = TRUE)
 
