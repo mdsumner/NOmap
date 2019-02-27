@@ -110,7 +110,7 @@ SOmap<-function(Bathleg=TRUE,
     if (land) {
       xland <-sf::st_as_sf(SOmap::SOmap_data$continent)
       xland <- sf::st_buffer(xland, 0)
-      buf <- sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), 111111 * (90-abs(q-3)))), crs = raster::projection(SOmap_data$continent))
+      buf <- sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), 111111 * (90-abs(Trim+2)))), crs = raster::projection(SOmap_data$continent))
       suppressWarnings(lat_continent <- sf::st_intersection(buf, xland))
 
       plot(lat_continent$geometry,col=NA, border = 1, add = TRUE)
@@ -143,3 +143,8 @@ SOmap<-function(Bathleg=TRUE,
       message("Congratulations, you did a thing!")
     }
 }
+
+
+
+SOmap(Trim = -45, Grats = TRUE, Bathleg = F)
+SOmap(Trim = -45, Grats = TRUE, Bathleg = T)
