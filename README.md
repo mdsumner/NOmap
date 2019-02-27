@@ -49,6 +49,19 @@ SOmanagement(EEZ = TRUE)
 
 <img src="man/figures/README-management-1.png" width="100%" />
 
+Curved legends can be either continuous (as above) or discrete.
+
+``` r
+spirited8 <- spiritedMedium(8)
+
+SOmap()
+plot(centroids, col=spirited8, add=TRUE, pch=19)
+SOleg(centroids,position = "topright", col = spirited8, ticks = 8,
+      tlabs =1:8, label = "Centroids", type = "discrete")
+```
+
+<img src="man/figures/README-SOleg-1.png" width="100%" />
+
 An **automatic** plot function `SOauto_map()` will take any data in the form of longitude and latitude vectors and create a guess at a map.
 
 ``` r
@@ -81,12 +94,26 @@ alb_map
 
 <img src="man/figures/README-automap3-1.png" width="100%" />
 
+We could also decide we want a reversed bathymetry color and cyan lines between the dots.
+
+``` r
+# change the line color 
+alb_map$lcol <- "cyan"
+# reverse the bathymetry
+alb_map$bathy_palette<-rev(alb_map$bathy_palette)
+
+## plot it
+alb_map
+```
+
+<img src="man/figures/README-automap4-1.png" width="100%" />
+
 Objects from `sf` or `sp` may also be used. (If a "raster" is given it is used only for its extent.)
 
 ``` r
 ## use the bundled fronts data as an example
 mydata <- SOmap_data$fronts_orsi
-SOauto_map(mydata, family = "laea", centre_lon = 147, input_points = FALSE)
+SOauto_map(mydata, family = "laea", centre_lon = 147, input_points = FALSE, lcol = 2)
 ```
 
 <img src="man/figures/README-automap-spatial-1.png" width="100%" />
