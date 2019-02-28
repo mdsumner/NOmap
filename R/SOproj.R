@@ -16,6 +16,9 @@
 #' @param crs
 #' target projection (default = stereo)
 #'
+#' @param data
+#' optional data to be included
+#'
 #' @return
 #' Produces at the very base a round bathymetry map of the southern hemisphere.
 #'
@@ -30,7 +33,7 @@
 #' @export
 #'
 
-SOproj<-function(lon, lat,prj, crs){
+SOproj<-function(lon, lat,prj, crs, data){
   if(missing(lon) || missing(lat)){
     stop("lon and lat must be provided")}
   if(missing(prj) || is.null(prj) || !nzchar(prj)){
@@ -38,7 +41,8 @@ SOproj<-function(lon, lat,prj, crs){
     prj<-"+proj=longlat +datum=WGS84"}
 
   if(missing(crs)){message("No CRS provided assuming SOmap default")}
-  df<-data.frame(lon=lon,lat=lat)
+  if(missing(data)){data<-1}
+  df<-data.frame(lon=lon,lat=lat, data=data)
   coordinates(df)<-c("lon","lat")
 
   projection(df)<-prj
