@@ -150,16 +150,13 @@ SOmap2<-function(Bathleg=TRUE,
             notANT <- sf::st_buffer(notANT, 0)
             buf <- sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), 111111 * (90-abs(q+3)))), crs = raster::projection(SOmap_data$continent))
             ##out$coastline$data <- suppressWarnings(sf::st_intersection(buf, notANT))
-            out$coastline$plotargs$x <- suppressWarnings(sf::st_intersection(buf, notANT))
+            out$coastline$plotargs$x <- suppressWarnings(sf::st_intersection(buf, notANT)$geometry)
         }
     }
 
     ## copy management layers into out
-    mxlayers <- setdiff(names(mx), c("projection", "plot_sequence"))
-    for (mxn in mxlayers) {
-        out[[mxn]] <- mx[[mxn]]
-    }
-    out$plot_sequence <- insert_into_sequence(out$plot_sequence, ins = mxlayers, after = c("bathy", "box", "coastline", "fronts", "graticule"))
+    out[mx$plot_sequence] <- mx[mx$plot_sequence]
+    out$plot_sequence <- insert_into_sequence(out$plot_sequence, ins = mx$plot_sequence, after = c("bathy", "box", "coastline", "fronts", "graticule"))
     out
 }
 

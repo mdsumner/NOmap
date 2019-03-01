@@ -172,34 +172,7 @@ print.SOmap <- function(x, ...) {
     op <- par(mar = rep(0.01, 4), oma= rep(0.0, 4), mai= rep(0.0, 4))
     on.exit(par(op))
     ## iterate through plot_sequence
-    for (toplot in intersect(x$plot_sequence, names(x))) {
-        allpf <- x[[toplot]] ## all the stuff to plot for this element
-        if (is.list(allpf) && length(allpf) > 1 && is.null(names(allpf))) {
-            ## a list of plotfun/args to iterate over
-        } else {
-            allpf <- list(allpf)
-        }
-        for (thispf in allpf) {
-            thisfun <- thispf$plotfun
-            ##if (is.character(thisfun)) thisfun <- parse(text = thisfun)
-            ##eval(thisfun, envir = x[[toplot]]$plotenv)
-            this_plotargs <- thispf$plotargs
-            if (is.character(thisfun)) do.call(eval(parse(text = thisfun)), this_plotargs) else do.call(thisfun, this_plotargs)
-        }
-        if (!is.null(thispf$labels)) {
-            allpf <- thispf$labels ## all the stuff to plot for this element
-            if (is.list(allpf) && length(allpf) > 1 && is.null(names(allpf))) {
-                ## a list of plotfun/args to iterate over
-            } else {
-                allpf <- list(allpf)
-            }
-            for (thispf in allpf) {
-                thisfun <- thispf$plotfun
-                this_plotargs <- thispf$plotargs
-                if (is.character(thisfun)) do.call(eval(parse(text = thisfun)), this_plotargs) else do.call(thisfun, this_plotargs)
-            }
-        }
-    }
+    plot_all(x)
     ## Plot bathymetry
 #    eval(parse(text = x$bathy$plotfun), envir = x$bathy$plotenv)
     #if (x$straight) {
@@ -211,7 +184,7 @@ print.SOmap <- function(x, ...) {
 
 #    if (!is.null(x$coastline)) eval(parse(text = x$coastline$plotfun), envir = x$coastline$plotenv)
 
-    plot_iwc(x$iwc)
+#    plot_iwc(x$iwc)
 
 #    ## fronts
 #    if (!is.null(x$fronts)) {
@@ -229,11 +202,11 @@ print.SOmap <- function(x, ...) {
 #    plot_research_blocks(x$research_blocks)
 #    plot_sprfmo(x$sprfmo_research_blocks)
 #    plot_ssru(x$ccamlr_ssru)
-    plot_ssmu(x$ccamlr_ssmu)
-    plot_ccamlr_areas(x$ccamlr_statistical_areas)
-    plot_eez(x$eez)
-    plot_mpa(x$mpa)
-    plot_domains(x$ccamlr_planning_domains)
+#    plot_ssmu(x$ccamlr_ssmu)
+#    plot_ccamlr_areas(x$ccamlr_statistical_areas)
+#    plot_eez(x$eez)
+#    plot_mpa(x$mpa)
+#    plot_domains(x$ccamlr_planning_domains)
 
     ## Legend
 #    if (!is.null(x$bathy_legend)) {
