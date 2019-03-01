@@ -124,7 +124,6 @@ SOmap2<-function(Bathleg=TRUE,
                  domcol="magenta") {
 
     out <- SOmap(Bathleg = Bathleg, Border = Border, Trim = Trim, Grats = Grats, straight = straight, land = land, fronts = fronts, frontcols = frontcols, bordercol = bordercol, gratcol = gratcol)
-
     ## data
     SOmap_data <- NULL
     data("SOmap_data", package = "SOmap", envir = environment())
@@ -150,14 +149,17 @@ SOmap2<-function(Bathleg=TRUE,
             notANT <- sf::st_as_sf(SOmap_data$continent[SOmap_data$continent$continent != "Antarctica",])
             notANT <- sf::st_buffer(notANT, 0)
             buf <- sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), 111111 * (90-abs(q+3)))), crs = raster::projection(SOmap_data$continent))
-            out$coastline$data <- suppressWarnings(sf::st_intersection(buf, notANT))
+            ##out$coastline$data <- suppressWarnings(sf::st_intersection(buf, notANT))
+            out$coastline$plotargs$x <- suppressWarnings(sf::st_intersection(buf, notANT))
         }
     }
 
     ## copy management layers into out
-    for (mxn in setdiff(names(mx), "projection")) {
+    mxlayers <- setdiff(names(mx), c("projection", "plot_sequence"))
+    for (mxn in mxlayers) {
         out[[mxn]] <- mx[[mxn]]
     }
+    out$plot_sequence <- insert_into_sequence(out$plot_sequence, ins = mxlayers, after = c("bathy", "box", "coastline", "fronts", "graticule"))
     out
 }
 

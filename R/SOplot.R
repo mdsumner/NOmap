@@ -31,7 +31,7 @@
 #'  y<-c(-50, -75, -45, -60)
 #'  map<-SOauto_map(x,y, input_lines = FALSE)
 #'  map
-#'  SOplot(lon=y, lat=x,crs = map$crs,pch=19,col=6)
+#'  SOplot(lon=y, lat=x,crs = map$projection,pch=19,col=6)
 #' }
 #' @export
 #'

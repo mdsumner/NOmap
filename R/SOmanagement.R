@@ -106,7 +106,7 @@ SOmanagement <- function(CCAMLR = FALSE,
     ## CCAMLR Labels
     cclabs<-c("88.3", "48.4", "88.2", "48.2", "48.3", "58.4.3a", "58.4.3b", "58.5.2", "48.5", "48.6", "58.4.1", "88.1", "58.4.4a", "58.7", "58.6", "58.5.1", "58.4.4b")
 
-    out <- list(projection = raster::projection(Bathy))
+    out <- list(projection = raster::projection(Bathy), plot_sequence = NULL)
 
     if (IWC) {
         out$iwc <- list(data = list(
@@ -130,22 +130,35 @@ SOmanagement <- function(CCAMLR = FALSE,
     }
 
     if (RB) {
-        out$research_blocks <- list(data = SOmap_data$CCAMLR_research_blocks, border = rbcol)
+        #out$research_blocks <- list(data = SOmap_data$CCAMLR_research_blocks, border = rbcol)
+        #if (RBlab) {
+        #    out$research_blocks$labels <- list(data = SOmap_data$CCAMLR_research_blocks, labels = SOmap_data$CCAMLR_research_blocks$GAR_Short_, col = rbcol, cex = 0.4, pos = 4, offset = 0.3)
+        #}
+        out$research_blocks <- list(plotfun = "raster::plot", plotargs = list(x = SOmap_data$CCAMLR_research_blocks, border = rbcol, add = TRUE))
+        out$plot_sequence <- c(out$plot_sequence, "research_blocks")
         if (RBlab) {
-            out$research_blocks$labels <- list(data = SOmap_data$CCAMLR_research_blocks, labels = SOmap_data$CCAMLR_research_blocks$GAR_Short_, col = rbcol, cex = 0.4, pos = 4, offset = 0.3)
+            out$research_blocks$labels <- list(plotfun = "text", plotargs = list(x = sp::coordinates(SOmap_data$CCAMLR_research_blocks), labels = SOmap_data$CCAMLR_research_blocks$GAR_Short_, col = rbcol, cex = 0.4, pos = 4, offset = 0.3))
         }
     }
 
     if (SPRFMORB) {
         sprfmoa <- graticule::graticule(lats = c(-59.9, -57.9), lons = c(-155.3333, -150), proj = out$projection)
         sprfmob <- graticule::graticule(lats = c(-59.0, -60.0),lons = c(-142.1666667, -145.833333), proj = out$projection)
-        out$sprfmo_research_blocks <- list(data = list(sprfmoa, sprfmob), col = sprfmocol)
+        ##out$sprfmo_research_blocks <- list(data = list(sprfmoa, sprfmob), col = sprfmocol)
+        out$sprfmo_research_blocks <- list(list(plotfun = "raster::plot",
+                                                plotargs = list(x = sprfmoa, col = sprfmocol, add = TRUE)),
+                                           list(plotfun = "raster::plot",
+                                                plotargs = list(x = sprfmob, col = sprfmocol, add = TRUE)))
     }
 
     if (SSRU) {
-        out$ccamlr_ssru <- list(data = SOmap_data$CCAMLR_SSRU, border = ssrucol)
+        ##out$ccamlr_ssru <- list(data = SOmap_data$CCAMLR_SSRU, border = ssrucol)
+        ##if (SSRUlab) {
+        ##    out$ccamlr_ssru$labels <- list(data = SOmap_data$CCAMLR_SSRU, labels = SOmap_data$CCAMLR_SSRU$ShortLabel, col = ssrucol, cex = 0.4, pos = 1, offset = -0.05)
+        ##}
+        out$ccamlr_ssru <- list(plotfun = "plot", plotargs = list(x = SOmap_data$CCAMLR_SSRU, border = ssrucol, add = TRUE))
         if (SSRUlab) {
-            out$ccamlr_ssru$labels <- list(data = SOmap_data$CCAMLR_SSRU, labels = SOmap_data$CCAMLR_SSRU$ShortLabel, col = ssrucol, cex = 0.4, pos = 1, offset = -0.05)
+            out$ccamlr_ssru$labels <- list(plotfun = "text", plotargs = list(x = sp::coordinates(SOmap_data$CCAMLR_SSRU), labels = SOmap_data$CCAMLR_SSRU$ShortLabel, col = ssrucol, cex = 0.4, pos = 1, offset = -0.05))
         }
     }
 
