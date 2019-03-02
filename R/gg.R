@@ -38,7 +38,7 @@ SOgg <- function(x) {
     }
 
     ## buffer to use for cropping things back to our extent of interest
-    buf <- sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), 111111 * (90-abs(x$trim+2)))), crs = x$projection)
+    buf <- make_buf(x$trim+2, x$projection)
 
     if (!is.null(x$coastline)) {
         ## the coastline data has to be trimmed to our northernmost latitude
