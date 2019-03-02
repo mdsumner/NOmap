@@ -102,12 +102,8 @@ SOmap <- function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, stra
     ## Graticule grid
     if (Grats) {
         ##out$graticule <- list(data = grat, col = gratcol, lty = 3, labels = list(data = gratlab, labels = gratlab$lab, col = gratcol, cex = 0.5))
-        ##out$graticule <- list(plotfun = "raster::plot(x, add = add, col = col, lty = lty); text(labels$data, lab = parse(text = labels$labels), col = labels$col, cex = labels$cex)",
-        ##                      plotenv = list(x = grat, col = gratcol, lty = 3, add = TRUE, labels = list(data = gratlab, labels = gratlab$lab, col = gratcol, cex = 0.5)))
-        out$graticule <- list(plotfun = function(x, add, col, lty, labels) { raster::plot(x, add = add, col = col, lty = lty); text(labels$data, lab = parse(text = labels$labels), col = labels$col, cex = labels$cex) },
-                              plotargs = list(x = grat, col = gratcol, lty = 3, add = TRUE, labels = list(data = gratlab, labels = gratlab$lab, col = gratcol, cex = 0.5)))
-        ##out$graticule <- list(plotfun = "function(x, add, col, lty, labx, labtxt, labcol, labcex) { raster::plot(x, add = add, col = col, lty = lty); text(labx, lab = parse(text = labtxt), col = labcol, cex = labcex) }",
-        ##                      plotargs = list(x = grat, col = gratcol, lty = 3, add = TRUE, labx = gratlab, labtxt = gratlab$lab, labcol = gratcol, labcex = 0.5))
+        out$graticule <- list(plotfun = "raster::plot", plotargs = list(x = grat, col = gratcol, lty = 3, add = TRUE))
+        out$graticule$labels <- list(plotfun = "text", plotargs = list(x = gratlab, labels = parse(text = gratlab$lab), col = gratcol, cex = 0.5))
         out$plot_sequence <- c(out$plot_sequence, "graticule")
     }
 
