@@ -48,4 +48,4 @@ plot_all <- function(x) {
 }
 
 ## convenience function to slap the SO_plotter class on an object
-as_plotter <- function(z) structure(z, class = "SO_plotter")
+as_plotter <- function(...) structure(list(...), class = "SO_plotter")
