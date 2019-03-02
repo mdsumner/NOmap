@@ -69,7 +69,7 @@ SOmap <- function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, stra
     Bathy <- raster::trim(SOmap::latmask(Bathy, latitude = q))
     out <- list(projection = raster::projection(Bathy), target = raster::raster(Bathy), straight = straight, trim = Trim)
     ##out$bathy <- list(plotfun = if (straight) "raster::plot(x, col = col, legend = legend, yaxt = yaxt, xaxt = xaxt, asp = asp)" else "raster::image(x, col = col, yaxt = yaxt, xaxt = xaxt, asp = asp)", plotenv = list(x = Bathy, col = bluepal, yaxt = "n", xaxt = "n", asp = 1))
-    out$bathy <- as_plotter(plotfun = if (straight) "raster::plot" else "raster::image", plotargs = list(x = Bathy, col = bluepal, yaxt = "n", xaxt = "n", asp = 1))
+    out$bathy <- as_plotter(plotfun = if (straight) "plot" else "image", plotargs = list(x = Bathy, col = bluepal, yaxt = "n", xaxt = "n", asp = 1))
     if (straight) out$bathy$plotargs$legend <- FALSE
 
     ##out$box <- list(plotfun = "graphics::box(col = col)", plotenv = list(col = "white"))
@@ -100,7 +100,7 @@ SOmap <- function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, stra
     ## Graticule grid
     if (Grats) {
         ##out$graticule <- list(data = grat, col = gratcol, lty = 3, labels = list(data = gratlab, labels = gratlab$lab, col = gratcol, cex = 0.5))
-        out$graticule <- as_plotter(plotfun = "raster::plot", plotargs = list(x = grat, col = gratcol, lty = 3, add = TRUE))
+        out$graticule <- as_plotter(plotfun = "plot", plotargs = list(x = grat, col = gratcol, lty = 3, add = TRUE))
         out$graticule$labels <- list(plotfun = "text", plotargs = list(x = gratlab, labels = parse(text = gratlab$lab), col = gratcol, cex = 0.5))
         out$plot_sequence <- c(out$plot_sequence, "graticule")
     }
@@ -129,11 +129,11 @@ SOmap <- function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, stra
 ##                           ))
         out$bathy_legend <- as_plotter(
             plotfun = function(mask, ticks, legend, graticules, labels) {
-                raster::plot(mask$graticule, border = mask$border, col = mask$col, add = TRUE) ## white mask
-                raster::plot(ticks$ticks, add = TRUE, col = ticks$col)
-                raster::plot(legend$legend, lwd = legend$lwd, add = TRUE)
-                raster::plot(legend$legend, border = legend$border, col = legend$col, add = TRUE)
-                raster::plot(graticules$graticules, border = graticules$border, col = graticules$col, add = TRUE)
+                plot(mask$graticule, border = mask$border, col = mask$col, add = TRUE) ## white mask
+                plot(ticks$ticks, add = TRUE, col = ticks$col)
+                plot(legend$legend, lwd = legend$lwd, add = TRUE)
+                plot(legend$legend, border = legend$border, col = legend$col, add = TRUE)
+                plot(graticules$graticules, border = graticules$border, col = graticules$col, add = TRUE)
                 text(labels$data, labels = labels$labels, cex = labels$cex, adj = labels$adj)
             },
             plotargs = list(mask = list(graticule = mask_graticule, col = "white", border = FALSE),
@@ -147,7 +147,7 @@ SOmap <- function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, stra
     if (Border) {
         ##out$border <- list(data = bord, col = bordercol)
         ##out$border <- list(plotfun = "raster::plot(x, col = col, add = add)", plotenv = list(x = bord, col = bordercol, add = TRUE))
-        out$border <- as_plotter(plotfun = "raster::plot", plotargs = list(x = bord, col = bordercol, add = TRUE))
+        out$border <- as_plotter(plotfun = "plot", plotargs = list(x = bord, col = bordercol, add = TRUE))
         out$plot_sequence <- c(out$plot_sequence, "border")
     }
     structure(out, class = "SOmap")
