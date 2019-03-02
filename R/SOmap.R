@@ -8,6 +8,7 @@
 #' @param Trim numeric: longitude to trim map to
 #' @param Grats logical: if \code{TRUE}, insert graticule grid
 #' @param bordercol character: colours for longitude border
+#' @param borderwidth numeric: thickness (in degrees of latitude) of the border
 #' @param gratcol string: colour for graticule grid
 #' @param straight logical: if \code{TRUE}, leave a blank space on the side for a straight legend
 #' @param land logical: if \code{TRUE}, plot coastline
@@ -23,7 +24,7 @@
 #' @export
 #'
 
-SOmap <- function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, straight = FALSE, land = TRUE, fronts = FALSE, frontcols = c("hotpink", "orchid", "plum"), bordercol = c("white", "black"), gratcol = "grey70") {
+SOmap <- function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, straight = FALSE, land = TRUE, fronts = FALSE, frontcols = c("hotpink", "orchid", "plum"), bordercol = c("white", "black"), borderwidth = 2, gratcol = "grey70") {
     ## data
     SOmap_data <- NULL
     Bathy <- NULL
@@ -34,26 +35,24 @@ SOmap <- function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, stra
     ramp2 <- grDevices::colorRampPalette(c("#54A3D1", "#60B3EB", "#78C8F0", "#98D1F5", "#B5DCFF", "#BDE1F0", "#CDEBFA", "#D6EFFF", "#EBFAFF","grey99", "grey90", "grey92", "grey94", "grey96", "white"))
     bluepal <- ramp2(100)
     bluepal2 <- ramp2(80)
-    ## Setup color border
-    bord <- graticule::graticule(lons = seq(-180, 180, by = 15), lats = c(Trim+2, Trim), tiles = TRUE, proj = raster::projection(Bathy))
-    ## fix trim without legend.
-    if (!Border) Trim <- Trim-2
+    ## fix trim without legend
+    if (!Border) Trim <- Trim-borderwidth
 
     #bathy legend
     if (Bathleg) {
         ## White Mask
-        mask_graticule <- graticule::graticule(lons = seq(-180, 180, by = 1),lats = c(Trim+13.5, Trim+2), tiles = TRUE, proj = raster::projection(Bathy))
+        mask_graticule <- graticule::graticule(lons = seq(-180, 180, by = 1),lats = c(Trim+13.5, Trim+borderwidth), tiles = TRUE, proj = raster::projection(Bathy))
 
         ## Legend
         ## Colored legend
-        bleg <- graticule::graticule(lons = seq(185, 265, by = 1),lats = c(Trim+3, Trim+5), tiles = TRUE, proj = raster::projection(Bathy))
+        bleg <- graticule::graticule(lons = seq(185, 265, by = 1),lats = c(Trim+borderwidth+1, Trim+borderwidth+3), tiles = TRUE, proj = raster::projection(Bathy))
 
-        btick <- graticule::graticule(lats = c(Trim+4, Trim+7), lons = seq(190, 260, by = 11.666), proj = raster::projection(Bathy), tiles = FALSE)
+        btick <- graticule::graticule(lats = c(Trim+borderwidth+2, Trim+borderwidth+5), lons = seq(190, 260, by = 11.666), proj = raster::projection(Bathy), tiles = FALSE)
 
-        spud <- graticule::graticule(lons = seq(-180, 180, by = 1), lats = c(Trim+10, Trim+6.75), tiles = TRUE, proj = raster::projection(Bathy))
+        spud <- graticule::graticule(lons = seq(-180, 180, by = 1), lats = c(Trim+borderwidth+8, Trim+borderwidth+4.75), tiles = TRUE, proj = raster::projection(Bathy))
         df2 <- data.frame(a = c("-8000", "-6000", "-4000", "-2000", "0", "2000", "4000"),
                           lon = seq(190, 260, by = 11.666),
-                          lat=rep(Trim+9, 7))
+                          lat=rep(Trim+borderwidth+7, 7))
         sp::coordinates(df2) <- c("lon", "lat")
         raster::projection(df2) <- "+init=epsg:4326"
         lab_pos2 <- sp::spTransform(df2, raster::crs(raster::projection(Bathy)))
@@ -65,7 +64,7 @@ SOmap <- function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, stra
     gratlab <- graticule::graticule_labels(lons = 180,lats = c(-45, -30, -60, -75), xline = 180, yline = -15, proj = raster::projection(Bathy))
 
     ## Set the Trim value depending on legend yes or no
-    q <- ifelse(Bathleg, Trim+13, Trim+2)
+    q <- ifelse(Bathleg, Trim+13, Trim+borderwidth)
     Bathy <- raster::trim(SOmap::latmask(Bathy, latitude = q))
     out <- list(projection = raster::projection(Bathy), target = raster::raster(Bathy), straight = straight, trim = Trim)
     out$bathy <- as_plotter(plotfun = if (straight) "plot" else "image", plotargs = list(x = Bathy, col = bluepal, yaxt = "n", xaxt = "n", asp = 1))
@@ -73,11 +72,11 @@ SOmap <- function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, stra
 
     out$box <- as_plotter(plotfun = "graphics::box", plotargs = list(col = "white"))
     out$plot_sequence <- c("bathy", "box")
+    buf <- sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), 111111 * (90-abs(Trim+borderwidth)))), crs = raster::projection(SOmap_data$continent))
 
     if (land) {
       xland <-sf::st_as_sf(SOmap::SOmap_data$continent)
       xland <- sf::st_buffer(xland, 0)
-      buf <- sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), 111111 * (90-abs(Trim+2)))), crs = raster::projection(SOmap_data$continent))
       out$coastline <- as_plotter(plotfun = "plot", plotargs = list(x = suppressWarnings(sf::st_intersection(buf, xland)$geometry), col = NA, border = "black", add = TRUE))
       out$plot_sequence <- c(out$plot_sequence, "coastline")
     }
@@ -85,7 +84,6 @@ SOmap <- function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, stra
     ## fronts
     if (fronts) {
       xfront <-sf::st_as_sf(SOmap::SOmap_data$fronts_orsi)
-      buf <- sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), 111111 * (90-abs(Trim+2)))), crs = raster::projection(SOmap_data$continent))
       out$fronts <- as_plotter(plotfun = "plot", plotargs = list(x = suppressWarnings(sf::st_intersection(buf, xfront)$geometry), col = frontcols, add = TRUE))
       out$plot_sequence <- c(out$plot_sequence, "fronts")
     }
@@ -118,6 +116,7 @@ SOmap <- function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, stra
         out$plot_sequence <- c(out$plot_sequence, "bathy_legend")
     }
     if (Border) {
+        bord <- graticule::graticule(lons = seq(-180, 180, by = 15), lats = c(Trim+borderwidth, Trim), tiles = TRUE, proj = raster::projection(Bathy))
         out$border <- as_plotter(plotfun = "plot", plotargs = list(x = bord, col = bordercol, border = "black", add = TRUE))
         out$plot_sequence <- c(out$plot_sequence, "border")
     }

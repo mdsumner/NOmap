@@ -7,7 +7,7 @@
 SOmap(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE,
   straight = FALSE, land = TRUE, fronts = FALSE,
   frontcols = c("hotpink", "orchid", "plum"), bordercol = c("white",
-  "black"), gratcol = "grey70")
+  "black"), borderwidth = 2, gratcol = "grey70")
 }
 \arguments{
 \item{Bathleg}{logical: if \code{TRUE}, insert the bathymetry legend}
@@ -27,6 +27,8 @@ SOmap(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE,
 \item{frontcols}{character: colours for fronts}
 
 \item{bordercol}{character: colours for longitude border}
+
+\item{borderwidth}{numeric: thickness (in degrees of latitude) of the border}
 
 \item{gratcol}{string: colour for graticule grid}
 }

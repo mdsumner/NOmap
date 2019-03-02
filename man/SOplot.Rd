@@ -4,7 +4,7 @@
 \alias{SOplot}
 \title{Southern Ocean plot}
 \usage{
-SOplot(lon, lat, prj, crs, add = TRUE...)
+SOplot(lon, lat, prj, crs, add = TRUE, ...)
 }
 \arguments{
 \item{lon}{longitude object}
@@ -31,6 +31,6 @@ Reproject and add point layers to either SOmap or SOauto_map layers.
  y<-c(-50, -75, -45, -60)
  map<-SOauto_map(x,y, input_lines = FALSE)
  map
- SOplot(lon=y, lat=x,crs = map$crs,pch=19,col=1)
+ SOplot(lon=y, lat=x,crs = map$projection,pch=19,col=6)
 }
 }

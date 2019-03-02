@@ -4,7 +4,7 @@
 \alias{SOproj}
 \title{Southern projection}
 \usage{
-SOproj(lon, lat, prj, crs)
+SOproj(lon, lat, prj, crs, data)
 }
 \arguments{
 \item{lon}{longitude object.}
@@ -14,6 +14,8 @@ SOproj(lon, lat, prj, crs)
 \item{prj}{starting projection (default = longlat)}
 
 \item{crs}{target projection (default = stereo)}
+
+\item{data}{optional data to be included}
 }
 \value{
 Produces at the very base a round bathymetry map of the southern hemisphere.
