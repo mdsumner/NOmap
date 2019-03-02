@@ -24,28 +24,32 @@
 #'
 #' @examples
 #' \dontrun{
-#'  x<-c(-70, -60,-50, -90)
-#'  y<-c(-50, -75, -45, -60)
-#'  pnts<-SOproj(lon = y, lat = x)
-#'  SOmap2(CCAMLR=T)
-#'  plot(pnts, pch=19, col=3, add=TRUE)
+#'  x <- c(-70, -60,-50, -90)
+#'  y <- c(-50, -75, -45, -60)
+#'  pnts <- SOproj(lon = y, lat = x)
+#'  SOmap2(CCAMLR = TRUE)
+#'  plot(pnts, pch = 19, col = 3, add = TRUE)
 #' }
 #' @export
 #'
 
-SOproj<-function(lon, lat,prj, crs, data){
-  if(missing(lon) || missing(lat)){
-    stop("lon and lat must be provided")}
-  if(missing(prj) || is.null(prj) || !nzchar(prj)){
+SOproj <- function(lon, lat, prj, crs, data){
+  if (missing(lon) || missing(lat)) {
+      stop("lon and lat must be provided")
+  }
+  if (missing(prj) || is.null(prj) || !nzchar(prj)) {
     message("No projection provided, assuming longlat")
-    prj<-"+proj=longlat +datum=WGS84"}
+    prj <- "+proj=longlat +datum=WGS84"
+  }
 
-  if(missing(crs)){message("No CRS provided assuming SOmap default")}
-  if(missing(data)){data<-1}
-  df<-data.frame(lon=lon,lat=lat, data=data)
-  coordinates(df)<-c("lon","lat")
+  if (missing(crs)) message("No CRS provided, assuming SOmap default")
+  if (missing(data)) data <- 1
+  df <- data.frame(lon = lon, lat = lat, data = data)
+  sp::coordinates(df) <- c("lon", "lat")
 
-  projection(df)<-prj
-  if(missing(crs)){crs<-"+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0"}
-  dft<-spTransform(df,CRS(crs))
+  raster::projection(df) <- prj
+  if(missing(crs)) {
+      crs <- "+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0"
+  }
+  dft <- sp::spTransform(df, sp::CRS(crs))
 }

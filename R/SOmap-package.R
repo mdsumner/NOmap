@@ -12,6 +12,6 @@
 #' @importFrom raster contour crop extend extent ncell plot
 #' @importFrom sp plot
 #' @importFrom stats runif
-#' @importFrom utils data head
+#' @importFrom utils data head tail
 NULL
 

@@ -25,10 +25,10 @@ Function for reprojecting data.
 }
 \examples{
 \dontrun{
- x<-c(-70, -60,-50, -90)
- y<-c(-50, -75, -45, -60)
- pnts<-SOproj(lon = y, lat = x)
- SOmap2(CCAMLR=T)
- plot(pnts, pch=19, col=3, add=TRUE)
+ x <- c(-70, -60,-50, -90)
+ y <- c(-50, -75, -45, -60)
+ pnts <- SOproj(lon = y, lat = x)
+ SOmap2(CCAMLR = TRUE)
+ plot(pnts, pch = 19, col = 3, add = TRUE)
 }
 }
