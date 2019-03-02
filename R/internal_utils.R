@@ -1,3 +1,16 @@
+## internal function to construct buffer to use for trimming
+## e.g.
+##  buf <- make_buf(Trim+borderwidth, proj = raster::projection(Bathy))
+##  suppressWarnings(sf::st_intersection(buf, some_object))
+make_buf <- function(trim_to_latitude, proj) {
+    bufrad <- 90-abs(trim_to_latitude) ## radius in degrees latitude
+    tmp <- data.frame(lon = 0, lat = -90+bufrad)
+    sp::coordinates(tmp) <- c("lon", "lat")
+    raster::projection(tmp) <- "+init=epsg:4326"
+    tmp <- sp::spTransform(tmp, raster::crs(proj))
+    sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), sp::coordinates(tmp)[2])), crs = proj)
+}
+
 insert_into_sequence <- function(sequence, ins, after) {
     ## insert ins into sequence, so that it appears directly after the last element in after
     idx <- tail(which(sequence %in% after), 1)

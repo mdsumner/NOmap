@@ -36,12 +36,12 @@ SOmap <- function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, stra
     bluepal <- ramp2(100)
     bluepal2 <- ramp2(80)
     ## fix trim without legend
-    if (!Border) Trim <- Trim-borderwidth
+    if (!Border) borderwidth <- 0
 
     #bathy legend
     if (Bathleg) {
         ## White Mask
-        mask_graticule <- graticule::graticule(lons = seq(-180, 180, by = 1),lats = c(Trim+13.5, Trim+borderwidth), tiles = TRUE, proj = raster::projection(Bathy))
+        mask_graticule <- graticule::graticule(lons = seq(-180, 180, by = 1),lats = c(Trim+borderwidth+11.5, Trim+borderwidth), tiles = TRUE, proj = raster::projection(Bathy))
 
         ## Legend
         ## Colored legend
@@ -59,12 +59,12 @@ SOmap <- function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, stra
     }
     ## Graticule dots #
     xx <- c(0, 45, 90, 135, 180, 225, 270, 315, 360)
-    yy <- c(-90, -75, -60, -45, if (Trim > -45) Trim)
+    yy <- c(seq(from = -90, to = Trim-1, by = 15), Trim)
     grat <- graticule::graticule(xx, yy, proj = raster::projection(Bathy))
     gratlab <- graticule::graticule_labels(lons = 180,lats = c(-45, -30, -60, -75), xline = 180, yline = -15, proj = raster::projection(Bathy))
 
-    ## Set the Trim value depending on legend yes or no
-    q <- ifelse(Bathleg, Trim+13, Trim+borderwidth)
+    ## crop bathy raster depending on legend yes or no
+    q <- ifelse(Bathleg, Trim+borderwidth+11, Trim+borderwidth)
     Bathy <- raster::trim(SOmap::latmask(Bathy, latitude = q))
     out <- list(projection = raster::projection(Bathy), target = raster::raster(Bathy), straight = straight, trim = Trim)
     out$bathy <- as_plotter(plotfun = if (straight) "plot" else "image", plotargs = list(x = Bathy, col = bluepal, yaxt = "n", xaxt = "n", asp = 1))
@@ -72,8 +72,7 @@ SOmap <- function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, stra
 
     out$box <- as_plotter(plotfun = "graphics::box", plotargs = list(col = "white"))
     out$plot_sequence <- c("bathy", "box")
-    buf <- sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), 111111 * (90-abs(Trim+borderwidth)))), crs = raster::projection(SOmap_data$continent))
-
+    buf <- make_buf(Trim+borderwidth, proj = out$projection)
     if (land) {
       xland <-sf::st_as_sf(SOmap::SOmap_data$continent)
       xland <- sf::st_buffer(xland, 0)
