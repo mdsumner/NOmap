@@ -16,11 +16,12 @@ plot_all <- function(x) {
     ## interate through each plottable element in turn
     for (toplot in intersect(x$plot_sequence, names(x))) {
         allpf <- x[[toplot]] ## all the stuff to plot for this element
-        if (is.list(allpf) && length(allpf) > 1 && (is.null(names(allpf)) || length(setdiff(names(allpf), c("", "labels"))) < 1)) {
-            ## a list of plotfun/args to iterate over
-            ## needs a more robust way of detecting this
-        } else {
-            allpf <- list(allpf)
+        ## either a SO_plotter object, or a list thereof
+        ## if it's just one, put it in a list
+        if (inherits(allpf, "SO_plotter")) allpf <- list(allpf)
+        if (!all(vapply(allpf, inherits, "SO_plotter", FUN.VALUE = TRUE))) {
+            warning("plotting behaviour for '", toplot, "' should be specified by an SO_plotter object or list of such objects, ignoring")
+            next
         }
         for (thispf in allpf) {
             thisfun <- thispf$plotfun
@@ -45,3 +46,6 @@ plot_all <- function(x) {
     }
     invisible(NULL)
 }
+
+## convenience function to slap the SO_plotter class on an object
+as_plotter <- function(z) structure(z, class = "SO_plotter")

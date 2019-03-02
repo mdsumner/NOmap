@@ -92,7 +92,19 @@ SOgg <- function(x) {
 ##    plot_ssru(x$ccamlr_ssru)
 ##    plot_ssmu(x$ccamlr_ssmu)
 ##    plot_ccamlr_areas(x$ccamlr_statistical_areas)
-##    plot_eez(x$eez)
+
+    ## NOTE, parse args to geom_text and geom_sf_text seem fragile, need better user control
+    if (!is.null(x$eez)) {
+        this <- suppressWarnings(sf::st_intersection(buf, sf::st_as_sf(x$eez$plotargs$x)))
+        p <- p + geom_sf(data = this, col = x$eez$plotargs$border, fill = x$eez$plotargs$col, inherit.aes = FALSE)
+        if (!is.null(x$eez$labels)) {
+            this <- x$eez$labels$plotargs$x
+            this$lab <- x$eez$labels$plotargs$labels
+            this <- suppressWarnings(sf::st_intersection(buf, sf::st_as_sf(this)))
+            p <- p + geom_sf_text(data = this, aes_string(label = "lab"), parse = FALSE, col = x$eez$labels$plotargs$col, inherit.aes = FALSE)##, cex = x$eez$labels$cex, pos = x$eez$labels$pos, offset = x$eez$labels$offset)
+        }
+    }
+
     if (!is.null(x$mpa)) {
         this <- suppressWarnings(sf::st_intersection(buf, sf::st_as_sf(x$mpa$plotargs$x)))
         p <- p + geom_sf(data = this, col = x$mpa$plotargs$border, fill = x$mpa$plotargs$col, inherit.aes = FALSE)
@@ -103,7 +115,24 @@ SOgg <- function(x) {
             p <- p + geom_sf_text(data = this, aes_string(label = "lab"), parse = TRUE, col = x$mpa$labels$plotargs$col, inherit.aes = FALSE)##, cex = x$mpa$labels$cex, pos = x$mpa$labels$pos, offset = x$mpa$labels$offset)
         }
     }
-##    plot_domains(x$ccamlr_planning_domains)
+
+    if (!is.null(x$ccamlr_planning_domains)) {
+        this <- suppressWarnings(sf::st_intersection(buf, sf::st_as_sf(x$ccamlr_planning_domains$plotargs$x)))
+        ## TODO fix that intersection, is slow because of complexity of coastline
+        p <- p + geom_sf(data = this, col = x$ccamlr_planning_domains$plotargs$border, fill = x$ccamlr_planning_domains$plotargs$col, inherit.aes = FALSE)
+        if (!is.null(x$ccamlr_planning_domains$labels)) {
+            ## this is horrible code
+            crds <- as.data.frame(sp::coordinates(x$ccamlr_planning_domains$labels[[1]]$plotargs$x))
+            names(crds) <- c("x", "y")
+            for (ii in seq_len(length(x$ccamlr_planning_domains$labels))) {
+    #            this <- x$ccamlr_planning_domains$labels[[ii]]$plotargs$x
+    #            this$lab <- x$ccamlr_planning_domains$labels[[ii]]$plotargs$labels
+                crds$lab <- x$ccamlr_planning_domains$labels[[ii]]$plotargs$labels
+    #            this <- suppressWarnings(sf::st_intersection(buf, sf::st_as_sf(this)))
+                p <- p + geom_text(data = crds, aes_string(x = "x", y = "y", label = "lab"), parse = FALSE, col = x$ccamlr_planning_domains$labels[[ii]]$plotargs$col, inherit.aes = FALSE)##, cex = x$ccamlr_planning_domains$labels[[ii]]$cex, pos = x$ccamlr_planning_domains$labels[[ii]]$pos, offset = x$ccamlr_planning_domains$labels[[ii]]$offset)
+            }
+        }
+    }
 
     if (!is.null(x$border)) {
         suppressMessages(this <- fortify(x$border$plotargs$x))
