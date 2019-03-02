@@ -5,7 +5,7 @@ disp_auto_map <- function() plot(SOauto_map(c(100:110), c(-70:-60)))
 test_that("auto map returns data", {
     x <- SOauto_map(c(100:110), c(-70:-60))
     expect_s3_class(x, "SOauto_map")
-    expect_identical(sort(names(x)), sort(c("projection", "bathy", "bathyleg", "bathy_palette", "coastline", "target", "lines_data", "points_data", "ppch", "pcol", "pcex", "contours", "levels", "contour_colour", "graticule", "crs")))
+    expect_identical(sort(names(x)), sort(c("projection", "bathy", "bathyleg", "bathy_palette", "coastline", "target", "lines_data", "points_data", "ppch", "pcol", "pcex", "llty", "llwd", "lcol", "contours", "levels", "contour_colour", "graticule", "crs")))
     skip("skipping vdiffr tests temporarily")
     vdiffr::expect_doppelganger("Soauto_map basic", disp_auto_map)
 })
