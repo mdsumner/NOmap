@@ -213,10 +213,10 @@ SOmanagement <- function(CCAMLR = FALSE,
 
     if (MPA) {
         #out$mpa <- list(data = SOmap_data$CCAMLR_MPA, border = mpacol)
-        out$mpa <- list(plotfun = "plot", plotargs = list(x = SOmap_data$CCAMLR_MPA, border = mpacol, add = TRUE))
+        out$mpa <- list(plotfun = "plot", plotargs = list(x = SOmap_data$CCAMLR_MPA, border = mpacol, col = NA, add = TRUE))
         if (MPAlab) {
             ##out$mpa$labels <- list(data = SOmap_data$CCAMLR_MPA, labels = SOmap_data$CCAMLR_MPA$ShortLabel, col = mpacol, cex = 0.35, pos = 1, offset =0.2)
-            out$mpa$labels <- list(plotfun = "text", plotargs = list(x = sp::coordinates(SOmap_data$CCAMLR_MPA), labels = SOmap_data$CCAMLR_MPA$ShortLabel, col = mpacol, cex = 0.35, pos = 1, offset =0.2))
+            out$mpa$labels <- list(plotfun = function(x, ...) text(sp::coordinates(x), ...), plotargs = list(x = SOmap_data$CCAMLR_MPA, labels = SOmap_data$CCAMLR_MPA$ShortLabel, col = mpacol, cex = 0.35, pos = 1, offset =0.2))
         }
         out$plot_sequence <- c(out$plot_sequence, "mpa")
     }
