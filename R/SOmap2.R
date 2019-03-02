@@ -140,16 +140,12 @@ SOmap2<-function(Bathleg=TRUE,
                        Domains = Domains, Domainslab = Domainslab, domcol = domcol,
                        IWC = IWC, IWClab = IWClab, iwccol = iwccol)
 
-    ## Set the Trim value depending on legend yes or no
-    q <- ifelse(Bathleg, Trim+13, Trim+2)
-
     if (land) {
         if (CCAMLR) {
             ## change coastline data
             notANT <- sf::st_as_sf(SOmap_data$continent[SOmap_data$continent$continent != "Antarctica",])
             notANT <- sf::st_buffer(notANT, 0)
-            buf <- sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), 111111 * (90-abs(q+3)))), crs = raster::projection(SOmap_data$continent))
-            ##out$coastline$data <- suppressWarnings(sf::st_intersection(buf, notANT))
+            buf <- make_buf(Trim, proj = out$projection)
             out$coastline$plotargs$x <- suppressWarnings(sf::st_intersection(buf, notANT)$geometry)
         }
     }
