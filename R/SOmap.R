@@ -59,7 +59,7 @@ SOmap <- function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, stra
     }
     ## Graticule dots #
     xx <- c(0, 45, 90, 135, 180, 225, 270, 315, 360)
-    yy <- c(-90, -75, -60, -45, Trim)
+    yy <- c(-90, -75, -60, -45, if (Trim > -45) Trim)
     grat <- graticule::graticule(xx, yy, proj = raster::projection(Bathy))
     gratlab <- graticule::graticule_labels(lons = 180,lats = c(-45, -30, -60, -75), xline = 180, yline = -15, proj = raster::projection(Bathy))
 
