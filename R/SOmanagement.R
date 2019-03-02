@@ -108,19 +108,7 @@ SOmanagement <- function(CCAMLR = FALSE,
 
     out <- list(projection = raster::projection(Bathy), plot_sequence = NULL)
 
-    ## buffer to use for cropping things back to our extent of interest
-    buf <- sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), 111111 * (90-abs(Trim+2)))), crs = out$projection)
-
     if (IWC) {
-        ##out$iwc <- list(data = list(
-        ##                            rgdal::project(rbind(c(-170, Trim), c(-170, -78.40)), out$projection),
-        ##                            rgdal::project(rbind(c(-120, Trim), c(-120, -73.844137)), out$projection),
-        ##                            rgdal::project(rbind(c(-60, -65.168), c(-60, -75.146206)), out$projection),
-        ##                            rgdal::project(rbind(c(-60, Trim), c(-60, -62.4505)), out$projection),
-        ##                            rgdal::project(rbind(c(0, Trim), c(0, -69.596701)), out$projection),
-        ##                            rgdal::project(rbind(c(70, Trim), c(70, -68.366691)), out$projection),
-        ##                            rgdal::project(rbind(c(130, Trim), c(130, -66.295027)), out$projection)),
-        ##                col = iwccol)
         out$iwc <- list(as_plotter(plotfun = "lines", plotargs = list(x = rgdal::project(rbind(c(-170, Trim), c(-170, -78.40)), out$projection), col = iwccol)),
                         as_plotter(plotfun = "lines", plotargs = list(x = rgdal::project(rbind(c(-120, Trim), c(-120, -73.844137)), out$projection), col = iwccol)),
                         as_plotter(plotfun = "lines", plotargs = list(x = rgdal::project(rbind(c(-60, -65.168), c(-60, -75.146206)), out$projection), col = iwccol)),
@@ -135,7 +123,6 @@ SOmanagement <- function(CCAMLR = FALSE,
             sp::coordinates(df3) <- c("lon", "lat")
             raster::projection(df3) <- "+init=epsg:4326"
             lab_pos3 <- sp::spTransform(df3, raster::crs(out$projection))
-            ##out$iwc$labels <- list(data = lab_pos3, labels = lab_pos3$a, col = iwccol, cex = 0.4, pos = 1, offset = -0.05)
             out$iwc$labels <- as_plotter(plotfun = "text", plotargs = list(x = lab_pos3, labels = lab_pos3$a, col = iwccol, cex = 0.4, pos = 1, offset = -0.05))
         }
         out$plot_sequence <- c(out$plot_sequence, "iwc")
@@ -146,7 +133,7 @@ SOmanagement <- function(CCAMLR = FALSE,
         #if (RBlab) {
         #    out$research_blocks$labels <- list(data = SOmap_data$CCAMLR_research_blocks, labels = SOmap_data$CCAMLR_research_blocks$GAR_Short_, col = rbcol, cex = 0.4, pos = 4, offset = 0.3)
         #}
-        out$research_blocks <- as_plotter(plotfun = "raster::plot", plotargs = list(x = SOmap_data$CCAMLR_research_blocks, border = rbcol, add = TRUE))
+        out$research_blocks <- as_plotter(plotfun = "plot", plotargs = list(x = SOmap_data$CCAMLR_research_blocks, border = rbcol, add = TRUE))
         out$plot_sequence <- c(out$plot_sequence, "research_blocks")
         if (RBlab) {
             out$research_blocks$labels <- as_plotter(plotfun = function(x, ...) text(sp::coordinates(x), ...), plotargs = list(x = SOmap_data$CCAMLR_research_blocks, labels = SOmap_data$CCAMLR_research_blocks$GAR_Short_, col = rbcol, cex = 0.4, pos = 4, offset = 0.3))
@@ -158,8 +145,8 @@ SOmanagement <- function(CCAMLR = FALSE,
         sprfmoa <- graticule::graticule(lats = c(-59.9, -57.9), lons = c(-155.3333, -150), proj = out$projection)
         sprfmob <- graticule::graticule(lats = c(-59.0, -60.0),lons = c(-142.1666667, -145.833333), proj = out$projection)
         ##out$sprfmo_research_blocks <- list(data = list(sprfmoa, sprfmob), col = sprfmocol)
-        out$sprfmo_research_blocks <- list(as_plotter(plotfun = "raster::plot", plotargs = list(x = sprfmoa, col = sprfmocol, add = TRUE)),
-                                           as_plotter(plotfun = "raster::plot", plotargs = list(x = sprfmob, col = sprfmocol, add = TRUE)))
+        out$sprfmo_research_blocks <- list(as_plotter(plotfun = "plot", plotargs = list(x = sprfmoa, col = sprfmocol, add = TRUE)),
+                                           as_plotter(plotfun = "plot", plotargs = list(x = sprfmob, col = sprfmocol, add = TRUE)))
         out$plot_sequence <- c(out$plot_sequence, "sprfmo_research_blocks")
     }
 
@@ -263,115 +250,7 @@ print.SOmap_management <- function(x, ...) {
     ## expects that an existing SOmap has already been plotted
     op <- par(mar = rep(0.01, 4), oma= rep(0.0, 4), mai= rep(0.0, 4))
     on.exit(par(op))
+    ## plot each layer
     plot_all(x)
-    ## plot each layer (if it's null, the plot_* function won't do anything)
-    ##plot_iwc(x$iwc)
-    ##plot_research_blocks(x$research_blocks)
-    ##plot_sprfmo(x$sprfmo_research_blocks)
-    ##plot_ssru(x$ccamlr_ssru)
-    ##plot_ssmu(x$ccamlr_ssmu)
-    ##plot_ccamlr_areas(x$ccamlr_statistical_areas)
-    ##plot_eez(x$eez)
-    ##plot_mpa(x$mpa)
-    ##plot_domains(x$ccamlr_planning_domains)
     invisible(x)
-}
-
-## each management layer has a specific function, which can be called by the SOmap_management plot method, or by the SOmap plot method
-## these functions are not exported to the user
-plot_iwc <- function(z) {
-    if (!is.null(z)) {
-        for (ii in seq_len(length(z$data))) {
-            lines(z$data[[ii]], col=z$col)
-        }
-        if (!is.null(z$labels)) {
-            text(z$labels$data, labels = z$labels$labels, col = z$labels$col, cex = z$labels$cex, pos = z$labels$pos, offset = z$labels$offset)
-        }
-    }
-    invisible(NULL)
-}
-
-plot_research_blocks <- function(z) {
-    if (!is.null(z)) {
-        raster::plot(z$data, border = z$border, add = TRUE)
-        if (!is.null(z$labels)) {
-            text(sp::coordinates(z$labels$data), labels = z$labels$labels, col = z$labels$col, cex = z$labels$cex, pos = z$labels$pos, offset = z$labels$offset)
-        }
-    }
-    invisible(NULL)
-}
-
-plot_sprfmo <- function(z) {
-    if (!is.null(z)) {
-        for (ii in seq_len(length(z$data))) {
-            raster::plot(z$data[[ii]], add = TRUE, col = z$col)
-        }
-    }
-    invisible(NULL)
-}
-
-plot_ssru <- function(z) {
-    if (!is.null(z)) {
-        plot(z$data, border = z$border, add = TRUE)
-        if (!is.null(z$labels)) {
-            text(sp::coordinates(z$labels$data), labels = z$labels$labels, col = z$labels$col, cex = z$labels$cex, pos = z$labels$pos, offset = z$labels$offset)
-        }
-    }
-    invisible(NULL)
-}
-
-plot_ssmu <- function(z) {
-    if (!is.null(z)) {
-        plot(z$data, border = z$border, add = TRUE)
-        if (!is.null(z$labels)) {
-            text(sp::coordinates(z$labels$data), labels = z$labels$labels, col = z$labels$col, cex = z$labels$cex, pos = z$labels$pos, offset = z$labels$offset)
-        }
-    }
-    invisible(NULL)
-}
-
-plot_ccamlr_areas <- function(z) {
-    if (!is.null(z)) {
-        plot(z$data, border = z$border, add = TRUE)
-        if (!is.null(z$labels)) {
-            ## labels is a list of stuff, plot each in turn
-            for (ii in seq_len(length(z$labels))) {
-                text(sp::coordinates(z$labels[[ii]]$data), labels = z$labels[[ii]]$labels, col = z$labels[[ii]]$col, cex = z$labels[[ii]]$cex, pos = z$labels[[ii]]$pos, offset = z$labels[[ii]]$offset)
-            }
-        }
-    }
-    invisible(NULL)
-}
-
-plot_eez <- function(z) {
-    if (!is.null(z)) {
-        plot(z$data, border = z$border, add = TRUE)
-        if (!is.null(z$labels)) {
-            text(sp::coordinates(z$labels$data), labels = z$labels$labels, col = z$labels$col, cex = z$labels$cex, pos = z$labels$pos, offset = z$labels$offset)
-        }
-    }
-    invisible(NULL)
-}
-
-plot_mpa <- function(z) {
-    if (!is.null(z)) {
-        plot(z$data, border = z$border, add = TRUE)
-        if (!is.null(z$labels)) {
-            text(sp::coordinates(z$labels$data), labels = z$labels$labels, col = z$labels$col, cex = z$labels$cex, pos = z$labels$pos, offset = z$labels$offset)
-        }
-    }
-    invisible(NULL)
-}
-
-plot_domains <- function(z) {
-    if (!is.null(z)) {
-        plot(z$data, border = z$border, add = TRUE)
-        if (!is.null(z$labels)) {
-            ## labels is a list, plot each in turn
-            for (ii in seq_len(length(z$labels))) {
-                text(sp::coordinates(z$labels[[ii]]$data), labels = z$labels[[ii]]$labels, col = z$labels[[ii]]$col, cex = z$labels[[ii]]$cex, pos = z$labels[[ii]]$pos, offset = z$labels[[ii]]$offset)
-            }
-        }
-    }
-    invisible(NULL)
 }
