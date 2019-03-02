@@ -68,11 +68,9 @@ SOmap <- function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, stra
     q <- ifelse(Bathleg, Trim+13, Trim+2)
     Bathy <- raster::trim(SOmap::latmask(Bathy, latitude = q))
     out <- list(projection = raster::projection(Bathy), target = raster::raster(Bathy), straight = straight, trim = Trim)
-    ##out$bathy <- list(plotfun = if (straight) "raster::plot(x, col = col, legend = legend, yaxt = yaxt, xaxt = xaxt, asp = asp)" else "raster::image(x, col = col, yaxt = yaxt, xaxt = xaxt, asp = asp)", plotenv = list(x = Bathy, col = bluepal, yaxt = "n", xaxt = "n", asp = 1))
     out$bathy <- as_plotter(plotfun = if (straight) "plot" else "image", plotargs = list(x = Bathy, col = bluepal, yaxt = "n", xaxt = "n", asp = 1))
     if (straight) out$bathy$plotargs$legend <- FALSE
 
-    ##out$box <- list(plotfun = "graphics::box(col = col)", plotenv = list(col = "white"))
     out$box <- as_plotter(plotfun = "graphics::box", plotargs = list(col = "white"))
     out$plot_sequence <- c("bathy", "box")
 
@@ -80,8 +78,6 @@ SOmap <- function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, stra
       xland <-sf::st_as_sf(SOmap::SOmap_data$continent)
       xland <- sf::st_buffer(xland, 0)
       buf <- sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), 111111 * (90-abs(Trim+2)))), crs = raster::projection(SOmap_data$continent))
-      ##out$coastline <- list(plotfun = "plot(x, col = col, border = border, add = add)",
-      ##                      plotenv = list(x = suppressWarnings(sf::st_intersection(buf, xland)$geometry), col = NA, border = "black", add = TRUE))
       out$coastline <- as_plotter(plotfun = "plot", plotargs = list(x = suppressWarnings(sf::st_intersection(buf, xland)$geometry), col = NA, border = "black", add = TRUE))
       out$plot_sequence <- c(out$plot_sequence, "coastline")
     }
@@ -90,16 +86,12 @@ SOmap <- function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, stra
     if (fronts) {
       xfront <-sf::st_as_sf(SOmap::SOmap_data$fronts_orsi)
       buf <- sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), 111111 * (90-abs(Trim+2)))), crs = raster::projection(SOmap_data$continent))
-      ##out$fronts <- list(plotfun = "plot", plotargs = list(x = suppressWarnings(sf::st_intersection(buf, xfront)$geometry), col = frontcols, add = TRUE))
-      ##out$fronts <- list(plotfun = "plot(x, col = col, add = add)", plotenv = list(x = suppressWarnings(sf::st_intersection(buf, xfront)$geometry), col = frontcols, add = TRUE))
-      ####out$fronts <- list(plotfun = "do.call(plot, c(list(x = x), plotargs))", plotenv = list(x = suppressWarnings(sf::st_intersection(buf, xfront)$geometry), plotargs = list(col = frontcols, add = TRUE)))
       out$fronts <- as_plotter(plotfun = "plot", plotargs = list(x = suppressWarnings(sf::st_intersection(buf, xfront)$geometry), col = frontcols, add = TRUE))
       out$plot_sequence <- c(out$plot_sequence, "fronts")
     }
-    
+
     ## Graticule grid
     if (Grats) {
-        ##out$graticule <- list(data = grat, col = gratcol, lty = 3, labels = list(data = gratlab, labels = gratlab$lab, col = gratcol, cex = 0.5))
         out$graticule <- as_plotter(plotfun = "plot", plotargs = list(x = grat, col = gratcol, lty = 3, add = TRUE))
         out$graticule$labels <- list(plotfun = "text", plotargs = list(x = gratlab, labels = parse(text = gratlab$lab), col = gratcol, cex = 0.5))
         out$plot_sequence <- c(out$plot_sequence, "graticule")
@@ -107,26 +99,7 @@ SOmap <- function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, stra
 
     ## Legend
     if (Bathleg) {
-##        out$bathy_legend <- list(
-##            mask = list(graticule = mask_graticule, col = "white", border = FALSE),
-##            ticks = list(ticks = btick, col = "black"),
-##            legend = list(legend = bleg, lwd = 2, col = bluepal2, border = FALSE),
-##            graticules = list(graticules = spud, border = FALSE, col = "white"),
-##            labels = list(data = lab_pos2, labels = lab_pos2$a, cex = 0.75, adj = 0.5))
-
-##        out$bathy_legend <- list(
-##            plotfun = "raster::plot(mask$graticule, border = mask$border, col = mask$col, add = TRUE) ## white mask
-##        raster::plot(ticks$ticks, add = TRUE, col = ticks$col)
-##        raster::plot(legend$legend, lwd = legend$lwd, add = TRUE)
-##        raster::plot(legend$legend, border = legend$border, col = legend$col, add = TRUE)
-##        raster::plot(graticules$graticules, border = graticules$border, col = graticules$col, add = TRUE)
-##        text(labels$data, labels = labels$labels, cex = labels$cex, adj = labels$adj)",
-##            plotenv = list(mask = list(graticule = mask_graticule, col = "white", border = FALSE),
-##                           ticks = list(ticks = btick, col = "black"),
-##                           legend = list(legend = bleg, lwd = 2, col = bluepal2, border = FALSE),
-##                           graticules = list(graticules = spud, border = FALSE, col = "white"),
-##                           labels = list(data = lab_pos2, labels = lab_pos2$a, cex = 0.75, adj = 0.5)
-##                           ))
+        ## TODO split this into multiple plot functions?
         out$bathy_legend <- as_plotter(
             plotfun = function(mask, ticks, legend, graticules, labels) {
                 plot(mask$graticule, border = mask$border, col = mask$col, add = TRUE) ## white mask
@@ -145,9 +118,7 @@ SOmap <- function(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE, stra
         out$plot_sequence <- c(out$plot_sequence, "bathy_legend")
     }
     if (Border) {
-        ##out$border <- list(data = bord, col = bordercol)
-        ##out$border <- list(plotfun = "raster::plot(x, col = col, add = add)", plotenv = list(x = bord, col = bordercol, add = TRUE))
-        out$border <- as_plotter(plotfun = "plot", plotargs = list(x = bord, col = bordercol, add = TRUE))
+        out$border <- as_plotter(plotfun = "plot", plotargs = list(x = bord, col = bordercol, border = "black", add = TRUE))
         out$plot_sequence <- c(out$plot_sequence, "border")
     }
     structure(out, class = "SOmap")
@@ -167,53 +138,5 @@ print.SOmap <- function(x, ...) {
     on.exit(par(op))
     ## iterate through plot_sequence
     plot_all(x)
-    ## Plot bathymetry
-#    eval(parse(text = x$bathy$plotfun), envir = x$bathy$plotenv)
-    #if (x$straight) {
-    #    raster::plot(x$bathy$data, col = x$bathy$col, legend = FALSE, yaxt = "n", xaxt = "n", asp = 1)
-    #} else {
-    #    raster::image(x$bathy$data, col = x$bathy$col, yaxt = "n", xaxt = "n", asp = 1)
-    #}
-#    eval(parse(text = x$box$plotfun), envir = x$box$plotenv)
-
-#    if (!is.null(x$coastline)) eval(parse(text = x$coastline$plotfun), envir = x$coastline$plotenv)
-
-#    plot_iwc(x$iwc)
-
-#    ## fronts
-#    if (!is.null(x$fronts)) {
-#        eval(parse(text = x$fronts$plotfun), envir = x$fronts$plotenv)
-#        ##plot(x$fronts$data$geometry, add = TRUE, col = x$fronts$linecol)
-#    }
-
-#    ## Graticule grid
-#    if (!is.null(x$graticule)) {
-#        raster::plot(x$graticule$data, add = TRUE, col = x$graticule$col, lty = x$graticule$lty)
-#        text(x$graticule$labels$data, lab = parse(text = x$graticule$labels$labels), col = x$graticule$labels$col, cex = x$graticule$labels$cex)
-#    }
-
-    ## the plot_* function for each management layer is defined in SOmanagement.R
-#    plot_research_blocks(x$research_blocks)
-#    plot_sprfmo(x$sprfmo_research_blocks)
-#    plot_ssru(x$ccamlr_ssru)
-#    plot_ssmu(x$ccamlr_ssmu)
-#    plot_ccamlr_areas(x$ccamlr_statistical_areas)
-#    plot_eez(x$eez)
-#    plot_mpa(x$mpa)
-#    plot_domains(x$ccamlr_planning_domains)
-
-    ## Legend
-#    if (!is.null(x$bathy_legend)) {
-#        raster::plot(x$bathy_legend$mask$graticule, border = x$bathy_legend$mask$border, col = x$bathy_legend$mask$col, add = TRUE) ## white mask
-#        raster::plot(x$bathy_legend$ticks$ticks, add = TRUE, col = x$bathy_legend$ticks$col)
-#        raster::plot(x$bathy_legend$legend$legend, lwd = x$bathy_legend$legend$lwd, add = TRUE)
-#        raster::plot(x$bathy_legend$legend$legend, border = x$bathy_legend$legend$border, col = x$bathy_legend$legend$col, add = TRUE)
-#        raster::plot(x$bathy_legend$graticules$graticules, border = x$bathy_legend$graticules$border, col = x$bathy_legend$graticules$col, add = TRUE)
-#        text(x$bathy_legend$labels$data, labels = x$bathy_legend$labels$labels, cex = x$bathy_legend$labels$cex, adj = x$bathy_legend$labels$adj)
-#    }
-
-#    if (!is.null(x$border)) {
-#        raster::plot(x$border$data, col = x$border$col, add = TRUE)
-#    }
     invisible(x)
 }
