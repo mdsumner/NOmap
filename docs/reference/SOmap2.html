@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Southern Ocean Map 2 — SOmap2 â€¢ SOmap</title>
+<title>Southern Ocean Map 2 — SOmap2 • SOmap</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,14 +25,17 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Southern Ocean Map 2 — SOmap2" />
 
 <meta property="og:description" content="Function for creating round Southern Ocean maps with inbuild base layers." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -55,8 +58,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">SOmap</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">SOmap</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -69,7 +76,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -81,6 +88,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -88,15 +96,19 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Southern Ocean Map 2</h1>
+    <small class="dont-index">Source: <a href='https://github.com/AustralianAntarcticDivision/SOmap/blob/master/R/SOmap2.R'><code>R/SOmap2.R</code></a></small>
+    <div class="hidden name"><code>SOmap2.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Function for creating round Southern Ocean maps with inbuild base layers.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>SOmap2</span>(<span class='kw'>Bathleg</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>land</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>CCAMLR</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>CCAMLRlab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>SSRU</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>SSRUlab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>SSMU</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
@@ -110,7 +122,7 @@
   <span class='kw'>mpacol</span> <span class='kw'>=</span> <span class='st'>"yellow"</span>, <span class='kw'>bordercol</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"white"</span>, <span class='st'>"black"</span>),
   <span class='kw'>gratcol</span> <span class='kw'>=</span> <span class='st'>"grey70"</span>, <span class='kw'>iwccol</span> <span class='kw'>=</span> <span class='st'>"blue"</span>, <span class='kw'>domcol</span> <span class='kw'>=</span> <span class='st'>"magenta"</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -294,5 +306,8 @@
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+
