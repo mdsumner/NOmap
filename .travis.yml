@@ -2,7 +2,7 @@
 
 language: r
 sudo: enabled
-dist: trusty
+dist: xenial
 cache:
   - packages
   - ccache
