@@ -82,6 +82,7 @@ projection.SOmap <- function(x, asText = TRUE) {
 #'
 #' bmap <- SOmap(Trim = -35)
 #'
+#' ## works great!
 #' reproj(bmap, "+proj=stere +lat_0=-90 +lon_0=147 +lat_ts=-71 +datum=WGS84")
 #' ## these aren't exactly ideal
 #' reproj(bmap, "+proj=ortho +lat_0=-70")
@@ -89,14 +90,15 @@ projection.SOmap <- function(x, asText = TRUE) {
 reproj.SOmap <- function(x, target, ..., source = NULL) {
   if (missing(target)) stop("'target' projection string required")
   if (!is.null(source)) warning("source ignored, should be NULL for SOmap objects")
-  rast <- try(raster::projectRaster(x$bathy$plotargs$x, crs = target), silent = TRUE)
-  if (inherits(rast, "try-error")) {
-    stop("unable to reproject raster sensibly")
+  if (!is.null(x$bathy)) {
+   rast <- try(reproj(x$bathy$plotargs$x, target = target), silent = TRUE)
+    if (inherits(rast, "try-error")) {
+     stop("unable to reproject raster sensibly")
+   }
+   x$bathy$plotargs$x <- rast
+   x$target <- raster::raster(rast)
   }
-  x$bathy$plotargs$x <- rast
-  x$target <- raster::raster(x$bathy$plotargs$x)
-  ## box?
-  x$coastline$plotargs$x <- sf::st_transform(x$coastline$plotargs$x, target)
+  x$coastline$plotargs$x <- reproj(x$coastline$plotargs$x, target)
   x$projection <- target
   x
 }
@@ -105,15 +107,33 @@ reproj.SOmap <- function(x, target, ..., source = NULL) {
 reproj.SOauto_map <- function(x, target, ..., source = NULL) {
   if (missing(target)) stop("'target' projection string required")
   if (!is.null(source)) warning("source ignored, should be NULL for SOmap objects")
-  x$bathy <- raster::projectRaster(x$bathy, crs = target)
-  x$target <- raster::raster(x$bathy)
-  ## box?
-  if (!is.null(x$coastline$data)) x$coastline$data <- sp::spTransform(x$coastline$data, target)
-  if (!is.null(x$graticule)) x$graticule <- sf::st_transform(x$graticule, target)
+  if (!is.null(x$bathy)) {
+    rast <- try(reproj(x$bathy, target = target), silent = TRUE)
+   if (inherits(rast, "try-error")) {
+     stop("unable to reproject raster sensibly")
+   }
+   x$bathy <- rast
+   x$target <- raster::raster(rast)
+  }
+  if (!is.null(x$coastline$data)) x$coastline$data <- reproj(x$coastline$data, target)
+  if (!is.null(x$graticule)) x$graticule <- reproj(x$graticule, target)
 
   if (!is.null(x$lines_data)) x$lines_data <- reproj(x$lines_data, target, source = x$projection)
   if (!is.null(x$points_data)) x$points_data <- reproj(x$points_data, target, source = x$projection)
 
   x$projection <- target
   x
+}
+
+reproj.BasicRaster <- function(x, target, ..., source = NULL) {
+  raster::projectRaster(x, crs = target)
+}
+reproj.Spatial <- function(x, target, ..., source = NULL) {
+  sp::spTransform(x, target)
+}
+reproj.sf <- function(x, target, ..., source = NULL) {
+  sf::st_transform(x, target)
+}
+reproj.sfc <- function(x, target, ..., source = NULL) {
+  sf::st_transform(x, target)
 }
