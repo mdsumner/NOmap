@@ -24,7 +24,8 @@ Imports:
     sf,
     spbabel,
     spex,
-    tabularaster
+    tabularaster,
+    reproj
 Suggests:
     adehabitatLT,
     covr,
