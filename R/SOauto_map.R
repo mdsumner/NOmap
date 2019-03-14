@@ -267,7 +267,8 @@ print.SOauto_map <- function(x, ...) {
     pp <- aspectplot.default(c(raster::xmin(x$target), raster::xmax(x$target)), c(raster::ymin(x$target), raster::ymax(x$target)), asp = aspect, mar = par("mar")/2.5)
     ## reset par(pp) when we exit this function
     on.exit(par(pp))
-
+    ## record current crs
+    SOcrs(x$projection)
     newextent <- raster::extent(par("usr"))
 
     if (!is.null(x$bathy)) {

@@ -44,8 +44,11 @@ SOproj <- function(lon, lat, prj, crs, data){
   }
 
   if (missing(crs)) {
-    message("No CRS provided, assuming SOmap default")
-    crs <- "+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0"
+    crs <-  SOcrs()
+    if (is.null(crs)) {
+      message("No CRS provided or available, assuming SOmap default")
+      crs <- "+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0"
+    }
   }
   if (missing(data)) data <- 1
   xy0 <- reproj::reproj(cbind(lon, lat), target = crs, source = prj)
