@@ -39,6 +39,7 @@
 #' @examples
 #' SOauto_map(c(0, 50), c(-70, -50))
 #' SOauto_map(runif(10, 130, 200), runif(10, -80, -10))
+#' SOplot(c(147, 180), c(-42, -60), pch = 19, cex = 2,col = "firebrick")
 #' SOauto_map(runif(10, 130, 200), runif(10, -85, -60))
 #' ## save the result to explore later!
 #' protomap <- SOauto_map(runif(10, 60, 160), runif(10, -73, -50))
@@ -266,7 +267,7 @@ print.SOauto_map <- function(x, ...) {
     aspect <- if (raster::isLonLat(x$target)) 1/cos(mean(c(raster::xmin(x$target), raster::xmax(x$target))) * pi/180) else 1
     pp <- aspectplot.default(c(raster::xmin(x$target), raster::xmax(x$target)), c(raster::ymin(x$target), raster::ymax(x$target)), asp = aspect, mar = par("mar")/2.5)
     ## reset par(pp) when we exit this function
-    on.exit(par(pp))
+    #on.exit(par(pp))
     ## record current crs
     SOcrs(x$projection)
     newextent <- raster::extent(par("usr"))

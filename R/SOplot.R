@@ -4,16 +4,16 @@
 #' @description
 #' Reproject and add point layers to either SOmap or SOauto_map layers.
 #'
-#' @param lon
-#' longitude object
+#' @param x
+#' longitude vector, or object with coordinates
 #'
-#' @param lat
-#' lattitude object
+#' @param y
+#' lattitude vector, or missing if x is an object
 #'
-#' @param prj
+#' @param source
 #' starting projection (default = longlat)
 #'
-#' @param crs
+#' @param target
 #' target projection (default = stereo)
 #'
 #' @param add
@@ -31,13 +31,13 @@
 #'  y<-c(-50, -75, -45, -60)
 #'  map<-SOauto_map(x,y, input_lines = FALSE)
 #'  map
-#'  SOplot(lon=y, lat=x,crs = map$projection,pch=19,col=6)
+#'  SOplot(x = x, y = y, target = map$projection,pch=19,col=6)
 #' }
 #' @export
 #'
 
 
-SOplot<-function(lon, lat,prj, crs,add=TRUE,...){
-  SObj<-SOproj(lon,lat,prj, crs)
-  plot(SObj,add=add,...)
+SOplot<-function(x, y = NULL, target = NULL, ..., source = NULL, add=TRUE){
+  SObj <- SOproj(x = x, y= y, target = target, source = source, ...)
+  plot(SObj, add=add, ...)
 }
