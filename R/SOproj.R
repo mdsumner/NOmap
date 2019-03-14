@@ -31,7 +31,9 @@
 #'  plot(pnts, pch = 19, col = 3, add = TRUE)
 #' }
 #' @export
-#'
+#' @importFrom reproj reproj
+#' @importFrom raster projection<-
+#' @importFrom sp coordinates<-
 SOproj <- function(lon, lat, prj, crs, data){
   if (missing(lon) || missing(lat)) {
       stop("lon and lat must be provided")
@@ -41,16 +43,16 @@ SOproj <- function(lon, lat, prj, crs, data){
     prj <- "+proj=longlat +datum=WGS84"
   }
 
-  if (missing(crs)) message("No CRS provided, assuming SOmap default")
-  if (missing(data)) data <- 1
-  df <- data.frame(lon = lon, lat = lat, data = data)
-  sp::coordinates(df) <- c("lon", "lat")
-
-  raster::projection(df) <- prj
-  if(missing(crs)) {
-      crs <- "+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0"
+  if (missing(crs)) {
+    message("No CRS provided, assuming SOmap default")
+    crs <- "+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0"
   }
-  sp::spTransform(df, sp::CRS(crs))
+  if (missing(data)) data <- 1
+  xy0 <- reproj::reproj(cbind(lon, lat), target = crs, source = prj)
+  df <- data.frame(x = xy0[,1], y = xy0[,2], data = data)
+  sp::coordinates(df) <- c("x", "y")
+  raster::projection(df) <- crs
+  df
 }
 
 #' @importFrom raster projection
@@ -66,10 +68,10 @@ projection.SOmap <- function(x, asText = TRUE) {
 #' @section Warning:
 #' So many ...
 #' @seealso reproj::reproj
-#' @export reproj
 #' @inheritParams reproj::reproj
 #' @export
-#' @aliases reproj.SOauto_map
+#' @export reproj
+#' @aliases reproj reproj.SOauto_map
 #' @importFrom reproj reproj
 #' @importFrom raster projectRaster raster
 #' @examples

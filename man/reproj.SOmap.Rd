@@ -2,6 +2,7 @@
 % Please edit documentation in R/SOproj.R
 \name{reproj.SOmap}
 \alias{reproj.SOmap}
+\alias{reproj}
 \alias{reproj.SOauto_map}
 \title{Reproject SOmap}
 \usage{
