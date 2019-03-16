@@ -70,7 +70,11 @@ SOproj <- function(x, y = NULL, target = NULL, data, ..., source = NULL){
   }
   out
 }
-
+#' Projection metadata
+#'
+#' Obtain the projection used in a SOmap object.
+#' @inheritParams raster::raster
+#' @export
 #' @importFrom raster projection
 projection.SOmap <- function(x, asText = TRUE) {
  raster::projection(x$projection, asText = asText)
@@ -83,7 +87,7 @@ projection.SOmap <- function(x, asText = TRUE) {
 #'
 #' @section Warning:
 #' So many ...
-#' @seealso reproj::reproj
+#' @seealso [reproj::reproj()]
 #' @inheritParams reproj::reproj
 #' @export
 #' @export reproj
@@ -140,16 +144,23 @@ reproj.SOauto_map <- function(x, target, ..., source = NULL) {
   x$projection <- target
   x
 }
-
+#' @name reproj
+#' @export
 reproj.BasicRaster <- function(x, target, ..., source = NULL) {
   raster::projectRaster(x, crs = target)
 }
+#' @name reproj
+#' @export
 reproj.Spatial <- function(x, target, ..., source = NULL) {
   sp::spTransform(x, target)
 }
+#' @name reproj
+#' @export
 reproj.sf <- function(x, target, ..., source = NULL) {
   sf::st_transform(x, target)
 }
+#' @name reproj
+#' @export
 reproj.sfc <- function(x, target, ..., source = NULL) {
   sf::st_transform(x, target)
 }
