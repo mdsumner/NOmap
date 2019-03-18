@@ -7,41 +7,47 @@
 SOmap(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE,
   straight = FALSE, land = TRUE, fronts = FALSE,
   frontcols = c("hotpink", "orchid", "plum"), bordercol = c("white",
-  "black"), gratcol = "grey70")
+  "black"), borderwidth = 2, gratcol = "grey70")
 }
 \arguments{
-\item{Bathleg}{Insert the bathymetry legend.}
+\item{Bathleg}{logical: if \code{TRUE}, insert the bathymetry legend}
 
-\item{Border}{Insert longitude border.}
+\item{Border}{logical: if \code{TRUE}, insert longitude border}
 
-\item{Trim}{Longitude to trim map to.}
+\item{Trim}{numeric: longitude to trim map to}
 
-\item{Grats}{Insert graticule grid.}
+\item{Grats}{logical: if \code{TRUE}, insert graticule grid}
 
-\item{straight}{Do you need a blank space on the side for a straight legend.}
+\item{straight}{logical: if \code{TRUE}, leave a blank space on the side for a straight legend}
 
-\item{land}{Plot land boundary}
+\item{land}{logical: if \code{TRUE}, plot coastline}
 
-\item{fronts}{Plot ocean fronts: Subantarctic Front, Polar Front, Southern Antarctic Circumpolar Current Front}
+\item{fronts}{logical: if \code{TRUE}, plot ocean fronts (Subantarctic Front, Polar Front, Southern Antarctic Circumpolar Current Front)}
 
-\item{frontcols}{colors for fronts
+\item{frontcols}{character: colours for fronts}
 
- @return
-Produces at the very base a round bathymetry map of the southern hemisphere.}
+\item{bordercol}{character: colours for longitude border}
 
-\item{bordercol}{Colors for longitude border; Default is c("black","white").}
+\item{borderwidth}{numeric: thickness (in degrees of latitude) of the border}
 
-\item{gratcol}{Color for graticule grid; Default is grey.}
+\item{gratcol}{string: colour for graticule grid}
+}
+\value{
+Produces at the very least a round bathymetry map of the southern hemisphere.
 }
 \description{
 Function for creating round Southern Ocean maps.
 }
 \examples{
 \dontrun{
+<<<<<<< HEAD
 tfile <- tempfile("SOmap", fileext = ".png")
 png(tfile, width=22, height=20, units='cm', res=600)
 SOmap(Trim=-45, Grats=TRUE)
 dev.off()
 unlink(tfile)
+=======
+  SOmap(Trim = -45, Grats = TRUE)
+>>>>>>> 742e85d061622921e61eeeba7f962c532a605a9f
 }
 }

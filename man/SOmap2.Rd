@@ -8,13 +8,13 @@ SOmap2(Bathleg = TRUE, land = TRUE, CCAMLR = FALSE,
   CCAMLRlab = FALSE, SSRU = FALSE, SSRUlab = FALSE, SSMU = FALSE,
   SSMUlab = FALSE, RB = FALSE, RBlab = FALSE, SPRFMORB = FALSE,
   Border = TRUE, Trim = -45, Grats = FALSE, EEZ = FALSE,
-  EEZlab = FALSE, MPA = FALSE, MPAlab = FALSE, IWC = FALSE,
-  IWClab = FALSE, straight = FALSE, fronts = FALSE,
-  frontcols = c("hotpink", "orchid", "plum"), rbcol = 3,
-  sprfmocol = "grey50", ccamlrcol = 2, ssrucol = "grey50",
-  ssmucol = "grey70", eezcol = "maroon", mpacol = "yellow",
-  bordercol = c("white", "black"), gratcol = "grey70",
-  iwccol = "blue")
+  EEZlab = FALSE, MPA = FALSE, MPAlab = FALSE, Domains = FALSE,
+  Domainslab = FALSE, IWC = FALSE, IWClab = FALSE,
+  straight = FALSE, fronts = FALSE, frontcols = c("hotpink",
+  "orchid", "plum"), rbcol = 3, sprfmocol = "grey50", ccamlrcol = 2,
+  ssrucol = "grey50", ssmucol = "grey70", eezcol = "maroon",
+  mpacol = "yellow", bordercol = c("white", "black"),
+  gratcol = "grey70", iwccol = "blue", domcol = "magenta")
 }
 \arguments{
 \item{Bathleg}{Insert the bathymetry legend.}
@@ -53,6 +53,10 @@ SOmap2(Bathleg = TRUE, land = TRUE, CCAMLR = FALSE,
 
 \item{MPAlab}{Insert CCAMLE Marine Protected Area labels.}
 
+\item{Domains}{Insert CCAMLR Marine Protected Areas planning Domains.}
+
+\item{Domainslab}{Insert CCAMLR Marine Protected Area planning Domains labels.}
+
 \item{IWC}{Insert International Whaling Commission boundaries.}
 
 \item{IWClab}{Insert International Whaling Commission labels.}
@@ -82,6 +86,8 @@ SOmap2(Bathleg = TRUE, land = TRUE, CCAMLR = FALSE,
 \item{gratcol}{Color for graticule grid; Default is grey.}
 
 \item{iwccol}{Color for IWC boundaries; Default is blue.}
+
+\item{domcol}{Color for the Domain boundaries. Default is magenta.}
 }
 \value{
 Produces at the very base a round bathymetry map of the southern hemisphere.
@@ -91,10 +97,14 @@ Function for creating round Southern Ocean maps with inbuild base layers.
 }
 \examples{
 \dontrun{
+<<<<<<< HEAD
 tfile <- tempfile("SOmap", fileext = ".png")
 png(tfile, width=22, height=20, units='cm', res=600)
 SOmap(CCAMLRlab= F,CCAMLR=T, ccamlrcol = 1, Trim=-45)
 dev.off()
 unlink(tfile)
+=======
+  SOmap2(CCAMLR = TRUE, MPA = TRUE, Trim = -45)
+>>>>>>> 742e85d061622921e61eeeba7f962c532a605a9f
 }
 }

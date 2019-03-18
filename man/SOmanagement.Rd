@@ -6,12 +6,12 @@
 \usage{
 SOmanagement(CCAMLR = FALSE, CCAMLRlab = FALSE, SSRU = FALSE,
   SSRUlab = FALSE, SSMU = FALSE, SSMUlab = FALSE, RB = FALSE,
-  RBlab = FALSE, SPRFMORB = FALSE, Trim = -45, Grats = FALSE,
-  EEZ = FALSE, EEZlab = FALSE, MPA = FALSE, MPAlab = FALSE,
-  IWC = FALSE, IWClab = FALSE, rbcol = 3, sprfmocol = "grey50",
-  ccamlrcol = 2, ssrucol = "grey50", ssmucol = "grey70",
-  eezcol = "maroon", mpacol = "yellow", bordercol = c("white",
-  "black"), gratcol = "grey70", iwccol = "blue")
+  RBlab = FALSE, SPRFMORB = FALSE, Trim = -45, EEZ = FALSE,
+  EEZlab = FALSE, MPA = FALSE, MPAlab = FALSE, IWC = FALSE,
+  IWClab = FALSE, Domains = FALSE, Domainslab = FALSE,
+  rbcol = "green", sprfmocol = "grey50", ccamlrcol = "red",
+  ssrucol = "grey50", ssmucol = "grey70", eezcol = "maroon",
+  mpacol = "yellow", iwccol = "blue", domcol = "magenta")
 }
 \arguments{
 \item{CCAMLR}{Insert the CCAMLR boundaries.}
@@ -34,8 +34,6 @@ SOmanagement(CCAMLR = FALSE, CCAMLRlab = FALSE, SSRU = FALSE,
 
 \item{Trim}{Longitude to trim map to.}
 
-\item{Grats}{Insert graticule grid.}
-
 \item{EEZ}{Insert Exclusive Economic Zones.}
 
 \item{EEZlab}{Insert Exclusive Economic Zone labels.}
@@ -47,6 +45,10 @@ SOmanagement(CCAMLR = FALSE, CCAMLRlab = FALSE, SSRU = FALSE,
 \item{IWC}{Insert International Whaling Commission boundaries.}
 
 \item{IWClab}{Insert International Whaling Commission labels.}
+
+\item{Domains}{Insert CCAMLR Marine Protected Area planning Domains.}
+
+\item{Domainslab}{Insert CCAMLR Marine Protected Area planning Domains labels.}
 
 \item{rbcol}{Color for CCAMLR research blocks.}
 
@@ -62,11 +64,9 @@ SOmanagement(CCAMLR = FALSE, CCAMLRlab = FALSE, SSRU = FALSE,
 
 \item{mpacol}{Color for CCAMLR Marine Protected Areas; Default is yellow.}
 
-\item{bordercol}{Colors for longitude border; Default is c("black","white").}
-
-\item{gratcol}{Color for graticule grid; Default is grey.}
-
 \item{iwccol}{Color for IWC boundaries; Default is blue.}
+
+\item{domcol}{Color for the Domain boundaries. Default is magenta.}
 }
 \value{
 Produces at the very base a round bathymetry map of the southern hemisphere.
@@ -76,11 +76,16 @@ Function for adding management layers to SOmap
 }
 \examples{
 \dontrun{
+<<<<<<< HEAD
 tfile <- tempfile("SOmap", fileext = ".png")
 png(tfile, width=22, height=20, units='cm', res=600)
 SOmap(Trim=-45)
 SOmanagement(CCAMLR=T, CCAMLRlab=T, Trim=-45)
 dev.off()
 unlink(tfile)
+=======
+  SOmap(Trim = -45)
+  SOmanagement(CCAMLR = TRUE, CCAMLRlab = TRUE, Trim = -45)
+>>>>>>> 742e85d061622921e61eeeba7f962c532a605a9f
 }
 }

@@ -54,23 +54,22 @@ VME_polygons$comment <- stringi::stri_enc_toascii(VME_polygons$comment)
 chk <- sapply(names(VME_polygons), function(z) length(tools::showNonASCII(VME_polygons[[z]])) > 0)
 if (any(chk)) stop("non-ASCII chars in VME_polygons data")
 
+##<Title>VME Fine Scale Rectangles (FSR)</Title>
+## VME Fine-Scale Rectangles identified under CM 22-07.
+files <- get_unzip_data("https://gis.ccamlr.org/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:vme_fsr&outputFormat=shape-zip", fname = "vme_fsr.zip")
+VME_fsr <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
+chk <- sapply(names(VME_fsr), function(z) length(tools::showNonASCII(VME_fsr[[z]])) > 0)
+if (any(chk)) stop("non-ASCII chars in VME_fsr data")
+
+##<Title>VME Risk Areas</Title>
+##<Abstract>VME Risk Areas declared under CM 22-07.</Abstract>
+files <- get_unzip_data("https://gis.ccamlr.org/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:vme_risk_areas&outputFormat=shape-zip", fname = "vme_risk_areas.zip")
+VME_risk_areas <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
+chk <- sapply(names(VME_risk_areas), function(z) length(tools::showNonASCII(VME_risk_areas[[z]])) > 0)
+if (any(chk)) stop("non-ASCII chars in VME_risk_areas data")
+
 if (FALSE) {
-    ## other possible layers, not yet included here:
-
-    ##<Title>VME Fine Scale Rectangles (FSR)</Title>
-    ## VME Fine-Scale Rectangles identified under CM 22-07.
-    files <- get_unzip_data("https://gis.ccamlr.org/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:vme_fsr&outputFormat=shape-zip", fname = "vme_fsr.zip")
-    VME_fsr <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
-    chk <- sapply(names(VME_fsr), function(z) length(tools::showNonASCII(VME_fsr[[z]])) > 0)
-    if (any(chk)) stop("non-ASCII chars in VME_fsr data")
-
-    ##<Title>VME Risk Areas</Title>
-    ##<Abstract>VME Risk Areas declared under CM 22-07.</Abstract>
-    files <- get_unzip_data("https://gis.ccamlr.org/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:vme_risk_areas&outputFormat=shape-zip", fname = "vme_risk_areas.zip")
-    VME_risk_areas <- spTransform(raster::shapefile(files[grepl("shp$", files)]), CRS(psproj))
-    chk <- sapply(names(VME_risk_areas), function(z) length(tools::showNonASCII(VME_risk_areas[[z]])) > 0)
-    if (any(chk)) stop("non-ASCII chars in VME_risk_areas data")
-
+    ## available but not yet included here
     ##<Title>VME lines</Title>
     ##Vulnerable Marine Ecosystem (VME) transects. VMEs notified under CM 22-06 (encounters with VMEs).
     files <- get_unzip_data("https://gis.ccamlr.org/geoserver/gis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gis:vme_lines&outputFormat=shape-zip", fname = "vme_lines.zip")
@@ -100,6 +99,18 @@ continent <- continent %>% st_as_sf() %>%  st_buffer(dist = 0) %>%
   group_by(continent) %>% summarize() %>% st_transform(psproj) %>% as("Spatial")
 
 #plot(st_as_sf(continent[2, ]))
+
+## alternative continent with actual ice shelves, eh!
+notANT <- sf::st_as_sf(continent[continent$continent != "Antarctica",])
+notANT <- sf::st_buffer(notANT, 0)
+##buf <- sf::st_sf(a = 1, geometry = sf::st_sfc(sf::st_buffer(sf::st_point(cbind(0, 0)), 111111 * (90-abs(q+3)))), crs = psproj)
+antonly <- quantarcticR::qa_get("ADD Coastlines (low)", verbose = TRUE, cache = "persistent")
+antonly <- sf::st_as_sf(antonly)
+coast_ice <- antonly$geometry[antonly$SURFACE != "land"] ## ice shelves, tongues, rumples, etc
+coast_land <- sf::st_union(antonly$geometry[antonly$SURFACE == "land"]) ## collapse down
+coast_land <- sf::st_union(c(coast_land, st_geometry(notANT))) ## join with the not-Antarctic land
+## then we can plot coast_ice with appropriate col (fill colour) and border (line colour) separately to coast_land with its own fill and border
+## NB if we wanted to keep non-Antarctic land separate from Antarctic land, we could do that here, and then they could be potentially plotted in different colours (or handled differently in other ways)
 
 
 g <- graticule::graticule(seq(-180, 180, by = 5), c(-84, 0), proj = psproj, tiles = TRUE)
@@ -181,7 +192,7 @@ GSHHS_i_L1 <- spTransform(GSHHS_i_L1, psproj)
 
 SOmap_data <- list(CCAMLR_MPA = MPA1, CCAMLR_statistical_areas = CCAMLR1, CCAMLR_research_blocks = RB1,
                    CCAMLR_SSRU = SSRU1, CCAMLR_SSMU = SSMU1,
-                   CCAMLR_VME_polygons = VME_polygons,
+                   CCAMLR_VME_polygons = VME_polygons, CCAMLR_VME_fsr = VME_fsr, CCAMLR_VME_risk_areas = VME_risk_areas,
                    CCAMLR_planning_domains = planning_domains,
                    continent = continent, fronts_orsi = fronts_orsi,
                    seaice_feb = seaice_feb, seaice_oct = seaice_oct,

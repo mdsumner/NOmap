@@ -23,8 +23,6 @@
 #' Insert the SPRFMO toothfish research block boundaries.
 #' @param Trim
 #' Longitude to trim map to.
-#' @param Grats
-#' Insert graticule grid.
 #' @param EEZ
 #' Insert Exclusive Economic Zones.
 #' @param EEZlab
@@ -33,6 +31,10 @@
 #' Insert CCAMLR Marine Protected Areas.
 #' @param MPAlab
 #' Insert CCAMLR Marine Protected Area labels.
+#' @param Domains
+#' Insert CCAMLR Marine Protected Area planning Domains.
+#' @param Domainslab
+#' Insert CCAMLR Marine Protected Area planning Domains labels.
 #' @param IWC
 #' Insert International Whaling Commission boundaries.
 #' @param IWClab
@@ -51,12 +53,10 @@
 #' Color for Exclusive Economic Zone boundaries; Default is maroon.
 #' @param mpacol
 #' Color for CCAMLR Marine Protected Areas; Default is yellow.
-#' @param bordercol
-#' Colors for longitude border; Default is c("black","white").
-#' @param gratcol
-#' Color for graticule grid; Default is grey.
 #' @param iwccol
 #' Color for IWC boundaries; Default is blue.
+#' @param domcol
+#' Color for the Domain boundaries. Default is magenta.
 #'
 #' @return
 #' Produces at the very base a round bathymetry map of the southern hemisphere.
@@ -69,136 +69,191 @@
 #' SOmanagement(CCAMLR=T, CCAMLRlab=T, Trim=-45)
 #' dev.off()
 #' unlink(tfile)
+#'   SOmap(Trim = -45)
+#'   SOmanagement(CCAMLR = TRUE, CCAMLRlab = TRUE, Trim = -45)
 #' }
 #' @export
-#'
-
-SOmanagement<-function(CCAMLR= FALSE,
-                CCAMLRlab= FALSE,
-                SSRU= FALSE,
-                SSRUlab = FALSE,
-                SSMU= FALSE,
-                SSMUlab= FALSE,
-                RB= FALSE,
-                RBlab= FALSE,
-                SPRFMORB= FALSE,
-                Trim= -45,
-                Grats= FALSE,
-                EEZ=FALSE,
-                EEZlab=FALSE,
-                MPA=FALSE,
-                MPAlab=FALSE,
-                IWC=FALSE,
-                IWClab=FALSE,
-                rbcol=3,
-                sprfmocol='grey50',
-                ccamlrcol=2,
-                ssrucol="grey50",
-                ssmucol="grey70",
-                eezcol="maroon",
-                mpacol= "yellow",
-                bordercol=c("white","black"),
-                gratcol="grey70",
-                iwccol="blue"){
-
+SOmanagement <- function(CCAMLR = FALSE,
+                         CCAMLRlab = FALSE,
+                         SSRU = FALSE,
+                         SSRUlab = FALSE,
+                         SSMU = FALSE,
+                         SSMUlab = FALSE,
+                         RB = FALSE,
+                         RBlab = FALSE,
+                         SPRFMORB = FALSE,
+                         Trim = -45,
+                         EEZ = FALSE,
+                         EEZlab = FALSE,
+                         MPA = FALSE,
+                         MPAlab = FALSE,
+                         IWC = FALSE,
+                         IWClab = FALSE,
+                         Domains = FALSE,
+                         Domainslab = FALSE,
+                         rbcol = "green",
+                         sprfmocol = "grey50",
+                         ccamlrcol = "red",
+                         ssrucol = "grey50",
+                         ssmucol = "grey70",
+                         eezcol = "maroon",
+                         mpacol = "yellow",
+                         iwccol = "blue",
+                         domcol = "magenta") {
     ## data
     SOmap_data <- NULL
     Bathy <- NULL
     data("SOmap_data", package = "SOmap", envir = environment())
     data("Bathy", package = "SOmap", envir = environment())
 
-  #### Set up color palette for bathy #
-  ramp2<-grDevices::colorRampPalette(c("#54A3D1","#60B3EB","#78C8F0","#98D1F5","#B5DCFF","#BDE1F0","#CDEBFA","#D6EFFF","#EBFAFF","grey92","grey94","grey96", "white"))
-  bluepal<-ramp2(68)
-  bluepal2<-ramp2(80)
-  #### Setup color border #
-  bord<-graticule::graticule(lons = seq(-180,180, by=15),lats = c(Trim+2,Trim), tiles = TRUE, proj = raster::projection(Bathy))
-  ## Graticule dots #
-  xx <- c(0,45, 90,135, 180,225, 270,315, 360); yy <- c(-90,-75, -60, -45, Trim)
-  grat <- graticule::graticule(xx, yy, proj=raster::projection(Bathy))
-  gratlab <- graticule::graticule_labels(lons=180,lats = c(-45,-30,-60,-75), xline=180, yline=-15, proj=raster::projection(Bathy))
-  #### CCAMLR Labels
-  cclabs<-c("88.3","48.4","88.2","48.2","48.3","58.4.3a","58.4.3b","58.5.2","48.5","48.6","58.4.1","88.1","58.4.4a","58.7","58.6","58.5.1","58.4.4b")
+    ## CCAMLR Labels
+    cclabs<-c("88.3", "48.4", "88.2", "48.2", "48.3", "58.4.3a", "58.4.3b", "58.5.2", "48.5", "48.6", "58.4.1", "88.1", "58.4.4a", "58.7", "58.6", "58.5.1", "58.4.4b")
 
+    out <- list(projection = raster::projection(Bathy), plot_sequence = NULL)
 
-  if(IWC==TRUE){
-    # iwc<-graticule::graticule(c(-170,-120,-60,0,70,130,-230), c(-90,Trim+0.5), proj=raster::projection(Bathy))
-    # plot(iwc,col=iwccol, add = TRUE)
-    graphics::lines(rgdal::project(rbind(c(-170, Trim), c(-170, -78.40)), raster::projection(Bathy)), col=iwccol)
-    graphics::lines(rgdal::project(rbind(c(-120, Trim), c(-120, -73.844137)), raster::projection(Bathy)), col=iwccol)
-    graphics::lines(rgdal::project(rbind(c(-60, -65.168), c(-60, -75.146206)), raster::projection(Bathy)), col=iwccol)
-    graphics::lines(rgdal::project(rbind(c(-60, Trim), c(-60, -62.4505)), raster::projection(Bathy)), col=iwccol)
-    graphics::lines(rgdal::project(rbind(c(0, Trim), c(0, -69.596701)), raster::projection(Bathy)), col=iwccol)
-    graphics::lines(rgdal::project(rbind(c(70, Trim), c(70, -68.366691)), raster::projection(Bathy)), col=iwccol)
-    graphics::lines(rgdal::project(rbind(c(130, Trim), c(130, -66.295027)), raster::projection(Bathy)), col=iwccol)
-  }
-  if(IWClab==TRUE){
-    df3 <- data.frame(a = c("Area VI","Area I","Area II","Area III","Area IV","Area V"),
-                      lon = c(-145,-90,-30,35,100,160),
-                      lat=rep(-60, 6))
-    sp::coordinates(df3) <- c("lon", "lat")
-    raster::projection(df3) <- "+init=epsg:4326"
-    lab_pos3 <- sp::spTransform(df3, raster::crs(raster::projection(Bathy)))
+    if (IWC) {
+        out$iwc <- list(as_plotter(plotfun = "lines", plotargs = list(x = rgdal::project(rbind(c(-170, Trim), c(-170, -78.40)), out$projection), col = iwccol)),
+                        as_plotter(plotfun = "lines", plotargs = list(x = rgdal::project(rbind(c(-120, Trim), c(-120, -73.844137)), out$projection), col = iwccol)),
+                        as_plotter(plotfun = "lines", plotargs = list(x = rgdal::project(rbind(c(-60, -65.168), c(-60, -75.146206)), out$projection), col = iwccol)),
+                        as_plotter(plotfun = "lines", plotargs = list(x = rgdal::project(rbind(c(-60, Trim), c(-60, -62.4505)), out$projection), col = iwccol)),
+                        as_plotter(plotfun = "lines", plotargs = list(x = rgdal::project(rbind(c(0, Trim), c(0, -69.596701)), out$projection), col = iwccol)),
+                        as_plotter(plotfun = "lines", plotargs = list(x = rgdal::project(rbind(c(70, Trim), c(70, -68.366691)), out$projection), col = iwccol)),
+                        as_plotter(plotfun = "lines", plotargs = list(x = rgdal::project(rbind(c(130, Trim), c(130, -66.295027)), out$projection), col = iwccol)))
+        if (IWClab) {
+            df3 <- data.frame(a = c("Area VI", "Area I", "Area II", "Area III", "Area IV", "Area V"),
+                              lon = c(-145, -90, -30, 35, 100, 160),
+                              lat=rep(-60, 6))
+            sp::coordinates(df3) <- c("lon", "lat")
+            raster::projection(df3) <- "+init=epsg:4326"
+            lab_pos3 <- sp::spTransform(df3, raster::crs(out$projection))
+            out$iwc$labels <- as_plotter(plotfun = "text", plotargs = list(x = lab_pos3, labels = lab_pos3$a, col = iwccol, cex = 0.4, pos = 1, offset = -0.05))
+        }
+        out$plot_sequence <- c(out$plot_sequence, "iwc")
+    }
 
-    text(lab_pos3, labels = lab_pos3$a,col=iwccol, cex = 0.4, pos=1, offset=-0.05)
-  }
-  #Graticule grid
-  if(Grats==TRUE){
-    raster::plot(grat,add=TRUE, col=gratcol, lty=3)
-    text(gratlab, lab= parse(text = gratlab$lab), col="grey70",cex=0.5)}
+    if (RB) {
+        #out$research_blocks <- list(data = SOmap_data$CCAMLR_research_blocks, border = rbcol)
+        #if (RBlab) {
+        #    out$research_blocks$labels <- list(data = SOmap_data$CCAMLR_research_blocks, labels = SOmap_data$CCAMLR_research_blocks$GAR_Short_, col = rbcol, cex = 0.4, pos = 4, offset = 0.3)
+        #}
+        out$research_blocks <- as_plotter(plotfun = "plot", plotargs = list(x = SOmap_data$CCAMLR_research_blocks, border = rbcol, add = TRUE))
+        out$plot_sequence <- c(out$plot_sequence, "research_blocks")
+        if (RBlab) {
+            out$research_blocks$labels <- as_plotter(plotfun = function(x, ...) text(sp::coordinates(x), ...), plotargs = list(x = SOmap_data$CCAMLR_research_blocks, labels = SOmap_data$CCAMLR_research_blocks$GAR_Short_, col = rbcol, cex = 0.4, pos = 4, offset = 0.3))
+        }
+        out$plot_sequence <- c(out$plot_sequence, "research_blocks")
+    }
 
-  if(RB==TRUE){
-    #load("RB.rda")
-    raster::plot(SOmap_data$CCAMLR_research_blocks, border=rbcol, add=TRUE)}
-  if(RBlab==TRUE){
-    text(SOmap_data$CCAMLR_research_blocks, labels = SOmap_data$CCAMLR_research_blocks@data$ShortLabel,col=rbcol, cex = 0.4, pos=4, offset=0.3)}
-  if(SPRFMORB==TRUE){
-    sprfmoa<-graticule::graticule(lats=c(-59.9,-57.9),lons= c(-155.3333,-150),proj = raster::projection(Bathy))
-    raster::plot(sprfmoa, add=TRUE, col=sprfmocol)
-    sprfmob<-graticule::graticule(lats=c(-59.0,-60.0),lons= c(-142.1666667,-145.833333),proj = raster::projection(Bathy))
-    raster::plot(sprfmob, add=TRUE, col=sprfmocol) }
-  if(SSRU==TRUE){
-    #load("SSRU.rda")
-    plot(SOmap_data$CCAMLR_SSRU,border=ssrucol, add = TRUE)}
-  if(SSRUlab==TRUE){
-    text(SOmap_data$CCAMLR_SSRU, labels = SOmap_data$CCAMLR_SSRU@data$ShortLabel,col=ssrucol, cex = 0.4, pos=1, offset=-0.05)}
-  if(SSMU==TRUE){
-    #load("SSMU.rda")
-    plot(SOmap_data$CCAMLR_SSMU,border=ssmucol, add = TRUE)}
-  if(SSMUlab==TRUE){
-    text(SOmap_data$CCAMLR_SSMU, labels = SOmap_data$CCAMLR_SSMU@data$LongLabel,col=ssmucol, cex = 0.5, pos=1, offset=0.6)}
-  if(CCAMLR==TRUE){
-    #load("CCAMLR.rda")
-    plot(SOmap_data$CCAMLR_statistical_areas,border=ccamlrcol, add = TRUE)}
-  if(CCAMLRlab==TRUE){
-    text(SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$GAR_Long_L!="48.1"&SOmap_data$CCAMLR_statistical_areas$GAR_Long_L!="58.4.2",], labels = cclabs, col=ccamlrcol,cex = 0.5, pos=1, offset=-0.3)
-    text(SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$GAR_Long_L=="58.4.2",], labels = "58.4.2", col=ccamlrcol,cex = 0.5, pos=3, offset=0.5)
-    text(SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$GAR_Long_L=="48.1",], labels = "48.1", col=ccamlrcol,cex = 0.5, pos=2, offset=-0.1)}
+    if (SPRFMORB) {
+        sprfmoa <- graticule::graticule(lats = c(-59.9, -57.9), lons = c(-155.3333, -150), proj = out$projection)
+        sprfmob <- graticule::graticule(lats = c(-59.0, -60.0),lons = c(-142.1666667, -145.833333), proj = out$projection)
+        ##out$sprfmo_research_blocks <- list(data = list(sprfmoa, sprfmob), col = sprfmocol)
+        out$sprfmo_research_blocks <- list(as_plotter(plotfun = "plot", plotargs = list(x = sprfmoa, col = sprfmocol, add = TRUE)),
+                                           as_plotter(plotfun = "plot", plotargs = list(x = sprfmob, col = sprfmocol, add = TRUE)))
+        out$plot_sequence <- c(out$plot_sequence, "sprfmo_research_blocks")
+    }
 
-  # EEZ
-  if(EEZ==TRUE){
-    plot(SOmap_data$EEZ,border=eezcol, add = TRUE)}
-  if(EEZlab==TRUE){
-    text(SOmap_data$EEZ, labels = SOmap_data$EEZ@data$Names, col=eezcol,cex = 0.35, pos=4, offset=0.8)}
-  # MPA
-  if(MPA==TRUE){
-    #load("MPA.rda")
-    plot(SOmap_data$CCAMLR_MPA, border=mpacol, add = TRUE)
-  }
-  if(MPAlab==TRUE){
-    text(SOmap_data$CCAMLR_MPA, labels = SOmap_data$CCAMLR_MPA$ShortLabel, col=mpacol,cex = 0.35, pos=1, offset=0.2)}
+    if (SSRU) {
+        ##out$ccamlr_ssru <- list(data = SOmap_data$CCAMLR_SSRU, border = ssrucol)
+        ##if (SSRUlab) {
+        ##    out$ccamlr_ssru$labels <- list(data = SOmap_data$CCAMLR_SSRU, labels = SOmap_data$CCAMLR_SSRU$ShortLabel, col = ssrucol, cex = 0.4, pos = 1, offset = -0.05)
+        ##}
+        out$ccamlr_ssru <- as_plotter(plotfun = "plot", plotargs = list(x = SOmap_data$CCAMLR_SSRU, border = ssrucol, add = TRUE))
+        if (SSRUlab) {
+            out$ccamlr_ssru$labels <- as_plotter(plotfun = function(x, ...) text(sp::coordinates(x), ...), plotargs = list(x = SOmap_data$CCAMLR_SSRU, labels = SOmap_data$CCAMLR_SSRU$ShortLabel, col = ssrucol, cex = 0.4, pos = 1, offset = -0.05))
+        }
+        out$plot_sequence <- c(out$plot_sequence, "ccamlr_ssru")
+    }
 
-  ## Return Par
-  #print("ooooh pretty!")
-  invisible(NULL)
+    if (SSMU) {
+        ##out$ccamlr_ssmu <- list(data = SOmap_data$CCAMLR_SSMU, border = ssmucol)
+        out$ccamlr_ssmu <- as_plotter(plotfun = "plot", plotargs = list(x = SOmap_data$CCAMLR_SSMU, border = ssmucol, add = TRUE))
+        if (SSMUlab) {
+            ##out$ccamlr_ssmu$labels <- list(data = SOmap_data$CCAMLR_SSMU, labels = SOmap_data$CCAMLR_SSMU$ShortLabel, col = ssmucol, cex = 0.5, pos = 1, offset = 0.6)
+            out$ccamlr_ssru$labels <- as_plotter(plotfun = function(x, ...) text(sp::coordinates(x), ...), plotargs = list(x = SOmap_data$CCAMLR_SSMU, labels = SOmap_data$CCAMLR_SSMU$ShortLabel, col = ssmucol, cex = 0.5, pos = 1, offset = 0.6))
+        }
+        out$plot_sequence <- c(out$plot_sequence, "ccamlr_ssmu")
+    }
+
+    if (CCAMLR) {
+        ##out$ccamlr_statistical_areas <- list(data = SOmap_data$CCAMLR_statistical_areas, border = ccamlrcol)
+        out$ccamlr_statistical_areas <- as_plotter(plotfun = "plot", plotargs = list(x = SOmap_data$CCAMLR_statistical_areas, border = ccamlrcol, add = TRUE))
+        if (CCAMLRlab) {
+            ##out$ccamlr_statistical_areas$labels <- list(
+            ##                                            list(data = SOmap_data$CCAMLR_statistical_areas[!SOmap_data$CCAMLR_statistical_areas$LongLabel %in% c("48.1", "58.4.2"), ], labels = cclabs, col = ccamlrcol, cex = 0.5, pos = 1, offset = -0.3),
+            ##                                            list(data = SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$LongLabel == "58.4.2", ], labels = "58.4.2", col = ccamlrcol,cex = 0.5, pos = 3, offset = 0.5),
+            ##                                            list(data = SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$LongLabel == "48.1", ], labels = "48.1", col = ccamlrcol, cex = 0.5, pos = 2, offset = -0.1))
+            out$ccamlr_statistical_areas$labels <- list(
+                as_plotter(plotfun = function(x, ...) text(sp::coordinates(x), ...), plotargs = list(x = SOmap_data$CCAMLR_statistical_areas[!SOmap_data$CCAMLR_statistical_areas$LongLabel %in% c("48.1", "58.4.2"), ], labels = cclabs, col = ccamlrcol, cex = 0.5, pos = 1, offset = -0.3)),
+                as_plotter(plotfun = function(x, ...) text(sp::coordinates(x), ...), plotargs = list(x = SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$LongLabel == "58.4.2", ], labels = "58.4.2", col = ccamlrcol,cex = 0.5, pos = 3, offset = 0.5)),
+                as_plotter(plotfun = function(x, ...) text(sp::coordinates(x), ...), plotargs = list(x = SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$LongLabel == "48.1", ], labels = "48.1", col = ccamlrcol, cex = 0.5, pos = 2, offset = -0.1))
+            )
+        }
+        out$plot_sequence <- c(out$plot_sequence, "ccamlr_statistical_areas")
+    }
+
+    if (EEZ) {
+        ##out$eez <- list(data = SOmap_data$EEZ, border = eezcol)
+        out$eez <- as_plotter(plotfun = "plot", plotargs = list(x = SOmap_data$EEZ, border = eezcol, col = NA, add = TRUE))
+        if (EEZlab) {
+            ##out$eez$labels <- list(data = SOmap_data$EEZ, labels = SOmap_data$EEZ$Name, col = eezcol, cex = 0.35, pos = 4, offset = 0.8)
+            out$eez$labels <- as_plotter(plotfun = function(x, ...) text(sp::coordinates(x), ...), plotargs = list(x = SOmap_data$EEZ, labels = SOmap_data$EEZ$Name, col = eezcol, cex = 0.35, pos = 4, offset = 0.8))
+        }
+        out$plot_sequence <- c(out$plot_sequence, "eez")
+    }
+
+    if (MPA) {
+        #out$mpa <- list(data = SOmap_data$CCAMLR_MPA, border = mpacol)
+        out$mpa <- as_plotter(plotfun = "plot", plotargs = list(x = SOmap_data$CCAMLR_MPA, border = mpacol, col = NA, add = TRUE))
+        if (MPAlab) {
+            ##out$mpa$labels <- list(data = SOmap_data$CCAMLR_MPA, labels = SOmap_data$CCAMLR_MPA$ShortLabel, col = mpacol, cex = 0.35, pos = 1, offset =0.2)
+            out$mpa$labels <- as_plotter(plotfun = function(x, ...) text(sp::coordinates(x), ...), plotargs = list(x = SOmap_data$CCAMLR_MPA, labels = SOmap_data$CCAMLR_MPA$ShortLabel, col = mpacol, cex = 0.35, pos = 1, offset =0.2))
+        }
+        out$plot_sequence <- c(out$plot_sequence, "mpa")
+    }
+
+    if (Domains) {
+        ##out$ccamlr_planning_domains <- list(data = SOmap_data$CCAMLR_planning_domains, border = domcol)
+        this <- SOmap_data$CCAMLR_planning_domains
+        out$ccamlr_planning_domains <- as_plotter(plotfun = "plot", plotargs = list(x = this, border = domcol, col = NA, add = TRUE))
+        if (Domainslab) {
+            labs <- c("Domain  8", "Domain  9", "", "", "Domain  3", "", "Domain  4", "Domain  5", "Domain  6")
+            labs1 <- c("", "", "Domain  1", "", "", "", "", "", "")
+            labs2 <- c("", "", "", "", "", "Domain  2", "", "", "")
+            labs7 <- c("", "", "", "Domain  7", "", "", "", "", "")
+            ##out$ccamlr_planning_domains$labels <- list(
+            ##                                           list(data = SOmap_data$CCAMLR_planning_domains, labels = labs, col = domcol, cex = 0.7, pos = 3, offset = 0.05),
+            ##                                           list(data = SOmap_data$CCAMLR_planning_domains, labels = labs1, col = domcol, cex = 0.7, pos = 1, offset = 3.0),
+            ##                                           list(data = SOmap_data$CCAMLR_planning_domains, labels = labs2, col = domcol, cex = 0.7, pos = 3, offset = 0.5),
+            ##                                           list(data = SOmap_data$CCAMLR_planning_domains, labels = labs7, col = domcol, cex = 0.7, pos = 4, offset = 0.9)
+            ##                                           )
+            out$ccamlr_planning_domains$labels <- list(
+                as_plotter(plotfun = function(x, ...) text(sp::coordinates(x), ...), plotargs = list(x = SOmap_data$CCAMLR_planning_domains, labels = labs, col = domcol, cex = 0.7, pos = 3, offset = 0.05)),
+                as_plotter(plotfun = function(x, ...) text(sp::coordinates(x), ...), plotargs = list(x = SOmap_data$CCAMLR_planning_domains, labels = labs1, col = domcol, cex = 0.7, pos = 1, offset = 3.0)),
+                as_plotter(plotfun = function(x, ...) text(sp::coordinates(x), ...), plotargs = list(x = SOmap_data$CCAMLR_planning_domains, labels = labs2, col = domcol, cex = 0.7, pos = 3, offset = 0.5)),
+                as_plotter(plotfun = function(x, ...) text(sp::coordinates(x), ...), plotargs = list(x = SOmap_data$CCAMLR_planning_domains, labels = labs7, col = domcol, cex = 0.7, pos = 4, offset = 0.9))
+            )
+        }
+        out$plot_sequence <- c(out$plot_sequence, "ccamlr_planning_domains")
+    }
+    structure(out, class = "SOmap_management")
 }
 
+#' @method plot SOmap_management
+#' @export
+plot.SOmap_management <- function (x, y, ...) {
+    print(x)
+    invisible()
+}
 
-
-
-
-
-
-
-
-
+#' @method print SOmap_management
+#' @export
+print.SOmap_management <- function(x, ...) {
+    ## print the management layers
+    ## expects that an existing SOmap has already been plotted
+    op <- par(mar = rep(0.01, 4), oma= rep(0.0, 4), mai= rep(0.0, 4))
+    on.exit(par(op))
+    ## plot each layer
+    plot_all(x)
+    invisible(x)
+}

@@ -37,6 +37,10 @@
 #' Insert CCAMLE Marine Protected Areas.
 #' @param MPAlab
 #' Insert CCAMLE Marine Protected Area labels.
+#' @param Domains
+#' Insert CCAMLR Marine Protected Areas planning Domains.
+#' @param Domainslab
+#' Insert CCAMLR Marine Protected Area planning Domains labels.
 #' @param IWC
 #' Insert International Whaling Commission boundaries.
 #' @param IWClab
@@ -61,6 +65,8 @@
 #' Color for graticule grid; Default is grey.
 #' @param iwccol
 #' Color for IWC boundaries; Default is blue.
+#' @param domcol
+#' Color for the Domain boundaries. Default is magenta.
 #' @param straight
 #' Do you need a blank space on the side for a straight legend.
 #' @param land
@@ -75,200 +81,78 @@
 #'
 #' @examples
 #' \dontrun{
-#' tfile <- tempfile("SOmap", fileext = ".png")
-#' png(tfile, width=22, height=20, units='cm', res=600)
-#' SOmap(CCAMLRlab= F,CCAMLR=T, ccamlrcol = 1, Trim=-45)
-#' dev.off()
-#' unlink(tfile)
+#' SOmap2(CCAMLR = TRUE, MPA = TRUE, Trim = -45)
 #' }
 #' @export
 #'
 
 SOmap2<-function(Bathleg=TRUE,
                  land=TRUE,
-                CCAMLR= FALSE,
-                CCAMLRlab= FALSE,
-                SSRU= FALSE,
-                SSRUlab = FALSE,
-                SSMU= FALSE,
-                SSMUlab= FALSE,
-                RB= FALSE,
-                RBlab= FALSE,
-                SPRFMORB= FALSE,
-                Border= TRUE,
-                Trim= -45,
-                Grats= FALSE,
-                EEZ=FALSE,
-                EEZlab=FALSE,
-                MPA=FALSE,
-                MPAlab=FALSE,
-                IWC=FALSE,
-                IWClab=FALSE,
-                straight=FALSE,
-                fronts=FALSE,
-                frontcols=c("hotpink","orchid","plum"),
-                rbcol=3,
-                sprfmocol='grey50',
-                ccamlrcol=2,
-                ssrucol="grey50",
-                ssmucol="grey70",
-                eezcol="maroon",
-                mpacol= "yellow",
-                bordercol=c("white","black"),
-                gratcol="grey70",
-                iwccol="blue"){
+                 CCAMLR= FALSE,
+                 CCAMLRlab= FALSE,
+                 SSRU= FALSE,
+                 SSRUlab = FALSE,
+                 SSMU= FALSE,
+                 SSMUlab= FALSE,
+                 RB= FALSE,
+                 RBlab= FALSE,
+                 SPRFMORB= FALSE,
+                 Border= TRUE,
+                 Trim= -45,
+                 Grats= FALSE,
+                 EEZ=FALSE,
+                 EEZlab=FALSE,
+                 MPA=FALSE,
+                 MPAlab=FALSE,
+                 Domains=FALSE,
+                 Domainslab=FALSE,
+                 IWC=FALSE,
+                 IWClab=FALSE,
+                 straight=FALSE,
+                 fronts=FALSE,
+                 frontcols=c("hotpink","orchid","plum"),
+                 rbcol=3,
+                 sprfmocol='grey50',
+                 ccamlrcol=2,
+                 ssrucol="grey50",
+                 ssmucol="grey70",
+                 eezcol="maroon",
+                 mpacol= "yellow",
+                 bordercol=c("white","black"),
+                 gratcol="grey70",
+                 iwccol="blue",
+                 domcol="magenta") {
 
+    out <- SOmap(Bathleg = Bathleg, Border = Border, Trim = Trim, Grats = Grats, straight = straight, land = land, fronts = fronts, frontcols = frontcols, bordercol = bordercol, gratcol = gratcol)
     ## data
-    Bathy <- NULL
     SOmap_data <- NULL
     data("SOmap_data", package = "SOmap", envir = environment())
-    data("Bathy", package = "SOmap", envir = environment())
 
-#### Set up color palette for bathy #
-  ramp2<-grDevices::colorRampPalette(c("#54A3D1","#60B3EB","#78C8F0","#98D1F5","#B5DCFF","#BDE1F0","#CDEBFA","#D6EFFF","#EBFAFF","grey92","grey94","grey96", "white"))
-  bluepal<-ramp2(68)
-  bluepal2<-ramp2(80)
-#### Setup color border #
-  bord<-graticule::graticule(lons = seq(-180,180, by=15),lats = c(Trim+2,Trim), tiles = TRUE, proj = raster::projection(Bathy))
-  if(Bathleg==TRUE){
- #### White Mask #
-  j<-graticule::graticule(lons = seq(-180,180, by=1),lats = c(-10,Trim+2), tiles = TRUE, proj = raster::projection(Bathy))
-#### Legend #
-  ##Colored legend
-  bleg<-graticule::graticule(lons = seq(185,265, by=1),lats = c(Trim+3,Trim+5), tiles = TRUE, proj = raster::projection(Bathy))
+    ## get the management layer details from SOmanagement
+    mx <- SOmanagement(CCAMLR = CCAMLR, CCAMLRlab = CCAMLRlab, ccamlrcol = ccamlrcol,
+                       SSRU = SSRU, SSRUlab = SSRUlab, ssrucol = ssrucol,
+                       SSMU = SSMU, SSMUlab = SSMUlab, ssmucol = ssmucol,
+                       RB = RB, RBlab = RBlab, rbcol = rbcol,
+                       SPRFMORB = SPRFMORB, sprfmocol = sprfmocol,
+                       Trim = Trim,
+                       EEZ = EEZ, EEZlab = EEZlab, eezcol = eezcol,
+                       MPA = MPA, MPAlab = MPAlab, mpacol= mpacol,
+                       Domains = Domains, Domainslab = Domainslab, domcol = domcol,
+                       IWC = IWC, IWClab = IWClab, iwccol = iwccol)
 
-  btick <- graticule::graticule(lats=c(Trim+4,Trim+7), lons = seq(190,260, by=11.666), proj=raster::projection(Bathy), tiles=F)
-
-  k<-graticule::graticule(lons = seq(-180,180, by=1),lats = c(Trim+10,Trim+6.75), tiles = TRUE, proj = raster::projection(Bathy))
-  df2 <- data.frame(a = c("-8000","-6000","-4000","-2000","0","2000", "4000"),
-                    lon = seq(190,260, by=11.666),
-                    lat=rep(Trim+9, 7))
-  sp::coordinates(df2) <- c("lon", "lat")
-  raster::projection(df2) <- "+init=epsg:4326"
-  lab_pos2 <- sp::spTransform(df2, raster::crs(raster::projection(Bathy)))
-  }
-  ## Graticule dots #
-  xx <- c(0,45, 90,135, 180,225, 270,315, 360); yy <- c(-90,-75, -60, -45, Trim)
-  grat <- graticule::graticule(xx, yy, proj=raster::projection(Bathy))
-  gratlab <- graticule::graticule_labels(lons=180,lats = c(-45,-30,-60,-75), xline=180, yline=-15, proj=raster::projection(Bathy))
-  #### CCAMLR Labels
-  cclabs<-c("88.3","48.4","88.2","48.2","48.3","58.4.3a","58.4.3b","58.5.2","48.5","48.6","58.4.1","88.1","58.4.4a","58.7","58.6","58.5.1","58.4.4b")
-
-  ## Which plot to use
-  ## Set the Trim value depending on legend yes or no
-  ifelse(Bathleg==TRUE,q<-Trim+13,q<-Trim+2)
-  ##Set Par
-  op <- graphics::par(mar = rep(0.01, 4), oma= rep(0.0, 4), mai= rep(0.0, 4))
-  ## Plot bathymetry
-  if(straight==T){potato<-raster::plot
-  warning("Straight legends with round plots look terrible.", call. = "FALSE")
-  potato(raster::trim(SOmap::latmask(Bathy, latitude = q)), col=bluepal,legend=FALSE, yaxt='n', xaxt='n')}else{
-    potato<-raster::image
-    potato(raster::trim(SOmap::latmask(Bathy, latitude = q)), col=bluepal, yaxt='n', xaxt='n')}
-  graphics::box(col = "white")
     if (land) {
         if (CCAMLR) {
-            notANT <- SOmap_data$continent[SOmap_data$continent$continent !="Antarctica",]
-            plot(notANT,border=1, add = TRUE)
-        } else {
-            plot(SOmap_data$continent, border=1, add = TRUE)
+            ## change coastline data
+            notANT <- sf::st_as_sf(SOmap_data$continent[SOmap_data$continent$continent != "Antarctica",])
+            notANT <- sf::st_buffer(notANT, 0)
+            buf <- make_buf(Trim, proj = out$projection)
+            out$coastline$plotargs$x <- suppressWarnings(sf::st_intersection(buf, notANT)$geometry)
         }
     }
 
-  if(IWC==TRUE){
-    # iwc<-graticule::graticule(c(-170,-120,-60,0,70,130,-230), c(-90,Trim+0.5), proj=raster::projection(Bathy))
-    # plot(iwc,col=iwccol, add = TRUE)
-    graphics::lines(rgdal::project(rbind(c(-170, Trim), c(-170, -78.40)), raster::projection(Bathy)), col=iwccol)
-    graphics::lines(rgdal::project(rbind(c(-120, Trim), c(-120, -73.844137)), raster::projection(Bathy)), col=iwccol)
-    graphics::lines(rgdal::project(rbind(c(-60, -65.168), c(-60, -75.146206)), raster::projection(Bathy)), col=iwccol)
-    graphics::lines(rgdal::project(rbind(c(-60, Trim), c(-60, -62.4505)), raster::projection(Bathy)), col=iwccol)
-    graphics::lines(rgdal::project(rbind(c(0, Trim), c(0, -69.596701)), raster::projection(Bathy)), col=iwccol)
-    graphics::lines(rgdal::project(rbind(c(70, Trim), c(70, -68.366691)), raster::projection(Bathy)), col=iwccol)
-    graphics::lines(rgdal::project(rbind(c(130, Trim), c(130, -66.295027)), raster::projection(Bathy)), col=iwccol)
-        }
-  if(IWClab==TRUE){
-    df3 <- data.frame(a = c("Area VI","Area I","Area II","Area III","Area IV","Area V"),
-                      lon = c(-145,-90,-30,35,100,160),
-                      lat=rep(-60, 6))
-    sp::coordinates(df3) <- c("lon", "lat")
-    raster::projection(df3) <- "+init=epsg:4326"
-    lab_pos3 <- sp::spTransform(df3, raster::crs(raster::projection(Bathy)))
-
-    text(lab_pos3, labels = lab_pos3$a,col=iwccol, cex = 0.4, pos=1, offset=-0.05)
-  }
-  #fronts
-  if(fronts==TRUE){
-    plot(SOmap_data$fronts_orsi, add = TRUE, col = frontcols)}
-
-  #Graticule grid
-  if(Grats==TRUE){
-    raster::plot(grat,add=TRUE, col=gratcol, lty=3)
-    text(gratlab, lab= parse(text = gratlab$lab), col="grey70",cex=0.5)}
-
-  if(RB==TRUE){
-    #load("RB.rda")
-    raster::plot(SOmap_data$CCAMLR_research_blocks, border=rbcol, add=TRUE)}
-  if(RBlab==TRUE){
-    text(SOmap_data$CCAMLR_research_blocks, labels = SOmap_data$CCAMLR_research_blocks@data$ShortLabel,col=rbcol, cex = 0.4, pos=4, offset=0.3)}
-  if(SPRFMORB==TRUE){
-    sprfmoa<-graticule::graticule(lats=c(-59.9,-57.9),lons= c(-155.3333,-150),proj = raster::projection(Bathy))
-    raster::plot(sprfmoa, add=TRUE, col=sprfmocol)
-    sprfmob<-graticule::graticule(lats=c(-59.0,-60.0),lons= c(-142.1666667,-145.833333),proj = raster::projection(Bathy))
-    raster::plot(sprfmob, add=TRUE, col=sprfmocol) }
-  if(SSRU==TRUE){
-    #load("SSRU.rda")
-    plot(SOmap_data$CCAMLR_SSRU,border=ssrucol, add = TRUE)}
-  if(SSRUlab==TRUE){
-    text(SOmap_data$CCAMLR_SSRU, labels = SOmap_data$CCAMLR_SSRU@data$ShortLabel,col=ssrucol, cex = 0.4, pos=1, offset=-0.05)}
-  if(SSMU==TRUE){
-    #load("SSMU.rda")
-    plot(SOmap_data$SSMU,border=ssmucol, add = TRUE)}
-  if(SSMUlab==TRUE){
-    text(SOmap_data$SSMU, labels = SOmap_data$SSMU@data$LongLabel,col=ssmucol, cex = 0.5, pos=1, offset=0.6)}
-  if(CCAMLR==TRUE){
-    #load("CCAMLR.rda")
-  plot(SOmap_data$CCAMLR_statistical_areas,border=ccamlrcol, add = TRUE)}
-  if(CCAMLRlab==TRUE){
-    text(SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$GAR_Long_L!="48.1"&SOmap_data$CCAMLR_statistical_areas$GAR_Long_L!="58.4.2",], labels = cclabs, col=ccamlrcol,cex = 0.5, pos=1, offset=-0.3)
-    text(SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$GAR_Long_L=="58.4.2",], labels = "58.4.2", col=ccamlrcol,cex = 0.5, pos=3, offset=0.5)
-    text(SOmap_data$CCAMLR_statistical_areas[SOmap_data$CCAMLR_statistical_areas$GAR_Long_L=="48.1",], labels = "48.1", col=ccamlrcol,cex = 0.5, pos=2, offset=-0.1)}
-  # EEZ
-  if(EEZ==TRUE){
-
-    plot(SOmap_data$EEZ,border=eezcol, add = TRUE)}
-  if(EEZlab==TRUE){
-    text(SOmap_data$EEZ, labels = SOmap_data$EEZ$Names, col=eezcol,cex = 0.35, pos=4, offset=0.8)}
-  # MPA
-  if(MPA==TRUE){
-    MPA1 <- SOmap_data$CCAMLR_MPA
-    #load("MPA.rda")
-    plot(MPA1,border=mpacol, add = TRUE)
-    }
-  if(MPAlab==TRUE){
-    text(MPA1, labels = MPA1@data$ShortLabel, col=mpacol,cex = 0.35, pos=1, offset=0.2)}
-  #Legend
-  if(Bathleg==TRUE) {raster::plot(j, border=F,col="white", add=T) #White mask
-    raster::plot(btick, add=T, col=1)
-    raster::plot(bleg, lwd=2, add=T)
-    raster::plot(bleg, border=F,  col=bluepal2, add=T)
-    raster::plot(k, border=F,col="white", add=T)
-    text(lab_pos2, labels=lab_pos2$a, cex= 0.75, adj=0.5)}
-  if(Border==TRUE){
-    raster::plot(bord,  col=bordercol, add=TRUE)}
-  #if(CCAMLR==TRUE & land==TRUE){warning("Note: CCAMLR and land boundaries are different resolutions.", "Suggest not using both", call. = "FALSE")}
-  ## Return Par
-  graphics::par(op)
-  print("Congratulations, you did a thing!")
+    ## copy management layers into out
+    out[mx$plot_sequence] <- mx[mx$plot_sequence]
+    out$plot_sequence <- insert_into_sequence(out$plot_sequence, ins = mx$plot_sequence, after = c("bathy", "box", "coastline", "fronts", "graticule"))
+    out
 }
-
-
-
-
-
-
-
-
-
-
-
 

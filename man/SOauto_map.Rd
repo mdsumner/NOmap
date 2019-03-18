@@ -9,7 +9,8 @@ SOauto_map(x, y, centre_lon = NULL, centre_lat = NULL,
   bathy = TRUE, coast = TRUE, input_points = TRUE,
   input_lines = TRUE, graticule = TRUE, buffer = 0.05,
   contours = TRUE, levels = c(-500, -1000, -2000),
-  trim_background = TRUE, mask = FALSE)
+  trim_background = TRUE, mask = FALSE, ppch = 19, pcol = 2,
+  pcex = 1, bathyleg = FALSE, llty = 1, llwd = 1, lcol = 1)
 }
 \arguments{
 \item{x}{optional input data longitudes}
@@ -26,9 +27,9 @@ SOauto_map(x, y, centre_lon = NULL, centre_lat = NULL,
 
 \item{dimXY}{dimensions of background bathmetry (if used) default is 300x300}
 
-\item{bathy}{optional bathymetry data to use (or `FALSE` for no bathmetry image)}
+\item{bathy}{logical: if \code{TRUE}, plot bathymetry. Alternatively, provide the bathymetry data to use as a \code{raster} object}
 
-\item{coast}{optional coastline data to use (or `FALSE` for no coastline)}
+\item{coast}{logical: if \code{TRUE}, plot coastline. Alternatively, provide the coastline data to use as a \code{Spatial} object}
 
 \item{input_points}{add points to plot (of x, y)}
 
@@ -38,24 +39,37 @@ SOauto_map(x, y, centre_lon = NULL, centre_lat = NULL,
 
 \item{buffer}{fraction to expand plot range from that calculated (either from data, or from centre_lon/centre_lat _and_ data if `expand = TRUE`)}
 
-\item{contours}{add contours}
+\item{contours}{logical: add contours?}
 
-\item{levels}{contour levels if `contours = TRUE`}
+\item{levels}{numeric: contour levels to use if \code{contours} is \code{TRUE}}
 
 \item{trim_background}{crop the resulting bathymetry to its margin of valid values}
 
-\item{mask}{logical, `FALSE` by default used to mask the raster and coastline to the graticule}
+\item{mask}{logical: if \code{TRUE}, mask the raster and coastline to the graticule}
+
+\item{ppch}{set point character (default=19)}
+
+\item{pcol}{set point color (default=19)}
+
+\item{pcex}{set point cex (default=1)}
+
+\item{bathyleg}{optional bathymetry legend (default=FALSE). Note when \code{bathyleg} is \code{FALSE}, plotting is done with \code{raster::image}, but when \code{bathyleg} is \code{TRUE} plotting uses \code{raster::plot}}
+
+\item{llty}{set line type}
+
+\item{llwd}{set line width}
+
+\item{lcol}{set line color}
 }
 \value{
-the derived target extent and the map projection used, bathymetry, and coastline data
+An object of class SOauto_map, containing the data and other details required to generate the map. Printing or plotting the object will cause it to be plotted.
 }
 \description{
 Provide minimal input information to get a default map. The simplest case is
 to run the function without any inputs at all and it will provide a random default.
 }
 \details{
-To input your data, use input locations as `x` (longitude) and `y` (latitude) values, there must be at least
-two locations.
+To input your data, use input locations as `x` (longitude) and `y` (latitude) values, there must be at least two locations.
 
 Try families such as 'lcc', 'laea', 'gnom', 'merc', 'aea' if feeling adventurous.
 
@@ -64,6 +78,7 @@ Using `mask = TRUE` does not work well when the pole is included, so it's `FALSE
 \examples{
 SOauto_map(c(0, 50), c(-70, -50))
 SOauto_map(runif(10, 130, 200), runif(10, -80, -10))
+SOplot(c(147, 180), c(-42, -60), pch = 19, cex = 2,col = "firebrick")
 SOauto_map(runif(10, 130, 200), runif(10, -85, -60))
 ## save the result to explore later!
 protomap <- SOauto_map(runif(10, 60, 160), runif(10, -73, -50))
