@@ -1,4 +1,4 @@
-#' record crs in use, or if NULL return it
+# record crs in use, or if NULL return it
 SOcrs <- function(crs = NULL) {
   if (!is.null(crs)) {
     options(SOmap.crs.inuse = crs)

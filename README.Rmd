@@ -131,5 +131,46 @@ SOauto_map(mydata, family = "laea", centre_lon = 147, input_points = FALSE, lcol
 
 ```
 
+## Easy projections
+
+`SOmap` goes with the philosophy "we actually rather like ourselves, and care about our experience" and so there are some easy ways to work with projections, and <quote>just map it!</quote>. 
+
+```{r auto-setup}
+set.seed(25)
+amap <- SOauto_map(input_points = FALSE, input_lines = FALSE)
+amap
+```
+
+To add data to this plot we can just do so. 
+
+```{r just-map-it}
+SOplot(SOmap_data$seaice_oct, lwd = 3, col = "blue", lty = 2)
+```
+
+`SOplot()` will add data by default, and can take spatial objects or even raw longitude and latitude values (we like you). When a plot is set up the *coordinate reference system* used is recorded so that we can use it again. 
+
+```{r add-it}
+SOplot(SOmap_data$mirounga_leonina$lon, SOmap_data$mirounga_leonina$lat)
+```
+
+The projection *currently in use* is always available by running `SOcrs()`. 
+
+```{r}
+SOcrs()
+```
+
+Many objects can be reprojected with `SOproj()`, including the map objects themselves. 
+
+```{r raster}
+prj <- "+proj=laea +lat_0=-90 +lon_0=147 +datum=WGS84"
+## reproject a raster
+SOproj(ice, prj)
+
+## reproject a SOmap
+reproj(amap, prj)
+```
+
+
+Note that we must assume raw input is "longitude/latitude", and the function tells us this. 
 
 Please note that the SOmap project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By contributing to this project, you agree to abide by its terms.

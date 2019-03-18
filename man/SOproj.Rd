@@ -15,6 +15,8 @@ SOproj(x, y = NULL, target = NULL, data, ..., source = NULL)
 
 \item{data}{optional data to be included}
 
+\item{...}{arguments passed to [reproj::reproj()]}
+
 \item{source}{starting projection (default = longlat)}
 }
 \value{

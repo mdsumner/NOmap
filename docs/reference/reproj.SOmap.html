@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Deprecated function — default_somap • SOmap</title>
+<title>Reproject SOmap — reproj.SOmap • SOmap</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Deprecated function — default_somap" />
+<meta property="og:title" content="Reproject SOmap — reproj.SOmap" />
 
-<meta property="og:description" content="Deprecated from SOmap" />
+<meta property="og:description" content="Reproject a SOmap object by specifying a 'target' projection string (PROJ4)" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -104,35 +104,81 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Deprecated function</h1>
-    <small class="dont-index">Source: <a href='https://github.com/AustralianAntarcticDivision/SOmap/blob/master/R/SOauto_map.R'><code>R/SOauto_map.R</code></a></small>
-    <div class="hidden name"><code>default_somap.Rd</code></div>
+    <h1>Reproject SOmap</h1>
+    <small class="dont-index">Source: <a href='https://github.com/AustralianAntarcticDivision/SOmap/blob/master/R/SOproj.R'><code>R/SOproj.R</code></a></small>
+    <div class="hidden name"><code>reproj.SOmap.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Deprecated from SOmap</p>
+    <p>Reproject a SOmap object by specifying a 'target' projection string (PROJ4)</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>default_somap</span>(<span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='co'># S3 method for SOmap</span>
+<span class='fu'>reproj</span>(<span class='no'>x</span>, <span class='no'>target</span>, <span class='no'>...</span>, <span class='kw'>source</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='co'># S3 method for SOauto_map</span>
+<span class='fu'>reproj</span>(<span class='no'>x</span>, <span class='no'>target</span>, <span class='no'>...</span>, <span class='kw'>source</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>x</th>
+      <td><p>coordinates</p></td>
+    </tr>
+    <tr>
+      <th>target</th>
+      <td><p>target specification (PROJ.4 string or epsg code)</p></td>
+    </tr>
+    <tr>
       <th>...</th>
-      <td><p>all arguments passed to new function</p></td>
+      <td><p>arguments passed to <code><a href='https://www.rdocumentation.org/packages/proj4/topics/transform'>proj4::ptransform()</a></code></p></td>
+    </tr>
+    <tr>
+      <th>source</th>
+      <td><p>source specification (PROJ.4 string or epsg code)</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
+    <p>See [reproj::reproj()] for details.</p>
+    
+    <h2 class="hasAnchor" id="warning"><a class="anchor" href="#warning"></a>Warning</h2>
+
+    
+    <p>So many ...</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>[reproj::reproj()]</p></div>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Random'>set.seed</a></span>(<span class='fl'>27</span>)
+<span class='no'>amap</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOauto_map.html'>SOauto_map</a></span>()
+<span class='fu'>reproj</span>(<span class='no'>amap</span>, <span class='st'>"+proj=moll"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 14864 projected point(s) not finite</span></div><div class='img'><img src='reproj.SOmap-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>reproj</span>(<span class='no'>amap</span>, <span class='st'>"+proj=laea +lat_0=-55 +lon_0=154 +datum=WGS84"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 6816 projected point(s) not finite</span></div><div class='img'><img src='reproj.SOmap-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>bmap</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOmap.html'>SOmap</a></span>(<span class='kw'>Trim</span> <span class='kw'>=</span> -<span class='fl'>35</span>)
+
+<span class='co'>## works great!</span>
+<span class='fu'>reproj</span>(<span class='no'>bmap</span>, <span class='st'>"+proj=stere +lat_0=-90 +lon_0=147 +lat_ts=-71 +datum=WGS84"</span>)</div><div class='img'><img src='reproj.SOmap-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'>## these aren't exactly ideal</span>
+<span class='fu'>reproj</span>(<span class='no'>bmap</span>, <span class='st'>"+proj=ortho +lat_0=-70"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 70 projected point(s) not finite</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 73276 projected point(s) not finite</span></div><div class='img'><img src='reproj.SOmap-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>reproj</span>(<span class='no'>bmap</span>, <span class='st'>"+proj=laea +lat_0=-55 +lon_0=154 +datum=WGS84"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 9941 projected point(s) not finite</span></div><div class='img'><img src='reproj.SOmap-5.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#details">Details</a></li>
+
+      <li><a href="#warning">Warning</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

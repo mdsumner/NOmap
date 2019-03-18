@@ -16,6 +16,7 @@
 #' @param target
 #' target projection (default = stereo)
 #'
+#' @param ... arguments passed to [reproj::reproj()]
 #' @param data
 #' optional data to be included
 #'
@@ -46,7 +47,7 @@ SOproj <- function(x, y = NULL, target = NULL, data, ..., source = NULL){
 
   if (is.na(raster::projection(x))) {
   if ((missing(source) || is.null(source) || !nzchar(source))) {
-    message("No projection provided, assuming longlat")
+   message("No projection provided, assuming longlat")
     source <- "+proj=longlat +datum=WGS84"
   }
 }
@@ -59,6 +60,7 @@ SOproj <- function(x, y = NULL, target = NULL, data, ..., source = NULL){
   }
 
   if (missing(data)) data <- 1
+  browser(0)
   if (!is.null(source)) {
     xy0 <- reproj::reproj(cbind(x, y), target = target, source = source)
     out <- data.frame(x = xy0[,1], y = xy0[,2], data = data)
