@@ -75,10 +75,11 @@
 #'
 #' @examples
 #' \dontrun{
-#' Dat.Dir<-getwd()
-#' png(paste(Dat.Dir,'/SOmap.png', sep=''), width=22, height=20, units='cm', res=600)
+#' tfile <- tempfile("SOmap", fileext = ".png")
+#' png(tfile, width=22, height=20, units='cm', res=600)
 #' SOmap(CCAMLRlab= F,CCAMLR=T, ccamlrcol = 1, Trim=-45)
 #' dev.off()
+#' unlink(tfile)
 #' }
 #' @export
 #'

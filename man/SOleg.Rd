@@ -30,6 +30,7 @@ SOleg creating rounded legends for SOmap
 }
 \examples{
 \dontrun{
+SOmap()
 SOleg(position="topleft",
       col=heat.colors(80),
       ticks=4,

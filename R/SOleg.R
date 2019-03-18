@@ -22,6 +22,7 @@
 #' @importFrom grDevices heat.colors
 #' @examples
 #' \dontrun{
+#' SOmap()
 #' SOleg(position="topleft",
 #'       col=heat.colors(80),
 #'       ticks=4,
