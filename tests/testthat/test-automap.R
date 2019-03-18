@@ -3,6 +3,14 @@ context("test-automap")
 disp_auto_map <- function() plot(SOauto_map(c(100:110), c(-70:-60)))
 
 test_that("auto map works", {
+
+  ## works with no input
+   tst <- SOauto_map()
+expect_s3_class(tst, "SOauto_map")
+   ## works with sp input
+   SOauto_map(SOmap_data$seaice_feb) %>% expect_s3_class("SOauto_map")
+
+   SOauto_map(ice) %>% expect_s3_class("SOauto_map")
     x <- SOauto_map(c(100:110), c(-70:-60))
     expect_s3_class(x, "SOauto_map")
     nms <- sort(c("projection", "bathy", "bathyleg", "bathy_palette",

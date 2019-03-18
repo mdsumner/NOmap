@@ -91,20 +91,22 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
         }
     } else {
         do_midpoint <- FALSE
+
+        if (inherits(x, "SpatialPoints")) {
+          input_lines <- FALSE
+        }
+        if (inherits(x, "SpatialLines") || inherits(x, "SpatialPolygons")) {
+          input_points <- FALSE
+        }
+
         ## we have some kind of object
-        if (inherits(x, "BasicRaster")) {
+        if (inherits(testx, "BasicRaster")) {
             warning("input 'x' is a raster, converting to an extent for a simple plot of input_points/input_lines")
-            x <- spex::spex(x)
+            x <- spex::spex(testx)
             do_midpoint <- TRUE
         }
         testx <- try(spbabel::sptable(x))  ##
 
-        if (inherits(x, "SpatialPoints")) {
-            input_lines <- FALSE
-        }
-        if (inherits(x, "SpatialLines") || inherits(x, "SpatialPolygons")) {
-            input_points <- FALSE
-        }
 
         if (inherits(testx, "try-error")) stop("don't understand how to get lon,lat from 'x'")
         ## split on branch
@@ -115,7 +117,7 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
             testx <- rgdal::project(testx, raster::projection(x), inv = TRUE)
             midpoint <- NULL
             if (do_midpoint) {
-                midpoint <- cbind(mean(range(testx$x_)), mean(range(testx$y_)))
+                midpoint <- cbind(mean(range(testx[,1L])), mean(range(testx[,2L])))
                 midpoint <- rgdal::project(midpoint, raster::projection(x), inv = TRUE)
             }
             ## add the midpoint for good measure
