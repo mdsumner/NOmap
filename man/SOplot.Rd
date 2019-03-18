@@ -4,20 +4,20 @@
 \alias{SOplot}
 \title{Southern Ocean plot}
 \usage{
-SOplot(lon, lat, prj, crs, add = TRUE, ...)
+SOplot(x, y = NULL, target = NULL, ..., source = NULL, add = TRUE)
 }
 \arguments{
-\item{lon}{longitude object}
+\item{x}{longitude vector, or object with coordinates}
 
-\item{lat}{lattitude object}
+\item{y}{lattitude vector, or missing if x is an object}
 
-\item{prj}{starting projection (default = longlat)}
-
-\item{crs}{target projection (default = stereo)}
-
-\item{add}{add layer to plot (default = TRUE)}
+\item{target}{target projection (default = stereo)}
 
 \item{...}{other plot options}
+
+\item{source}{starting projection (default = longlat)}
+
+\item{add}{add layer to plot (default = TRUE)}
 }
 \value{
 Produces at the very base a round bathymetry map of the southern hemisphere.
@@ -31,6 +31,6 @@ Reproject and add point layers to either SOmap or SOauto_map layers.
  y<-c(-50, -75, -45, -60)
  map<-SOauto_map(x,y, input_lines = FALSE)
  map
- SOplot(lon=y, lat=x,crs = map$projection,pch=19,col=6)
+ SOplot(x = x, y = y, target = map$projection,pch=19,col=6)
 }
 }

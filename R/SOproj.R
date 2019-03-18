@@ -70,14 +70,12 @@ SOproj <- function(x, y = NULL, target = NULL, data, ..., source = NULL){
   }
   out
 }
-#' Projection metadata
-#'
-#' Obtain the projection used in a SOmap object.
-#' @inheritParams raster::raster
-#' @export
-#' @importFrom raster projection
+
 projection.SOmap <- function(x, asText = TRUE) {
  raster::projection(x$projection, asText = asText)
+}
+projection.SOauto_map <- function(x, asText = TRUE) {
+  raster::projection(x$projection, asText = asText)
 }
 #' Reproject SOmap
 #'

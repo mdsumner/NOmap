@@ -4,18 +4,18 @@
 \alias{SOproj}
 \title{Southern projection}
 \usage{
-SOproj(lon, lat, prj, crs, data)
+SOproj(x, y = NULL, target = NULL, data, ..., source = NULL)
 }
 \arguments{
-\item{lon}{longitude object.}
+\item{x}{longitude vector, or object with coordinates}
 
-\item{lat}{lattitude object.}
+\item{y}{lattitude vector}
 
-\item{prj}{starting projection (default = longlat)}
-
-\item{crs}{target projection (default = stereo)}
+\item{target}{target projection (default = stereo)}
 
 \item{data}{optional data to be included}
+
+\item{source}{starting projection (default = longlat)}
 }
 \value{
 Produces at the very base a round bathymetry map of the southern hemisphere.
@@ -27,7 +27,7 @@ Function for reprojecting data.
 \dontrun{
  x <- c(-70, -60,-50, -90)
  y <- c(-50, -75, -45, -60)
- pnts <- SOproj(lon = y, lat = x)
+ pnts <- SOproj(x = y, y = x)
  SOmap2(CCAMLR = TRUE)
  plot(pnts, pch = 19, col = 3, add = TRUE)
 }

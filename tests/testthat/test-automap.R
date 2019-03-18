@@ -2,10 +2,23 @@ context("test-automap")
 
 disp_auto_map <- function() plot(SOauto_map(c(100:110), c(-70:-60)))
 
-test_that("auto map returns data", {
+test_that("auto map works", {
     x <- SOauto_map(c(100:110), c(-70:-60))
     expect_s3_class(x, "SOauto_map")
-    expect_identical(sort(names(x)), sort(c("projection", "bathy", "bathyleg", "bathy_palette", "coastline", "target", "lines_data", "points_data", "ppch", "pcol", "pcex", "llty", "llwd", "lcol", "contours", "levels", "contour_colour", "graticule", "crs")))
+    nms <- sort(c("projection", "bathy", "bathyleg", "bathy_palette",
+                  "coastline", "target", "lines_data", "points_data",
+                  "ppch", "pcol", "pcex", "llty", "llwd", "lcol", "contours", "levels", "contour_colour", "graticule", "crs"))
+    expect_identical(sort(names(x)), nms)
+
+
+    expect_s3_class(rx <- reproj(x, "+proj=laea +lat_0=-40 +lon_0=110 +datum=WGS84"), "SOauto_map")
+    expect_identical(sort(names(rx)), nms)
+    expect_true(grepl("laea", rx$projection))
+
+    expect_silent(print(rx))
+    expect_message(SOplot(c(102, 105), c(-64, -68)))
+    expect_silent(SOplot(SOmap_data$continent))
+    expect_silent(SOplot(SOmap_data$seaice_oct))
     skip("skipping vdiffr tests temporarily")
     vdiffr::expect_doppelganger("Soauto_map basic", disp_auto_map)
 })
