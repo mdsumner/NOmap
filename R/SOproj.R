@@ -36,21 +36,24 @@
 #' @importFrom raster projection<-
 #' @importFrom sp coordinates<-
 SOproj <- function(x, y = NULL, target = NULL, data, ..., source = NULL){
-
+ if (is.character(y)) stop("y is character, did you mean 'target = '?")
+  ## shortcut out, we have an object
   if (missing(y) && !missing(x)) {
-    return(reproj(x, target = SOcrs(), source = source))
+    if (is.null(target)) target <- SOcrs()
+    return(reproj(x, target = target, source = source))
 
   }
   if (missing(x) || missing(y)) {
       stop("x (and optionally y) must be provided")
   }
 
-  if (is.na(raster::projection(x))) {
-  if ((missing(source) || is.null(source) || !nzchar(source))) {
-   message("No projection provided, assuming longlat")
-    source <- "+proj=longlat +datum=WGS84"
+  if (is.na(projection(x)) && is.null(source)) {
+    if (!is.null(x$crs)) {
+      source <- x$crs
+    } else {
+     stop("no projection metadata on 'x'")
+    }
   }
-}
   if (is.null(target)) {
     target <-  SOcrs()
     if (is.null(target)) {
@@ -60,8 +63,12 @@ SOproj <- function(x, y = NULL, target = NULL, data, ..., source = NULL){
   }
 
   if (missing(data)) data <- 1
-  browser(0)
-  if (!is.null(source)) {
+
+  if (is.numeric(x)) {
+    if ((missing(source) || is.null(source) || !nzchar(source))) {
+      message("No projection provided, assuming longlat")
+      source <- "+proj=longlat +datum=WGS84"
+    }
     xy0 <- reproj::reproj(cbind(x, y), target = target, source = source)
     out <- data.frame(x = xy0[,1], y = xy0[,2], data = data)
     sp::coordinates(out) <- c("x", "y")
