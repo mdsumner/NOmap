@@ -48,12 +48,9 @@ SOleg creating rounded legends for SOmap
 }
 \examples{
 \dontrun{
-<<<<<<< HEAD
 SOmap()
-=======
 #Discrete Legend
 
->>>>>>> 742e85d061622921e61eeeba7f962c532a605a9f
 SOleg(position="topleft",
       col=viridis::viridis(5),
       tlabs = c("a","b","c","d", "e"),

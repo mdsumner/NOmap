@@ -76,16 +76,13 @@ Function for adding management layers to SOmap
 }
 \examples{
 \dontrun{
-<<<<<<< HEAD
 tfile <- tempfile("SOmap", fileext = ".png")
 png(tfile, width=22, height=20, units='cm', res=600)
 SOmap(Trim=-45)
 SOmanagement(CCAMLR=T, CCAMLRlab=T, Trim=-45)
 dev.off()
 unlink(tfile)
-=======
   SOmap(Trim = -45)
   SOmanagement(CCAMLR = TRUE, CCAMLRlab = TRUE, Trim = -45)
->>>>>>> 742e85d061622921e61eeeba7f962c532a605a9f
 }
 }

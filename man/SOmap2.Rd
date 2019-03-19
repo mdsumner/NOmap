@@ -97,14 +97,6 @@ Function for creating round Southern Ocean maps with inbuild base layers.
 }
 \examples{
 \dontrun{
-<<<<<<< HEAD
-tfile <- tempfile("SOmap", fileext = ".png")
-png(tfile, width=22, height=20, units='cm', res=600)
-SOmap(CCAMLRlab= F,CCAMLR=T, ccamlrcol = 1, Trim=-45)
-dev.off()
-unlink(tfile)
-=======
-  SOmap2(CCAMLR = TRUE, MPA = TRUE, Trim = -45)
->>>>>>> 742e85d061622921e61eeeba7f962c532a605a9f
+SOmap2(CCAMLR = TRUE, MPA = TRUE, Trim = -45)
 }
 }
