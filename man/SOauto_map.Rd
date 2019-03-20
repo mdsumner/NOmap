@@ -21,7 +21,7 @@ SOauto_map(x, y, centre_lon = NULL, centre_lat = NULL,
 
 \item{centre_lat}{as per `centre_lon`}
 
-\item{family}{optional projection family (default is `stere`ographic)}
+\item{family}{optional projection family (default is `stere`ographic), or full PROJ string (see Details)}
 
 \item{expand}{re-compute range of plot to incorporate centre_lon and centre_lat with the data as a natural middle}
 
