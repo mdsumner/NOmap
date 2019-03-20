@@ -140,8 +140,9 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
       ## ignore the above and take the string as given
       prj <- family
       if (!is.null(centre_lon) || !is.null(centre_lat)) {
-        warning("centre_lon and centre_lat are ignore if 'family' is a full PROJ string")
+        warning("centre_lon and centre_lat are ignored if 'family' is a full PROJ string")
       }
+
     } else {
     if (is.null(centre_lon)) {
         centre_lon <- zapsmall(round(mean(xlim), digits = 2))
@@ -169,8 +170,13 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
     xxlim <- xxlim + diff(range(xxlim)) * c(-buffer, buffer)
     yylim <- c(raster::ymin(target), raster::ymax(target))
     yylim <- yylim + diff(range(yylim)) * c(-buffer, buffer)
+    middle <- rgdal::project(cbind(mean(xxlim), mean(yylim)), projection(target),
+                             inv = TRUE)
+    if (is.null(centre_lon)) centre_lon <- middle[1L]
+    if (is.null(centre_lat)) centre_lat <- middle[2L]
     target <- extend(target, extent(xxlim, yylim))
     if (expand) {
+
         centre_line <- rgdal::project(cbind(centre_lon, centre_lat), prj)
         ## we need the largest of the difference from centre to target boundary
         xhalf <- max(abs(centre_line[1] - c(raster::xmin(target), raster::xmax(target))))
