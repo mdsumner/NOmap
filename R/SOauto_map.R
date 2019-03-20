@@ -265,14 +265,19 @@ plot.SOauto_map <- function (x, y, ...) {
 
 #' @method print SOauto_map
 #' @export
-print.SOauto_map <- function(x, ...) {
+print.SOauto_map <- function(x,main=NULL, ...) {
     aspect <- if (raster::isLonLat(x$target)) 1/cos(mean(c(raster::xmin(x$target), raster::xmax(x$target))) * pi/180) else 1
-    pp <- aspectplot.default(c(raster::xmin(x$target), raster::xmax(x$target)), c(raster::ymin(x$target), raster::ymax(x$target)), asp = aspect, mar = par("mar")/2.5)
+    margins<- if (is.null(main)){ par("mar")/2.5} else { mars<-par("mar")/2.5
+                                                         mars[3]<-mars[3]+2
+                                                         mars}
+    pp <- aspectplot.default(c(raster::xmin(x$target), raster::xmax(x$target)), c(raster::ymin(x$target), raster::ymax(x$target)), asp = aspect, mar =margins)
     ## reset par(pp) when we exit this function
     #on.exit(par(pp))
     ## record current crs
     SOcrs(x$projection)
     newextent <- raster::extent(par("usr"))
+
+    if(!is.null(main)){title(main = main)}
 
     if (!is.null(x$bathy)) {
         if (isTRUE(x$bathyleg)) {
