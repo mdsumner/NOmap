@@ -44,16 +44,16 @@ SOproj <- function(x, y = NULL, target = NULL, data, ..., source = NULL){
 
   }
   if (missing(x) || missing(y)) {
-      stop("x (and optionally y) must be provided")
+      stop("x and y must be provided unless 'x' is an object")
   }
-
-  if (is.na(projection(x)) && is.null(source)) {
-    if (!is.null(x$crs)) {
-      source <- x$crs
-    } else {
-     stop("no projection metadata on 'x'")
-    }
-  }
+#  should never be needed
+#   if (is.na(projection(x)) && is.null(source)) {
+#     if (is.list(x) && !is.null(x$crs)) {
+#       source <- x$crs
+#     } else {
+#      stop("no projection metadata on 'x'")
+#     }
+#   }
   if (is.null(target)) {
     target <-  SOcrs()
     if (is.null(target)) {
@@ -64,7 +64,7 @@ SOproj <- function(x, y = NULL, target = NULL, data, ..., source = NULL){
 
   if (missing(data)) data <- 1
 
-  if (is.numeric(x)) {
+  if (is.numeric(x) && is.numeric(y)) {
     if ((missing(source) || is.null(source) || !nzchar(source))) {
       message("No projection provided, assuming longlat")
       source <- "+proj=longlat +datum=WGS84"
@@ -73,10 +73,13 @@ SOproj <- function(x, y = NULL, target = NULL, data, ..., source = NULL){
     out <- data.frame(x = xy0[,1], y = xy0[,2], data = data)
     sp::coordinates(out) <- c("x", "y")
     raster::projection(out) <- target
-
   } else {
-   out <- reproj(x, target = target)
+    stop("this should never happen!")
   }
+  #  should never be needed
+  #else {
+  #out <- reproj(x, target = target)
+  #}
   out
 }
 
