@@ -13,7 +13,7 @@
 #' @param y optional input data latitudes
 #' @param centre_lon optional centre longitude (of the map projection, also used to for plot range if `expand = TRUE`)
 #' @param centre_lat as per `centre_lon`
-#' @param family optional projection family (default is `stere`ographic)
+#' @param family optional projection family (default is `stere`ographic), or full PROJ string (see Details)
 #' @param expand re-compute range of plot to incorporate centre_lon and centre_lat with the data as a natural middle
 #' @param dimXY dimensions of background bathmetry (if used) default is 300x300
 #' @param bathy logical: if \code{TRUE}, plot bathymetry. Alternatively, provide the bathymetry data to use as a \code{raster} object
@@ -136,12 +136,20 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
     if (ylim[1] < -90) {ylim[1] <- -90}
     if (ylim[2] > 90) {ylim[2] <- 90}
 
+    if (grepl("\\+proj", family)) {
+      ## ignore the above and take the string as given
+      prj <- family
+      if (!is.null(centre_lon) || !is.null(centre_lat)) {
+        warning("centre_lon and centre_lat are ignore if 'family' is a full PROJ string")
+      }
+    } else {
     if (is.null(centre_lon)) {
         centre_lon <- zapsmall(round(mean(xlim), digits = 2))
     }
     if (is.null(centre_lat)) {
         centre_lat <-  zapsmall(round(mean(ylim), digits = 2))
     }
+
 
     template <- "+proj=%s +lon_0=%f +lat_0=%f +datum=WGS84"
     if (family == "stere") {
@@ -153,7 +161,7 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
     }
     prj <- sprintf(template, family, centre_lon, centre_lat)
 
-
+}
     target <- raster::projectExtent(raster::raster(raster::extent(xlim, ylim), crs = "+init=epsg:4326"), prj)
     dim(target) <- dimXY
     ## extend projected bounds by the buffer
