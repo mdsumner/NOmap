@@ -74,7 +74,7 @@ SOproj <- function(x, y = NULL, target = NULL, data, ..., source = NULL){
     sp::coordinates(out) <- c("x", "y")
     raster::projection(out) <- target
   } else {
-    stop("this should never happen!")
+    stop("x and or y arguments malformed, should both be numeric vectors")
   }
   #  should never be needed
   #else {
