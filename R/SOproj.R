@@ -38,12 +38,12 @@
 SOproj <- function(x, y = NULL, target = NULL, data, ..., source = NULL){
  if (is.character(y)) stop("y is character, did you mean 'target = '?")
   ## shortcut out, we have an object
-  if (missing(y) && !missing(x)) {
+  if (is.null(y) && !missing(x)) {
     if (is.null(target)) target <- SOcrs()
     return(reproj(x, target = target, source = source))
 
   }
-  if (missing(x) || missing(y)) {
+  if (missing(x) || is.null(y)) {
       stop("x and y must be provided unless 'x' is an object")
   }
 #  should never be needed
