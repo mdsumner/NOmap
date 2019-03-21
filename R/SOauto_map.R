@@ -33,7 +33,7 @@
 #' @param llwd set line width
 #' @param lcol set line color
 #' @param bathyleg optional bathymetry legend (default=FALSE). Note when \code{bathyleg} is \code{FALSE}, plotting is done with \code{raster::image}, but when \code{bathyleg} is \code{TRUE} plotting uses \code{raster::plot}
-#'
+#' @param sample_type create random input data from a 'polar' or 'lonlat' domain
 #' @return An object of class SOauto_map, containing the data and other details required to generate the map. Printing or plotting the object will cause it to be plotted.
 #' @export
 #' @examples
@@ -53,7 +53,8 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
                        graticule = TRUE, buffer = 0.05,
                        contours = TRUE, levels = c(-500, -1000, -2000),
                        trim_background = TRUE,
-                       mask = FALSE, ppch = 19, pcol = 2, pcex = 1, bathyleg = FALSE, llty = 1, llwd = 1, lcol = 1) {
+                       mask = FALSE, ppch = 19, pcol = 2, pcex = 1, bathyleg = FALSE, llty = 1, llwd = 1, lcol = 1,
+                       sample_type = sample(c("polar", "lonlat"), 1L)) {
     ## check inputs
     assert_that(is.flag(contours), !is.na(contours))
     assert_that(is.numeric(levels), length(levels) > 0)
@@ -65,12 +66,25 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
     data("Bathy", package = "SOmap", envir = environment())
 
     if (missing(x) && missing(y)) {
-        xlim <- sort(runif(2, -359, 359))
-        ylim <- sort(runif(2, -89, -20))
+      stopifnot(sample_type %in% c("lonlat", "polar"))
+      nsample <- runif(1, 15, 35)
+      if (sample_type == "polar") {
+       ## sample from Bathy
+       rr <- raster(Bathy)
+       res(rr) <- c(runif(1, 16000, 1e6), runif(1, 16000, 1e6))
+       xy <- rgdal::project(xyFromCell(rr, sample(raster::ncell(rr), nsample)), raster::projection(rr), inv = TRUE)
+       xy <- xy[xy[,2] < -40, ]
+       if (length(xy) == 2) xy <- jitter(rbind(xy, xy), amount = 10)
+      }
+      if (sample_type == "lonlat") {
+      xlim <- sort(runif(2, -359, 359))
+      ylim <- sort(runif(2, -89, -20))
 
-        x <- runif(30, xlim[1], xlim[2])
-        y <- runif(30, ylim[1], ylim[2])
-        xy <- cbind(x, y)
+       x <- runif(nsample, xlim[1], xlim[2])
+       y <- runif(nsample, ylim[1], ylim[2])
+       xy <- cbind(x, y)
+
+      }
         xy <- xy[order(xy[, 1], xy[,2]), ]
         x <- xy[,1]
         y <- xy[,2]
@@ -280,10 +294,15 @@ plot.SOauto_map <- function (x, y, ...) {
 #' @method print SOauto_map
 #' @export
 print.SOauto_map <- function(x,main=NULL, ...) {
+  base_mar <- c(5.1, 4.1, 4.1, 2.1)
     aspect <- if (raster::isLonLat(x$target)) 1/cos(mean(c(raster::xmin(x$target), raster::xmax(x$target))) * pi/180) else 1
-    margins<- if (is.null(main)){ par("mar")/2.5} else { mars<-par("mar")/2.5
-                                                         mars[3]<-mars[3]+2
-                                                         mars}
+    if (is.null(main)) {
+       margins <-base_mar/2.5
+    } else {
+        mars <- base_mar/2.5
+        mars[3] <- mars[3]+2
+        margins <- mars
+    }
     pp <- aspectplot.default(c(raster::xmin(x$target), raster::xmax(x$target)), c(raster::ymin(x$target), raster::ymax(x$target)), asp = aspect, mar =margins)
     ## reset par(pp) when we exit this function
     #on.exit(par(pp))
@@ -292,7 +311,7 @@ print.SOauto_map <- function(x,main=NULL, ...) {
     newextent <- raster::extent(par("usr"))
 
     if(!is.null(main)){title(main = main)}
-
+    op <- par(xpd = FALSE)
     if (!is.null(x$bathy)) {
         if (isTRUE(x$bathyleg)) {
             raster::plot(x$bathy, add = TRUE, col = x$bathy_palette, axes = FALSE)
@@ -303,17 +322,16 @@ print.SOauto_map <- function(x,main=NULL, ...) {
     ## suggested param change: if levels is a scalar than pass it to nlevels
     ## nlevels = 1
     if (x$contours && !is.null(x$bathy)) contour(x$bathy, levels = x$levels, col = x$contour_colour, add = TRUE)
-    op <- par(xpd = FALSE)
+
     if (!is.null(x$coastline)) plot(x$coastline$data, col = x$coastline$fillcol, border = x$coastline$linecol, add = TRUE)
-    par(op)
+
     if (!is.null(x$points_data)) points(x$points_data, pch = x$ppch, cex = x$pcex, col = x$pcol)
     if (!is.null(x$lines_data)) lines(x$lines_data, lty = x$llty, lwd = x$llwd, col = x$lcol)
 
     if (!is.null(x$graticule)) {
-        op <- par(xpd = NA)
         plot_graticule(x$graticule)
-        par(op)
     }
+    par(op)
     invisible(x)
 }
 
