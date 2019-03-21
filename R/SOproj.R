@@ -36,7 +36,9 @@
 #' @importFrom raster projection<-
 #' @importFrom sp coordinates<-
 SOproj <- function(x, y = NULL, target = NULL, data, ..., source = NULL){
- if (is.character(y)) stop("y is character, did you mean 'target = '?")
+ if (is.character(y)) stop(sprintf("'y' is character, did you mean? \n\n  SOproj(%s, target = %s)",
+                                   as.character(substitute(x)),
+                                   as.character(substitute(y))))
   ## shortcut out, we have an object
   if (is.null(y) && !missing(x)) {
     if (is.null(target)) target <- SOcrs()
@@ -157,7 +159,8 @@ reproj.SOauto_map <- function(x, target, ..., source = NULL) {
 #' @name reproj
 #' @export
 reproj.BasicRaster <- function(x, target, ..., source = NULL) {
-  raster::projectRaster(x, crs = target)
+  targ <- raster::projectExtent(x, target)
+  raster::projectRaster(x, targ)
 }
 #' @name reproj
 #' @export

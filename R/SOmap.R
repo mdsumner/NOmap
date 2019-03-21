@@ -5,7 +5,7 @@
 #'
 #' @param Bathleg logical: if \code{TRUE}, insert the bathymetry legend
 #' @param Border logical: if \code{TRUE}, insert longitude border
-#' @param Trim numeric: longitude to trim map to
+#' @param Trim numeric: latitude to trim map to, set to -10 for effectively no trim
 #' @param Grats logical: if \code{TRUE}, insert graticule grid
 #' @param bordercol character: colours for longitude border
 #' @param borderwidth numeric: thickness (in degrees of latitude) of the border
