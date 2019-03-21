@@ -10,7 +10,8 @@ SOauto_map(x, y, centre_lon = NULL, centre_lat = NULL,
   input_lines = TRUE, graticule = TRUE, buffer = 0.05,
   contours = TRUE, levels = c(-500, -1000, -2000),
   trim_background = TRUE, mask = FALSE, ppch = 19, pcol = 2,
-  pcex = 1, bathyleg = FALSE, llty = 1, llwd = 1, lcol = 1)
+  pcex = 1, bathyleg = FALSE, llty = 1, llwd = 1, lcol = 1,
+  sample_type = sample(c("polar", "lonlat"), 1L))
 }
 \arguments{
 \item{x}{optional input data longitudes}
@@ -60,6 +61,8 @@ SOauto_map(x, y, centre_lon = NULL, centre_lat = NULL,
 \item{llwd}{set line width}
 
 \item{lcol}{set line color}
+
+\item{sample_type}{create random input data from a 'polar' or 'lonlat' domain}
 }
 \value{
 An object of class SOauto_map, containing the data and other details required to generate the map. Printing or plotting the object will cause it to be plotted.

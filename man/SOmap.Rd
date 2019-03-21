@@ -14,7 +14,7 @@ SOmap(Bathleg = TRUE, Border = TRUE, Trim = -45, Grats = FALSE,
 
 \item{Border}{logical: if \code{TRUE}, insert longitude border}
 
-\item{Trim}{numeric: longitude to trim map to}
+\item{Trim}{numeric: latitude to trim map to, set to -10 for effectively no trim}
 
 \item{Grats}{logical: if \code{TRUE}, insert graticule grid}
 
