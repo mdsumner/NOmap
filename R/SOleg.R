@@ -31,6 +31,7 @@
 #' Size of the title text. default=1
 #' @param rnd
 #' optional rounding factor for continuous legends using the round() function. default = NULL.
+#' @param borderwidth numeric: thickness (in degrees of latitude) of the border
 #'
 #' @return
 #' Creates rounded legends
@@ -79,7 +80,8 @@ SOleg <-function(x = NULL,
                  lcex = 0.75,
                  tadj = 0.5,
                  tcex = 1,
-                 rnd = NULL) {
+                 rnd = NULL,
+                 borderwidth = 2) {
 
     if (is.null(col)) col <- c("#440154FF", "#3E4A89FF", "#26828EFF", "#35B779FF", "#B4DE2CFF")
 
@@ -196,11 +198,12 @@ SOleg <-function(x = NULL,
     }
 
     ## Graticule for colors
-    bleg  <- graticule::graticule(lons = bllons,lats = c(Trim+3, Trim+5), tiles = TRUE, proj = raster::projection(Bathy))
+    bleg  <- graticule::graticule(lons = bllons,lats = c(Trim+borderwidth+1, Trim+borderwidth+3), tiles = TRUE, proj = raster::projection(Bathy))
     ## Graticule for ticks
-    btick <- graticule::graticule(lons = btlons ,lats = c(Trim+4, Trim+7),  proj = raster::projection(Bathy), tiles = FALSE)
+    btick <- graticule::graticule(lons = btlons ,lats = c(Trim+borderwidth+2, Trim+borderwidth+5),  proj = raster::projection(Bathy), tiles = FALSE)
     ## Graticule for masks
-    k <- graticule::graticule(lons = jklons, lats = c(Trim+10, Trim+6.75), tiles = TRUE, proj = raster::projection(Bathy))
+
+    k <- graticule::graticule(lons = jklons, lats = c(Trim+borderwidth+8, Trim+borderwidth+4.75), tiles = TRUE, proj = raster::projection(Bathy))
     j <- graticule::graticule(lons = jklons, lats = c(Trim+15, Trim+2), tiles = TRUE, proj = raster::projection(Bathy))
 
     ## Tick labels
