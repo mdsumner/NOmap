@@ -137,7 +137,7 @@ plot.SOmap <- function (x, y, ...) {
 #' @method print SOmap
 #' @export
 print.SOmap <- function(x, ...) {
-    op <- par(mar = rep(0.01, 4), oma= rep(0.0, 4), mai= rep(0.0, 4))
+    op <- par(mar = rep(0.01, 4),  mai= rep(0.0, 4))#oma= rep(0.0, 4),
     #on.exit(par(op))
     ## record current CRS
     SOcrs(x$projection)
