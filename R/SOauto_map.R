@@ -81,8 +81,8 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
       if (sample_type == "polar") {
        ## sample from Bathy
        rr <- raster(Bathy)
-       res(rr) <- c(runif(1, 16000, 1e6), runif(1, 16000, 1e6))
-       xy <- rgdal::project(xyFromCell(rr, sample(raster::ncell(rr), nsample)), raster::projection(rr), inv = TRUE)
+       raster::res(rr) <- c(runif(1, 16000, 1e6), runif(1, 16000, 1e6))
+       xy <- rgdal::project(raster::xyFromCell(rr, sample(raster::ncell(rr), nsample)), raster::projection(rr), inv = TRUE)
        xy <- xy[xy[,2] < -40, ]
        if (length(xy) == 2) xy <- jitter(rbind(xy, xy), amount = 10)
       }
@@ -202,7 +202,7 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
     xxlim <- xxlim + diff(range(xxlim)) * c(-buffer, buffer)
     yylim <- c(raster::ymin(target), raster::ymax(target))
     yylim <- yylim + diff(range(yylim)) * c(-buffer, buffer)
-    middle <- rgdal::project(cbind(mean(xxlim), mean(yylim)), projection(target),
+    middle <- rgdal::project(cbind(mean(xxlim), mean(yylim)), raster::projection(target),
                              inv = TRUE)
     if (is.null(centre_lon)) centre_lon <- middle[1L]
     if (is.null(centre_lat)) centre_lat <- middle[2L]
@@ -328,7 +328,7 @@ print.SOauto_map <- function(x,main=NULL, ...) {
     SOcrs(x$projection)
     newextent <- raster::extent(par("usr"))
 
-    if(!is.null(main)){title(main = main)}
+    if(!is.null(main)){graphics::title(main = main)}
     op <- par(xpd = FALSE)
     if (!is.null(x$bathy)) {
         if (isTRUE(x$bathyleg)) {
