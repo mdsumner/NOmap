@@ -2,9 +2,9 @@
 ## e.g.
 ##  buf <- make_buf(Trim+borderwidth, proj = raster::projection(Bathy))
 ##  suppressWarnings(sf::st_intersection(buf, some_object))
-make_buf <- function(trim_to_latitude, proj) {
+NOmake_buf <- function(trim_to_latitude, proj) {
     bufrad <- 90-abs(trim_to_latitude) ## radius in degrees latitude
-    tmp <- data.frame(lon = 0, lat = -90+bufrad)
+    tmp <- data.frame(lon = 0, lat = 90-bufrad)
     sp::coordinates(tmp) <- c("lon", "lat")
     raster::projection(tmp) <- "+init=epsg:4326"
     tmp <- sp::spTransform(tmp, sp::CRS(proj))
@@ -25,7 +25,7 @@ insert_into_sequence <- function(sequence, ins, after) {
 ## internal plotting routine, called by SOmap and SOmanagement
 ## iterate through the object's plot_sequence vector, running the plotfun with plotargs for each
 plot_all <- function(x) {
-    assert_that(inherits(x, c("SOmap_management", "SOmap")))
+    assert_that(inherits(x, c("NOmap_management", "NOmap")))
     ## interate through each plottable element in turn
     for (toplot in intersect(x$plot_sequence, names(x))) {
         allpf <- x[[toplot]] ## all the stuff to plot for this element

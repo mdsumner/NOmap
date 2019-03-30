@@ -1,13 +1,13 @@
-Package: SOmap
+Package: NOmap
 Type: Package
-Title: Southern Ocean maps
+Title: Northern Ocean maps
 Version: 0.2.1
-Authors@R: c(person("Dale", "Maschette", email = "dale.maschette@aad.gov.au", role = c("aut", "cre")),
-             person("Michael", "Sumner", role = "aut"),
+Authors@R: c(person("Dale", "Maschette", role = "aut"),
+             person("Michael", "Sumner", email = "mdsumner@gmail.com", role = "cre"),
              person("Ben", "Raymond", role = "aut"))
-Description: Create publication-quality Southern Ocean maps in a simple manner with multiple management layer options. Future versions will have the option of adding extra rounded legends for other layers. 
-URL: https://github.com/AustralianAntarcticDivision/SOmap
-BugReports: https://github.com/AustralianAntarcticDivision/SOmap/issues
+Description: Create publication-quality Northern Ocean maps in a simple manner with multiple layer options. 
+URL: https://github.com/mdsumner/NOmap
+BugReports: https://github.com/mdsumner/NOmap/issues
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
