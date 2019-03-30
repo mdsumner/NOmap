@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>record crs in use, or if NULL return it — SOcrs • SOmap</title>
+<title>SOmap coordinate system — SOcrs • SOmap</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="record crs in use, or if NULL return it — SOcrs" />
+<meta property="og:title" content="SOmap coordinate system — SOcrs" />
 
-<meta property="og:description" content="record crs in use, or if NULL return it" />
+<meta property="og:description" content="Set or return the coordinate system currently in use." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -104,25 +104,48 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>record crs in use, or if NULL return it</h1>
+    <h1>SOmap coordinate system</h1>
     <small class="dont-index">Source: <a href='https://github.com/AustralianAntarcticDivision/SOmap/blob/master/R/SOcrs.R'><code>R/SOcrs.R</code></a></small>
     <div class="hidden name"><code>SOcrs.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>record crs in use, or if NULL return it</p>
+    <p>Set or return the coordinate system currently in use.</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>SOcrs</span>(<span class='kw'>crs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
-        
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>crs</th>
+      <td><p>provide PROJ string to set the value</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
+    <p>If argument `crs` is NULL, the function returns the current value (which may be `NULL``).</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'><a href='SOmap.html'>SOmap</a></span>()
+<span class='fu'>SOcrs</span>()
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-                </ul>
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#details">Details</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

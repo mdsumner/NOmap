@@ -1,5 +1,7 @@
 # dev
 
+* New auto extent logic for `SOauto_map()` to address #30. 
+
 * New `reproj::reproj` methods for `SOauto_map` and `SOmap` classes. 
 
 # SOmap 0.1.3.9000

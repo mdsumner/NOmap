@@ -1,21 +1,10 @@
-mid_points <- function (p, fold = FALSE)
+mid_point <- function (p, fold = FALSE)
   {
-  ## written by SWotherspoon in SGAT
-    n <- nrow(p)
-    rad <- pi/180
-    p <- rad * p
-    dlon <- diff(p[, 1L])
-    lon1 <- p[-n, 1L]
-    lat1 <- p[-n, 2L]
-    lat2 <- p[-1L, 2L]
-    bx <- cos(lat2) * cos(dlon)
-    by <- cos(lat2) * sin(dlon)
-    lat <- atan2(sin(lat1) + sin(lat2), sqrt((cos(lat1) + bx)^2 +
-                                               by^2))/rad
-    lon <- (lon1 + atan2(by, cos(lat1) + bx))/rad
-    if (fold)
-      lon <- wrapLon(lon)
-    cbind(lon, lat)
+  gc <- "+proj=geocent"
+  lc <- "+proj=longlat +datum=WGS84"
+   reproj::reproj(matrix(colMeans(reproj::reproj(p, target = gc, source  = lc), na.rm = TRUE), 1L),
+                  target = lc, source = gc)[1L, 1:2, drop = FALSE]
+
   }
 
 
@@ -179,7 +168,7 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
       }
 
     } else {
-      mp <- mid_points(cbind(x, y))
+      mp <- mid_point(cbind(x, y))
     if (is.null(centre_lon)) {
         #centre_lon <- zapsmall(round(mean(xlim), digits = 2))
         centre_lon <- mp[1]
@@ -204,6 +193,7 @@ SOauto_map <- function(x, y, centre_lon = NULL, centre_lat = NULL, family = "ste
 
     target <- raster::projectExtent(raster::raster(raster::extent(xlim, ylim), crs = "+init=epsg:4326"), prj)
     if (trim_background) {
+      #browser()
       target <- crop(target, extent(rgdal::project(cbind(x, y), prj)))
     }
     dim(target) <- dimXY

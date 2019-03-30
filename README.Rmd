@@ -144,12 +144,14 @@ amap
 To add data to this plot we can just do so. 
 
 ```{r just-map-it}
+amap
 SOplot(SOmap_data$seaice_oct, lwd = 3, col = "blue", lty = 2)
 ```
 
 `SOplot()` will add data by default, and can take spatial objects or even raw longitude and latitude values (we like you). When a plot is set up the *coordinate reference system* used is recorded so that we can use it again. 
 
 ```{r add-it}
+print(amap)
 SOplot(SOmap_data$mirounga_leonina$lon, SOmap_data$mirounga_leonina$lat)
 ```
 
@@ -164,13 +166,13 @@ Many objects can be reprojected with `SOproj()`, including the map objects thems
 ```{r raster}
 prj <- "+proj=laea +lat_0=-90 +lon_0=147 +datum=WGS84"
 ## reproject a raster
-SOproj(ice, prj)
+SOproj(ice, target = prj)
 
 ## reproject a SOmap
 reproj(amap, prj)
 ```
 
 
-Note that we must assume raw input is "longitude/latitude", and the function tells us this. 
+Note that we must assume raw input is "longitude/latitude", and the function will issue a warning. 
 
 Please note that the SOmap project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By contributing to this project, you agree to abide by its terms.

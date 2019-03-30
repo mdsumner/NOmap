@@ -7,7 +7,7 @@
 SOleg(x = NULL, position = "topright", col = NULL, ticks = NULL,
   tlabs = NULL, breaks = NULL, Trim = -45, type = "discrete",
   label = "", ladj = 0.5, lsrt = 0, lcex = 0.75, tadj = 0.5,
-  tcex = 1, rnd = NULL)
+  tcex = 1, rnd = NULL, borderwidth = 2)
 }
 \arguments{
 \item{x}{Object to obtain min and max values from for type='continuous' default=NULL}
@@ -39,6 +39,8 @@ SOleg(x = NULL, position = "topright", col = NULL, ticks = NULL,
 \item{tcex}{Size of the title text. default=1}
 
 \item{rnd}{optional rounding factor for continuous legends using the round() function. default = NULL.}
+
+\item{borderwidth}{numeric: thickness (in degrees of latitude) of the border}
 }
 \value{
 Creates rounded legends
