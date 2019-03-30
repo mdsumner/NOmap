@@ -28,6 +28,9 @@ data("wrld_simpl", package = "maptools")
 wrld_simpl <- subset(wrld_simpl, !NAME %in% "Antarctica")
 plot(nmap)
 NOmap::SOplot(wrld_simpl, col = grey(0.6, alpha = 0.3))
+
+library(trip)
+SOplot(as(walrus818, "SpatialLinesDataFrame"), col = viridis::viridis(length(unique(walrus818$Deployment))))
 ```
 
 <img src="man/figures/README-unnamed-chunk-1-1.png" width="100%" />
