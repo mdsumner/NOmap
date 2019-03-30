@@ -21,6 +21,7 @@ WIP AND WILL MAKE YOUR LIFE VERY BAD, DO NOT USE.
 library(NOmap)
 #> Loading required package: raster
 #> Loading required package: sp
+#> Warning: S3 method 'print.SOmap' was declared in NAMESPACE but not found
 nmap <- NOmap(land = F)
 #> Loading required namespace: rgeos
 data("wrld_simpl", package = "maptools")
